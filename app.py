@@ -19,25 +19,61 @@ import hashlib
 load_dotenv()
 
 # --- Enhanced CoinGecko API Integration ---
+# Import the new CoinGecko clients integration
+try:
+    from coingecko_clients_integration import (
+        CoinGeckoSwaggerClient,
+        PyCoinGeckoClient,
+        PyCGAPIClient,
+        CoinGeckoClientManager,
+        get_enhanced_coingecko_data,
+        get_portfolio_optimization_data,
+        get_swagger_documentation
+    )
+    COINGECKO_CLIENTS_AVAILABLE = True
+except ImportError:
+    COINGECKO_CLIENTS_AVAILABLE = False
+    st.warning("⚠️ Enhanced CoinGecko clients not available. Using fallback API.")
+
 class CoinGeckoAPI:
     def __init__(self):
         self.base_url = "https://api.coingecko.com/api/v3"
         self.api_key = os.getenv("COINGECKO_API_KEY")
+        self.demo_api_key = os.getenv("COINGECKO_DEMO_API_KEY")
+        self.pro_api_key = os.getenv("COINGECKO_PRO_API_KEY")
         self.session = requests.Session()
         
         # Add headers for better API performance and authentication
         self.session.headers.update({
-            'User-Agent': 'Decentralized-Portfolio-Optimizer/1.0',
+            'User-Agent': 'Decentralized-Portfolio-Optimizer/2.0',
             'Accept': 'application/json'
         })
         
         # Add API key to headers if available (Recommended method)
-        if self.api_key:
+        if self.demo_api_key:
+            self.session.headers.update({
+                'x-cg-demo-api-key': self.demo_api_key
+            })
+        elif self.pro_api_key:
+            self.session.headers.update({
+                'x-cg-pro-api-key': self.pro_api_key
+            })
+        elif self.api_key:
             self.session.headers.update({
                 'x-cg-demo-api-key': self.api_key
             })
         else:
             pass
+        
+        # Initialize enhanced clients if available
+        if COINGECKO_CLIENTS_AVAILABLE:
+            self.swagger_client = CoinGeckoSwaggerClient()
+            self.py_client = PyCoinGeckoClient()
+            self.pycg_client = PyCGAPIClient()
+            self.client_manager = CoinGeckoClientManager()
+            self.enhanced_clients_available = True
+        else:
+            self.enhanced_clients_available = False
     
     def _handle_api_response(self, response, endpoint_name):
         """Handle API responses with proper error handling"""
@@ -522,6 +558,42 @@ class CoinGeckoAPI:
             except:
                 print(f"Error fetching DeFi market data: {str(e)}")
             return {}
+    
+    def get_enhanced_market_data(self, coin_ids=None):
+        """Get enhanced market data using multiple clients"""
+        try:
+            if self.enhanced_clients_available:
+                return get_enhanced_coingecko_data(coin_ids)
+            else:
+                st.warning("⚠️ Enhanced clients not available. Using basic API.")
+                return None
+        except Exception as e:
+            st.error(f"❌ Error fetching enhanced market data: {str(e)}")
+            return None
+    
+    def get_portfolio_optimization_data(self, coin_ids, risk_profile="medium"):
+        """Get data optimized for portfolio analysis"""
+        try:
+            if self.enhanced_clients_available:
+                return get_portfolio_optimization_data(coin_ids, risk_profile)
+            else:
+                st.warning("⚠️ Enhanced clients not available. Using basic API.")
+                return None
+        except Exception as e:
+            st.error(f"❌ Error fetching portfolio optimization data: {str(e)}")
+            return None
+    
+    def get_swagger_documentation(self):
+        """Get comprehensive API documentation"""
+        try:
+            if self.enhanced_clients_available:
+                return get_swagger_documentation()
+            else:
+                st.warning("⚠️ Enhanced clients not available.")
+                return None
+        except Exception as e:
+            st.error(f"❌ Error fetching Swagger documentation: {str(e)}")
+            return None
     
     def get_public_companies_holdings(self, coin_id):
         """
