@@ -1,0 +1,25 @@
+# CoinGecko API Configuration
+COINGECKO_API_KEY=MY_API_KEY
+
+# Ethereum Network Configuration
+# For mainnet: https://mainnet.infura.io/v3/YOUR_PROJECT_ID
+# For testnet: https://sepolia.infura.io/v3/YOUR_PROJECT_ID
+ETHEREUM_RPC_URL=https://sepolia.infura.io/v3/YOUR_PROJECT_ID
+
+# Smart Contract Configuration
+# Deploy the PortfolioStorage.sol contract on Remix and add the address here
+# Contract deployed on Sepolia: 0xd0214254f898F8855C73Bd1bBD080Cb5a06A131e
+CONTRACT_ADDRESS=0xd0214254f898F8855C73Bd1bBD080Cb5a06A131e
+
+# Private Key for Blockchain Transactions
+# WARNING: Never commit your private key to version control!
+# Use a test wallet for development
+PRIVATE_KEY=my_private_key_here
+
+# Application Configuration
+# Set to "true" to enable developer features (API status, debug info)
+DEBUG=false
+LOG_LEVEL=INFO
+
+# MCP Server Configuration (optional)
+MCP_SERVER_URL=https://mcp.api.coingecko.com/sse 
