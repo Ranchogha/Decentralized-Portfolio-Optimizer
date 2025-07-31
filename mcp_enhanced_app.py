@@ -26,6 +26,12 @@ from typing import Dict, List, Optional, Any
 # Load environment variables
 load_dotenv()
 
+# Initialize session state for retry functionality
+if 'retry_default' not in st.session_state:
+    st.session_state.retry_default = False
+if 'retry_fewer' not in st.session_state:
+    st.session_state.retry_fewer = False
+
 # Initialize MCP components
 mcp_server = CoinGeckoMCPServer()
 mcp_optimizer = MCPPortfolioOptimizer()
@@ -552,72 +558,90 @@ with st.sidebar:
         except Exception as e:
             st.error(f"Error analyzing sentiment: {str(e)}")
 
-# Enhanced sidebar for user inputs
+# Sidebar Configuration
 with st.sidebar:
-    st.header("🎯 Portfolio Configuration")
+    st.header("⚙️ Configuration")
     
-    # Risk Profile Selection with AI insights
+    # Risk Profile Selection
     risk_profile = st.selectbox(
-        "Risk Profile",
+        "🎯 Risk Profile",
         ["low", "medium", "high"],
-        help="Low: Conservative with stablecoins, Medium: Balanced, High: Aggressive growth"
+        index=1,
+        help="Select your investment risk tolerance"
     )
-    
-    # AI risk explanation
-    risk_explanations = {
-        "low": "Conservative approach with stablecoins and blue-chip cryptocurrencies. Lower volatility, steady returns.",
-        "medium": "Balanced allocation across different sectors. Moderate risk with growth potential.",
-        "high": "Aggressive strategy focusing on high-growth assets. Higher volatility, higher potential returns."
-    }
-    
-    st.info(f"**{risk_profile.title()} Risk Profile:**\n{risk_explanations[risk_profile]}")
     
     # Investment Amount
     investment_amount = st.number_input(
-        "Investment Amount (USD)",
-        min_value=100,
-        value=10000,
-        step=100,
-        help="Total amount to invest across the portfolio"
+        "💰 Investment Amount (USD)",
+        min_value=100.0,
+        max_value=1000000.0,
+        value=10000.0,
+        step=100.0,
+        help="Enter your total investment amount"
     )
     
-    # Enhanced Sector Selection with AI-powered analysis
-    st.subheader("🏢 Sector Selection (AI Enhanced)")
-    st.markdown("Select sectors to include in your portfolio:")
+    # Sector Selection
+    available_sectors = ["DeFi", "Layer 1", "Layer 2", "Gaming", "NFT", "AI/ML", "Privacy", "Infrastructure"]
+    selected_sectors = st.multiselect(
+        "🏢 Preferred Sectors",
+        available_sectors,
+        default=["DeFi", "Layer 1"],
+        help="Select your preferred cryptocurrency sectors"
+    )
     
-    sector_options = {
-        "DeFi": "Decentralized Finance protocols",
-        "Layer 1": "Base blockchain networks",
-        "Layer 2": "Scaling solutions",
-        "Stablecoins": "Price-stable cryptocurrencies",
-        "AI": "Artificial Intelligence tokens",
-        "Gaming": "Gaming and metaverse tokens",
-        "Infrastructure": "Blockchain infrastructure"
-    }
-    
-    selected_sectors = []
-    for sector, description in sector_options.items():
-        if st.checkbox(f"{sector}", value=sector in ["DeFi", "Layer 1"], help=description):
-            selected_sectors.append(sector)
-    
-    if not selected_sectors:
-        st.warning("⚠️ Please select at least one sector")
-        selected_sectors = ["DeFi", "Layer 1"]
-    
-    # Portfolio Size
+    # Maximum Assets
     max_assets = st.slider(
-        "Maximum Assets",
+        "📊 Maximum Assets",
         min_value=3,
-        max_value=15,
-        value=8,
-        help="Maximum number of assets in the portfolio"
+        max_value=20,
+        value=10,
+        help="Maximum number of assets in your portfolio"
     )
     
-    # Enhanced Blockchain Integration
-    st.subheader("🔗 Blockchain Features")
+    # Handle retry states
+    if st.session_state.retry_default:
+        max_assets = 5  # Use fewer assets for retry
+        selected_sectors = ["DeFi", "Layer 1"]  # Use default sectors
+        st.session_state.retry_default = False
+        st.info("🔄 Using default settings for retry")
     
-    # Show enhanced blockchain connection status
-    network_info = portfolio_manager.get_network_info()
+    if st.session_state.retry_fewer:
+        max_assets = 3  # Use even fewer assets
+        st.session_state.retry_fewer = False
+        st.info("🔄 Using fewer assets for retry")
+    
+    # Diagnostic Section
+    st.header("🔧 Diagnostics")
+    if st.button("🔍 Run Connection Test"):
+        with st.spinner("Testing connections..."):
+            # Test API keys
+            demo_key = os.getenv("COINGECKO_DEMO_API_KEY")
+            pro_key = os.getenv("COINGECKO_PRO_API_KEY")
+            
+            if demo_key or pro_key:
+                st.success("✅ API keys found")
+            else:
+                st.warning("⚠️ No API keys found")
+            
+            # Test server connection
+            try:
+                status = mcp_optimizer.mcp_server.get_server_status()
+                if status and status.get('gecko_says'):
+                    st.success("✅ CoinGecko API accessible")
+                else:
+                    st.error("❌ CoinGecko API not responding")
+            except Exception as e:
+                st.error(f"❌ Connection error: {str(e)}")
+            
+            # Test market data
+            try:
+                market_data = mcp_optimizer.mcp_server.get_coins_markets_mcp(per_page=5)
+                if market_data:
+                    st.success(f"✅ Market data available ({len(market_data)} assets)")
+                else:
+                    st.error("❌ No market data available")
+            except Exception as e:
+                st.error(f"❌ Market data error: {str(e)}")
 
 # Main application tabs
 tab1, tab2, tab3, tab4, tab5 = st.tabs([
@@ -636,7 +660,48 @@ with tab1:
     if st.button("🚀 Generate AI-Optimized Portfolio", type="primary"):
         with st.spinner("🔄 Generating portfolio with AI-enhanced data..."):
             try:
+                # Debug: Check API key configuration
+                demo_key = os.getenv("COINGECKO_DEMO_API_KEY")
+                pro_key = os.getenv("COINGECKO_PRO_API_KEY")
+                
+                if not demo_key and not pro_key:
+                    st.warning("⚠️ No CoinGecko API keys found. Using public endpoints (rate limited).")
+                else:
+                    st.success("✅ API keys configured")
+                
+                # Debug: Check MCP server status first
+                st.info("🔍 Checking MCP server connection...")
+                server_status = mcp_optimizer.mcp_server.get_server_status()
+                if not server_status:
+                    st.error("❌ MCP server is not responding. Check your internet connection and API keys.")
+                    return
+                
+                # Test basic API connectivity
+                st.info("🌐 Testing API connectivity...")
+                try:
+                    test_response = mcp_optimizer.mcp_server._make_mcp_request("ping")
+                    if test_response and test_response.get('gecko_says'):
+                        st.success("✅ CoinGecko API is accessible")
+                    else:
+                        st.warning("⚠️ CoinGecko API response unclear")
+                except Exception as api_error:
+                    st.error(f"❌ API connectivity test failed: {str(api_error)}")
+                    return
+                
+                # Debug: Check market data availability
+                st.info("📊 Fetching market data...")
+                market_data = mcp_optimizer.mcp_server.get_coins_markets_mcp(per_page=50)
+                if not market_data:
+                    st.error("❌ No market data available. This could be due to:")
+                    st.error("   • API rate limiting")
+                    st.error("   • Invalid API key")
+                    st.error("   • Network connectivity issues")
+                    return
+                
+                st.success(f"✅ Found {len(market_data)} market assets")
+                
                 # Get AI-enhanced portfolio data
+                st.info("🤖 Running AI optimization...")
                 portfolio_data = mcp_optimizer.ai_optimize_portfolio(
                     risk_profile=risk_profile,
                     investment_amount=investment_amount,
@@ -650,10 +715,79 @@ with tab1:
                     st.success("✅ AI-optimized portfolio generated successfully!")
                 else:
                     st.error("❌ Failed to generate portfolio. Please try again.")
+                    st.info("💡 This might be due to:")
+                    st.info("   • Insufficient market data for selected sectors")
+                    st.info("   • AI optimization algorithm constraints")
+                    st.info("   • Rate limiting from CoinGecko API")
                     
             except Exception as e:
                 st.error(f"❌ Error generating portfolio: {str(e)}")
                 st.info("ℹ️ Falling back to standard API endpoints")
+                
+                # Fallback: Simple portfolio generation
+                try:
+                    st.info("🔄 Attempting fallback portfolio generation...")
+                    
+                    # Get basic market data
+                    fallback_market_data = mcp_optimizer.mcp_server.get_coins_markets_mcp(per_page=20)
+                    if fallback_market_data:
+                        # Create simple portfolio with top assets
+                        portfolio = []
+                        total_allocation = 0
+                        
+                        for i, asset in enumerate(fallback_market_data[:max_assets]):
+                            # Simple allocation based on position
+                            allocation_percentage = (1 / max_assets) * 100
+                            allocation_usd = (investment_amount * allocation_percentage) / 100
+                            
+                            portfolio.append({
+                                'id': asset['id'],
+                                'symbol': asset['symbol'].upper(),
+                                'name': asset['name'],
+                                'current_price': asset['current_price'],
+                                'allocation_usd': allocation_usd,
+                                'allocation_percentage': allocation_percentage,
+                                'market_cap': asset['market_cap'],
+                                'price_change_24h': asset.get('price_change_percentage_24h', 0)
+                            })
+                            total_allocation += allocation_usd
+                        
+                        if portfolio:
+                            fallback_portfolio_data = {
+                                'portfolio': portfolio,
+                                'total_value': total_allocation,
+                                'ai_model_used': 'Fallback Simple Allocation',
+                                'risk_profile': risk_profile,
+                                'sectors': selected_sectors,
+                                'timestamp': datetime.now().isoformat()
+                            }
+                            
+                            st.session_state.portfolio_data = fallback_portfolio_data
+                            st.session_state.market_data = {'fallback': True}
+                            st.success("✅ Fallback portfolio generated successfully!")
+                        else:
+                            st.error("❌ Fallback portfolio generation also failed")
+                    else:
+                        st.error("❌ No market data available for fallback")
+                        
+                except Exception as fallback_error:
+                    st.error(f"❌ Fallback also failed: {str(fallback_error)}")
+    
+    # Retry button if portfolio generation failed
+    if 'portfolio_data' not in st.session_state or not st.session_state.portfolio_data:
+        st.warning("⚠️ No portfolio data available. Click 'Generate AI-Optimized Portfolio' to create one.")
+        
+        # Quick retry with different settings
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("🔄 Retry with Default Settings", type="secondary"):
+                st.session_state.retry_default = True
+                st.rerun()
+        
+        with col2:
+            if st.button("🔧 Try with Fewer Assets", type="secondary"):
+                st.session_state.retry_fewer = True
+                st.rerun()
     
     # Portfolio Summary Section
     if 'portfolio_data' in st.session_state and st.session_state.portfolio_data:
