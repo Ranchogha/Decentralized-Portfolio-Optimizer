@@ -601,7 +601,7 @@ with tab1:
                 server_status = mcp_optimizer.mcp_server.get_server_status()
                 if not server_status:
                     st.error("❌ MCP server is not responding. Check your internet connection and API keys.")
-                    return
+                    st.stop()
                 
                 # Test basic API connectivity
                 st.info("🌐 Testing API connectivity...")
@@ -613,7 +613,7 @@ with tab1:
                         st.warning("⚠️ CoinGecko API response unclear")
                 except Exception as api_error:
                     st.error(f"❌ API connectivity test failed: {str(api_error)}")
-                    return
+                    st.stop()
                 
                 # Debug: Check market data availability
                 st.info("📊 Fetching market data...")
@@ -623,7 +623,7 @@ with tab1:
                     st.error("   • API rate limiting")
                     st.error("   • Invalid API key")
                     st.error("   • Network connectivity issues")
-                    return
+                    st.stop()
                 
                 st.success(f"✅ Found {len(market_data)} market assets")
                 
@@ -699,6 +699,7 @@ with tab1:
                         
                 except Exception as fallback_error:
                     st.error(f"❌ Fallback also failed: {str(fallback_error)}")
+                    st.stop()
     
     # Retry button if portfolio generation failed
     if 'portfolio_data' not in st.session_state or not st.session_state.portfolio_data:
