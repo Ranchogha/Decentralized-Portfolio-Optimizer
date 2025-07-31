@@ -50,13 +50,13 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Enhanced CSS for Shopify-inspired modern theme with metallic touches
+# Enhanced CSS for Blockchain-Inspired Modern Theme with Vibrant Gradients
 st.markdown("""
 <style>
-    /* Shopify-Inspired Modern Theme with Metallic Touches */
+    /* Blockchain-Inspired Modern Theme with Vibrant Gradients */
     .stApp {
-        background: #ADBBDA;
-        color: #3D52A0;
+        background: linear-gradient(135deg, #0a0e1a 0%, #1a1f2e 50%, #0f1419 100%);
+        color: #ffffff;
     }
     
     /* Custom Scrollbar */
@@ -65,29 +65,29 @@ st.markdown("""
     }
     
     ::-webkit-scrollbar-track {
-        background: #EDE8F5;
+        background: #1a1f2e;
     }
     
     ::-webkit-scrollbar-thumb {
-        background: #8697C4;
+        background: linear-gradient(180deg, #6366f1 0%, #8b5cf6 100%);
         border-radius: 4px;
     }
     
     ::-webkit-scrollbar-thumb:hover {
-        background: #7091E6;
+        background: linear-gradient(180deg, #4f46e5 0%, #7c3aed 100%);
     }
     
-    /* Main Header - Shopify Style */
+    /* Main Header - Blockchain Style */
     .main-header {
-        background: linear-gradient(135deg, #EDE8F5 0%, #ADBBDA 50%, #8697C4 100%);
-        border: 1px solid #7091E6;
-        border-radius: 16px;
-        padding: 2rem;
-        color: #3D52A0;
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 2.5rem;
+        color: #ffffff;
         text-align: center;
         margin-bottom: 2rem;
-        box-shadow: 0 8px 32px rgba(61, 82, 160, 0.2);
-        backdrop-filter: blur(10px);
+        box-shadow: 0 20px 40px rgba(99, 102, 241, 0.3);
+        backdrop-filter: blur(20px);
         position: relative;
         overflow: hidden;
     }
@@ -98,9 +98,20 @@ st.markdown("""
         top: 0;
         left: 0;
         right: 0;
-        height: 1px;
-        background: linear-gradient(90deg, transparent, #7091E6, transparent);
-        animation: shimmer 2s infinite;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+        opacity: 0.3;
+    }
+    
+    .main-header::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #ffffff, transparent);
+        animation: shimmer 3s infinite;
     }
     
     @keyframes shimmer {
@@ -108,46 +119,50 @@ st.markdown("""
         100% { transform: translateX(100%); }
     }
     
-    /* Token Cards - Shopify Style */
+    /* Token Cards - Blockchain Style */
     .token-card {
-        background: linear-gradient(135deg, #EDE8F5 0%, #ADBBDA 100%);
-        border: 1px solid #8697C4;
-        border-radius: 12px;
-        padding: 1rem;
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 1.5rem;
         margin: 0.5rem 0;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        color: #3D52A0;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        color: #ffffff;
+        backdrop-filter: blur(10px);
     }
     
     .token-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(61, 82, 160, 0.2);
-        border-color: #7091E6;
+        transform: translateY(-4px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(99, 102, 241, 0.4);
+        border-color: rgba(255, 255, 255, 0.3);
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
     }
     
-    /* Protocol Cards - Shopify Style */
+    /* Protocol Cards - Blockchain Style */
     .protocol-card {
-        background: linear-gradient(135deg, #EDE8F5 0%, #ADBBDA 100%);
-        border: 1px solid #8697C4;
-        border-radius: 12px;
-        padding: 1.5rem;
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 2rem;
         margin: 1rem 0;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        color: #3D52A0;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        color: #ffffff;
+        backdrop-filter: blur(10px);
     }
     
     .protocol-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(61, 82, 160, 0.2);
-        border-color: #7091E6;
+        transform: translateY(-4px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(99, 102, 241, 0.4);
+        border-color: rgba(255, 255, 255, 0.3);
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
     }
     
     /* AI Badge */
     .ai-badge {
-        background: linear-gradient(135deg, #7091E6 0%, #3D52A0 100%);
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
         color: white;
         padding: 0.5rem 1rem;
         border-radius: 20px;
@@ -175,18 +190,18 @@ st.markdown("""
     }
     
     .status-online { 
-        background-color: #7091E6;
-        box-shadow: 0 0 10px rgba(112, 145, 230, 0.5);
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        box-shadow: 0 0 15px rgba(16, 185, 129, 0.6);
     }
     
     .status-offline { 
-        background-color: #ff6b6b;
-        box-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        box-shadow: 0 0 15px rgba(239, 68, 68, 0.6);
     }
     
     .status-warning { 
-        background-color: #ffd93d;
-        box-shadow: 0 0 10px rgba(255, 217, 61, 0.5);
+        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        box-shadow: 0 0 15px rgba(245, 158, 11, 0.6);
     }
     
     @keyframes glow {
@@ -196,49 +211,53 @@ st.markdown("""
     
     /* AI Feature Cards */
     .ai-feature {
-        background: linear-gradient(135deg, #EDE8F5 0%, #ADBBDA 100%);
-        border: 1px solid #8697C4;
-        border-radius: 12px;
-        color: #3D52A0;
-        padding: 1rem;
-        border-radius: 10px;
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        color: #ffffff;
+        padding: 1.5rem;
         margin: 0.5rem 0;
-        border-left: 4px solid #7091E6;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border-left: 4px solid #6366f1;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        backdrop-filter: blur(10px);
     }
     
     .ai-feature:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(61, 82, 160, 0.2);
-        border-color: #7091E6;
+        transform: translateY(-4px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(99, 102, 241, 0.4);
+        border-color: rgba(255, 255, 255, 0.3);
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
     }
     
     /* Chat Container */
     .chat-container {
-        background: linear-gradient(135deg, #EDE8F5 0%, #ADBBDA 100%);
-        border: 1px solid #8697C4;
-        border-radius: 12px;
-        padding: 1rem;
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 1.5rem;
         margin: 1rem 0;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        color: #3D52A0;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        color: #ffffff;
+        backdrop-filter: blur(10px);
     }
     
     .chat-container:hover {
-        border-color: #7091E6;
-        box-shadow: 0 8px 24px rgba(61, 82, 160, 0.2);
+        border-color: rgba(255, 255, 255, 0.3);
+        box-shadow: 0 20px 40px rgba(99, 102, 241, 0.4);
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
     }
     
     /* Notification Alerts */
     .notification-alert {
-        background: linear-gradient(135deg, #EDE8F5 0%, #ADBBDA 100%);
-        border: 1px solid #8697C4;
-        border-radius: 8px;
-        color: #3D52A0;
-        padding: 0.5rem;
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        color: #ffffff;
+        padding: 1rem;
         margin: 0.5rem 0;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         animation: slideIn 0.3s ease-out;
+        backdrop-filter: blur(10px);
     }
     
     @keyframes slideIn {
@@ -248,15 +267,16 @@ st.markdown("""
     
     /* Financial Metrics Cards */
     .metric-card {
-        background: linear-gradient(135deg, #EDE8F5 0%, #ADBBDA 100%);
-        border: 1px solid #8697C4;
-        border-radius: 12px;
-        padding: 1rem;
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 1.5rem;
         margin: 0.5rem;
         text-align: center;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         position: relative;
-        color: #3D52A0;
+        color: #ffffff;
+        backdrop-filter: blur(10px);
     }
     
     .metric-card::after {
@@ -267,8 +287,8 @@ st.markdown("""
         transform: translateX(-50%);
         width: 0;
         height: 2px;
-        background: linear-gradient(90deg, #7091E6, #3D52A0);
-        transition: width 0.3s ease;
+        background: linear-gradient(90deg, #6366f1, #8b5cf6);
+        transition: width 0.4s ease;
     }
     
     .metric-card:hover::after {
@@ -276,43 +296,48 @@ st.markdown("""
     }
     
     .metric-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(61, 82, 160, 0.2);
-        border-color: #7091E6;
+        transform: translateY(-4px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(99, 102, 241, 0.4);
+        border-color: rgba(255, 255, 255, 0.3);
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
     }
     
     /* Risk Analysis Cards */
     .risk-card {
-        background: linear-gradient(135deg, #EDE8F5 0%, #ADBBDA 100%);
-        border: 1px solid #8697C4;
-        border-radius: 12px;
-        padding: 1.5rem;
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 2rem;
         margin: 1rem 0;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        color: #3D52A0;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        color: #ffffff;
+        backdrop-filter: blur(10px);
     }
     
     .risk-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(61, 82, 160, 0.2);
-        border-color: #7091E6;
+        transform: translateY(-4px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(99, 102, 241, 0.4);
+        border-color: rgba(255, 255, 255, 0.3);
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
     }
     
     /* Portfolio Summary Cards */
     .portfolio-summary {
-        background: linear-gradient(135deg, #EDE8F5 0%, #ADBBDA 100%);
-        border: 1px solid #8697C4;
-        border-radius: 16px;
-        padding: 2rem;
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 2.5rem;
         margin: 1rem 0;
-        color: #3D52A0;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        color: #ffffff;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        backdrop-filter: blur(10px);
     }
     
     .portfolio-summary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(61, 82, 160, 0.2);
-        border-color: #7091E6;
+        transform: translateY(-4px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(99, 102, 241, 0.4);
+        border-color: rgba(255, 255, 255, 0.3);
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
     }
     
     /* Floating Elements Animation */
@@ -327,7 +352,7 @@ st.markdown("""
     
     /* Metallic Button Style */
     .metallic-button {
-        background: linear-gradient(135deg, #3D52A0 0%, #7091E6 100%);
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
         color: white;
         border: none;
         border-radius: 8px;
@@ -1248,7 +1273,12 @@ with tab5:
 st.markdown("---")
 st.markdown("""
 <div style="text-align: center; color: #888; padding: 2rem;">
-    <p>🚀 Powered by AI & Blockchain Technology</p>
-    <p>Built with Streamlit, CoinGecko API, and Ethereum Smart Contracts</p>
+    <p>🚀 Powered by AI, Coingecko MCP & Blockchain Technology</p>
+    <p>Built with Streamlit, CoinGecko API, and Ethereum Smart Contracts by Rancho</p>
+    <p>
+        <a href="https://x.com/Rancho_GHA" target="_blank" style="text-decoration: none; color: #1DA1F2;">
+            <span style="font-size: 24px;">𝕏</span> Follow @Rancho_GHA
+        </a>
+    </p>
 </div>
 """, unsafe_allow_html=True) 

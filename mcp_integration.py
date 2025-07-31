@@ -22,6 +22,14 @@ warnings.filterwarnings('ignore')
 # Load environment variables
 load_dotenv()
 
+def safe_gt(a, b):
+    try:
+        if a is None or b is None:
+            return False
+        return float(a) > float(b)
+    except (ValueError, TypeError):
+        return False
+
 class CoinGeckoAIIntegration:
     """
     AI Integration following CoinGecko's llms.txt guidelines
@@ -141,7 +149,7 @@ class CoinGeckoAIIntegration:
                               investment_amount: float, sectors: List[str]) -> Dict:
         """Fallback optimization when AI model fails"""
         # Simple market cap weighted allocation
-        filtered_data = [coin for coin in market_data if coin.get('market_cap', 0) > 0]
+        filtered_data = [coin for coin in market_data if safe_gt(coin.get('market_cap', 0), 0)]
         total_market_cap = sum(coin['market_cap'] for coin in filtered_data)
         
         portfolio = []
@@ -180,10 +188,10 @@ class CoinGeckoAIIntegration:
             volumes = [coin.get('total_volume', 0) for coin in market_data]
             
             # Sentiment metrics
-            positive_coins = sum(1 for change in price_changes if change > 0)
-            negative_coins = sum(1 for change in price_changes if change < 0)
-            avg_change = np.mean(price_changes)
-            avg_volume = np.mean(volumes)
+            positive_coins = sum(1 for change in price_changes if safe_gt(change, 0))
+            negative_coins = sum(1 for change in price_changes if safe_gt(0, change))
+            avg_change = np.mean([float(x) if x is not None else 0 for x in price_changes])
+            avg_volume = np.mean([float(x) if x is not None else 0 for x in volumes])
             
             # Sentiment score (-1 to 1)
             sentiment_score = (positive_coins - negative_coins) / len(price_changes) if price_changes else 0
@@ -194,7 +202,7 @@ class CoinGeckoAIIntegration:
                 'negative_coins': negative_coins,
                 'avg_price_change': avg_change,
                 'avg_volume': avg_volume,
-                'market_mood': 'Bullish' if sentiment_score > 0.1 else 'Bearish' if sentiment_score < -0.1 else 'Neutral'
+                'market_mood': 'Bullish' if safe_gt(sentiment_score, 0.1) else 'Bearish' if safe_gt(-0.1, sentiment_score) else 'Neutral'
             }
         except Exception as e:
             st.error(f"❌ Sentiment analysis error: {str(e)}")
@@ -211,7 +219,7 @@ class CoinGeckoAIIntegration:
             # Risk calculations
             concentration_risk = np.std(allocations)  # Higher std = more concentrated
             volatility_risk = np.std(price_changes)  # Higher std = more volatile
-            market_cap_diversity = len(set([mc > 1e9 for mc in market_caps]))  # Large vs small cap mix
+            market_cap_diversity = len(set([safe_gt(mc, 1e9) for mc in market_caps]))  # Large vs small cap mix
             
             # Overall risk score (0-1)
             risk_score = (concentration_risk * 0.4 + volatility_risk * 0.4 + (1 - market_cap_diversity/2) * 0.2) / 100
@@ -221,7 +229,7 @@ class CoinGeckoAIIntegration:
                 'volatility_risk': volatility_risk,
                 'market_cap_diversity': market_cap_diversity,
                 'overall_risk_score': min(risk_score, 1.0),
-                'risk_level': 'High' if risk_score > 0.6 else 'Medium' if risk_score > 0.3 else 'Low',
+                'risk_level': 'High' if safe_gt(risk_score, 0.6) else 'Medium' if safe_gt(risk_score, 0.3) else 'Low',
                 'recommendations': self._generate_risk_recommendations(risk_score, concentration_risk, volatility_risk)
             }
         except Exception as e:
@@ -232,14 +240,14 @@ class CoinGeckoAIIntegration:
         """Generate AI-powered risk recommendations"""
         recommendations = []
         
-        if risk_score > 0.6:
+        if safe_gt(risk_score, 0.6):
             recommendations.append("Consider diversifying across more assets")
             recommendations.append("Add stablecoins to reduce volatility")
         
-        if concentration > 20:
+        if safe_gt(concentration, 20):
             recommendations.append("Reduce concentration in top holdings")
         
-        if volatility > 10:
+        if safe_gt(volatility, 10):
             recommendations.append("Consider adding defensive assets")
         
         if not recommendations:
@@ -411,9 +419,9 @@ class CoinGeckoMCPServer:
             # Add AI-powered global market analysis
             data = result['data']
             result['ai_analysis'] = {
-                'market_health': 'bullish' if data.get('market_cap_change_percentage_24h_usd', 0) > 0 else 'bearish',
-                'volume_trend': 'increasing' if data.get('total_volume', {}).get('usd', 0) > 0 else 'decreasing',
-                'market_sentiment': 'positive' if data.get('market_cap_change_percentage_24h_usd', 0) > 2 else 'neutral'
+                'market_health': 'bullish' if safe_gt(data.get('market_cap_change_percentage_24h_usd', 0), 0) else 'bearish',
+                'volume_trend': 'increasing' if safe_gt(data.get('total_volume', {}).get('usd', 0), 0) else 'decreasing',
+                'market_sentiment': 'positive' if safe_gt(data.get('market_cap_change_percentage_24h_usd', 0), 2) else 'neutral'
             }
         
         return result
@@ -426,9 +434,9 @@ class CoinGeckoMCPServer:
             # Add AI-powered DeFi analysis
             data = result['data']
             result['ai_analysis'] = {
-                'defi_health': 'growing' if data.get('defi_market_cap', 0) > 0 else 'declining',
+                'defi_health': 'growing' if safe_gt(data.get('defi_market_cap', 0), 0) else 'declining',
                 'defi_dominance': data.get('defi_dominance', 0),
-                'defi_trend': 'positive' if data.get('defi_market_cap', 0) > 0 else 'negative'
+                'defi_trend': 'positive' if safe_gt(data.get('defi_market_cap', 0), 0) else 'negative'
             }
         
         return result
@@ -445,13 +453,13 @@ class CoinGeckoMCPServer:
             # Add AI-powered price prediction analysis
             prices = [price[1] for price in result['prices']]
             if len(prices) > 1:
-                price_trend = 'upward' if prices[-1] > prices[0] else 'downward'
-                volatility = np.std(prices) / np.mean(prices) if np.mean(prices) > 0 else 0
+                price_trend = 'upward' if safe_gt(prices[-1], prices[0]) else 'downward'
+                volatility = np.std(prices) / np.mean(prices) if safe_gt(np.mean(prices), 0) else 0
                 
                 result['ai_analysis'] = {
                     'price_trend': price_trend,
                     'volatility': volatility,
-                    'trend_strength': abs(prices[-1] - prices[0]) / prices[0] if prices[0] > 0 else 0
+                    'trend_strength': abs(prices[-1] - prices[0]) / prices[0] if safe_gt(prices[0], 0) else 0
                 }
         
         return result
@@ -471,8 +479,8 @@ class CoinGeckoMCPServer:
         
         if result:
             # Add AI-powered gainers/losers analysis
-            gainers = [coin for coin in result if coin.get('price_change_percentage_24h', 0) > 0]
-            losers = [coin for coin in result if coin.get('price_change_percentage_24h', 0) < 0]
+            gainers = [coin for coin in result if safe_gt(coin.get('price_change_percentage_24h', 0), 0)]
+            losers = [coin for coin in result if safe_gt(0, coin.get('price_change_percentage_24h', 0))]
             
             result.append({
                 'ai_analysis': {
@@ -543,7 +551,7 @@ class CoinGeckoMCPServer:
             rates = result['rates']
             result['ai_analysis'] = {
                 'total_currencies': len(rates),
-                'major_currencies': [rate for rate in rates if rates[rate].get('value', 0) > 0.1],
+                'major_currencies': [rate for rate in rates if safe_gt(rates[rate].get('value', 0), 0.1)],
                 'exchange_volatility': 'low' if len(rates) > 0 else 'unknown'
             }
         
@@ -576,7 +584,7 @@ class CoinGeckoMCPServer:
         if result:
             # Add AI-powered derivatives analysis
             result['ai_analysis'] = {
-                'derivatives_volume': 'high' if result.get('total_volume', 0) > 1e9 else 'moderate',
+                'derivatives_volume': 'high' if safe_gt(result.get('total_volume', 0), 1e9) else 'moderate',
                 'market_activity': 'active' if len(result) > 0 else 'inactive'
             }
         
@@ -760,7 +768,7 @@ class MCPPortfolioOptimizer:
                         'market_cap': market_cap,
                         'volatility_score': volatility_score,
                         'risk_score': risk_score,
-                        'risk_level': 'High' if risk_score > 0.5 else 'Medium' if risk_score > 0.2 else 'Low'
+                        'risk_level': 'High' if safe_gt(risk_score, 0.5) else 'Medium' if safe_gt(risk_score, 0.2) else 'Low'
                     }
             
             return risk_metrics
