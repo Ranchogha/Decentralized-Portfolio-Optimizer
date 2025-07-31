@@ -212,15 +212,127 @@ class AIPredictiveAnalytics:
             return {}
     
     def _generate_trend_recommendation(self, price_trend: str, volume_trend: str, volatility: float) -> str:
-        """Generate AI-powered trend recommendations"""
+        """Generate trend-based recommendations"""
         if price_trend == 'upward' and volume_trend == 'increasing':
-            return "Strong bullish momentum - consider growth assets"
+            return "Strong bullish momentum detected"
         elif price_trend == 'downward' and volume_trend == 'decreasing':
-            return "Bearish trend - consider defensive positioning"
-        elif volatility > 10:
-            return "High volatility - consider stablecoins for stability"
+            return "Bearish trend with declining volume"
+        elif volatility > 0.1:
+            return "High volatility detected - consider risk management"
         else:
-            return "Mixed signals - maintain balanced portfolio"
+            return "Market showing mixed signals"
+    
+    def get_portfolio_predictions(self, portfolio_data: Dict) -> List[Dict]:
+        """Get AI predictions for portfolio assets"""
+        predictions = []
+        
+        try:
+            if not portfolio_data.get('portfolio'):
+                return predictions
+            
+            portfolio = portfolio_data['portfolio']
+            
+            for asset in portfolio[:5]:  # Predict for top 5 assets
+                # Simple prediction based on current data
+                current_price = asset.get('current_price', 0)
+                price_change = asset.get('price_change_24h', 0)
+                
+                # Simple trend-based prediction
+                if price_change > 5:
+                    predicted_price = current_price * 1.05  # 5% increase
+                    confidence = 70
+                elif price_change < -5:
+                    predicted_price = current_price * 0.95  # 5% decrease
+                    confidence = 65
+                else:
+                    predicted_price = current_price * 1.02  # 2% increase
+                    confidence = 50
+                
+                predictions.append({
+                    'asset': asset.get('symbol', 'Unknown'),
+                    'predicted_price': predicted_price,
+                    'confidence': confidence,
+                    'trend': 'bullish' if price_change > 0 else 'bearish'
+                })
+            
+        except Exception as e:
+            st.error(f"❌ Error generating portfolio predictions: {str(e)}")
+        
+        return predictions
+    
+    def calculate_risk_metrics(self, portfolio_data: Dict) -> Dict:
+        """Calculate risk metrics for portfolio"""
+        risk_metrics = {
+            'avg_volatility': 0.0,
+            'diversity': 0,
+            'largest_position': 0.0
+        }
+        
+        try:
+            if not portfolio_data.get('portfolio'):
+                return risk_metrics
+            
+            portfolio = portfolio_data['portfolio']
+            
+            # Calculate diversity (number of assets)
+            risk_metrics['diversity'] = len(portfolio)
+            
+            # Calculate largest position
+            allocations = [asset.get('allocation_percentage', 0) for asset in portfolio]
+            risk_metrics['largest_position'] = max(allocations) if allocations else 0
+            
+            # Calculate average volatility (simplified)
+            price_changes = [abs(asset.get('price_change_24h', 0)) for asset in portfolio]
+            risk_metrics['avg_volatility'] = sum(price_changes) / len(price_changes) if price_changes else 0
+            
+        except Exception as e:
+            st.error(f"❌ Error calculating risk metrics: {str(e)}")
+        
+        return risk_metrics
+    
+    def get_portfolio_insights(self, portfolio_data: Dict) -> List[Dict]:
+        """Get AI insights for portfolio"""
+        insights = []
+        
+        try:
+            if not portfolio_data.get('portfolio'):
+                return insights
+            
+            portfolio = portfolio_data['portfolio']
+            
+            # Diversification insight
+            if len(portfolio) < 5:
+                insights.append({
+                    'title': 'Diversification Opportunity',
+                    'description': 'Consider adding more assets for better diversification'
+                })
+            
+            # Concentration risk insight
+            allocations = [asset.get('allocation_percentage', 0) for asset in portfolio]
+            max_allocation = max(allocations) if allocations else 0
+            
+            if max_allocation > 30:
+                insights.append({
+                    'title': 'Concentration Risk',
+                    'description': f'Your largest position ({max_allocation:.1f}%) may be too concentrated'
+                })
+            
+            # Sector analysis insight
+            sectors = set()
+            for asset in portfolio:
+                if 'sector' in asset:
+                    sectors.add(asset['sector'])
+            
+            if len(sectors) < 3:
+                insights.append({
+                    'title': 'Sector Diversification',
+                    'description': 'Consider diversifying across more sectors'
+                })
+            
+        except Exception as e:
+            st.error(f"❌ Error generating portfolio insights: {str(e)}")
+        
+        return insights
 
 class AISmartNotifications:
     """
@@ -345,22 +457,73 @@ class AISmartNotifications:
         return insights
     
     def display_notifications(self, alerts: List[Dict], insights: List[Dict]):
-        """Display AI-powered notifications in Streamlit"""
-        if alerts or insights:
-            st.subheader("🔔 AI Smart Notifications")
+        """Display notifications in a user-friendly format"""
+        all_notifications = alerts + insights
+        
+        if not all_notifications:
+            st.info("No notifications at this time")
+            return
+        
+        for notification in all_notifications[:5]:  # Show last 5 notifications
+            severity_color = {
+                'high': '#ff4444',
+                'medium': '#ffaa00',
+                'low': '#00aa00',
+                'info': '#00d4ff'
+            }.get(notification.get('severity', 'info'), '#00d4ff')
             
-            # Display alerts
-            if alerts:
-                st.write("**Alerts:**")
-                for alert in alerts:
-                    color = "🔴" if alert['severity'] == 'high' else "🟡" if alert['severity'] == 'medium' else "🔵"
-                    st.write(f"{color} {alert['message']}")
-            
-            # Display insights
-            if insights:
-                st.write("**Insights:**")
-                for insight in insights:
-                    st.write(f"💡 {insight['message']}")
+            st.markdown(f"""
+            <div style="background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+                        border: 1px solid {severity_color};
+                        border-radius: 8px;
+                        padding: 1rem;
+                        margin: 0.5rem 0;
+                        color: white;">
+                <strong>{notification.get('title', notification.get('type', 'Notification'))}</strong><br>
+                {notification.get('message', '')}<br>
+                <small style="color: #888;">{notification.get('timestamp', '')}</small>
+            </div>
+            """, unsafe_allow_html=True)
+    
+    def get_notification_history(self) -> List[Dict]:
+        """Get notification history for display"""
+        return self.notification_history
+    
+    def send_price_alert(self, asset: str, price: float, change_percent: float):
+        """Send a price alert notification"""
+        alert = {
+            'type': 'price_alert',
+            'title': f'Price Alert: {asset}',
+            'message': f'{asset} is now ${price:,.2f} ({change_percent:+.1f}%)',
+            'severity': 'high' if abs(change_percent) > 10 else 'medium',
+            'timestamp': datetime.now().isoformat()
+        }
+        self.notification_history.append(alert)
+        return alert
+    
+    def send_portfolio_alert(self, message: str):
+        """Send a portfolio alert notification"""
+        alert = {
+            'type': 'portfolio_alert',
+            'title': 'Portfolio Update',
+            'message': message,
+            'severity': 'medium',
+            'timestamp': datetime.now().isoformat()
+        }
+        self.notification_history.append(alert)
+        return alert
+    
+    def send_market_alert(self, message: str):
+        """Send a market alert notification"""
+        alert = {
+            'type': 'market_alert',
+            'title': 'Market Update',
+            'message': message,
+            'severity': 'info',
+            'timestamp': datetime.now().isoformat()
+        }
+        self.notification_history.append(alert)
+        return alert
 
 class AIEnhancedVisualizations:
     """

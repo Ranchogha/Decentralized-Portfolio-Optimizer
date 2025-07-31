@@ -661,7 +661,7 @@ col1, col2 = st.columns([2, 1])
 
 with col1:
     # Enhanced tabs for different functionalities
-    tab1, tab2, tab3, tab4, tab5 = st.tabs(["🎯 Portfolio Optimization", "💰 Price Queries", "🪙 Coins API", "🔗 Contract API", "🔗 Blockchain Operations"])
+    tab1, tab2, tab3, tab4, tab5 = st.tabs(["🎯 Portfolio Optimization", "🔍 SEARCH", "🪙 Coins API", "🔗 Contract API", "🔗 Blockchain Operations"])
     
     with tab1:
         st.subheader("🎯 Enhanced Portfolio Generation")

@@ -50,13 +50,13 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Enhanced CSS for Zapper-inspired modern dark theme
+# Enhanced CSS for Shopify-inspired modern theme with metallic touches
 st.markdown("""
 <style>
-    /* Modern Dark Theme - Zapper.xyz Inspired */
+    /* Shopify-Inspired Modern Theme with Metallic Touches */
     .stApp {
-        background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0f0f0f 100%);
-        color: #ffffff;
+        background: #ADBBDA;
+        color: #3D52A0;
     }
     
     /* Custom Scrollbar */
@@ -65,28 +65,28 @@ st.markdown("""
     }
     
     ::-webkit-scrollbar-track {
-        background: #1a1a1a;
+        background: #EDE8F5;
     }
     
     ::-webkit-scrollbar-thumb {
-        background: #333333;
+        background: #8697C4;
         border-radius: 4px;
     }
     
     ::-webkit-scrollbar-thumb:hover {
-        background: #555555;
+        background: #7091E6;
     }
     
-    /* Main Header - Zapper Style */
+    /* Main Header - Shopify Style */
     .main-header {
-        background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 50%, #1f1f1f 100%);
-        border: 1px solid #333333;
+        background: linear-gradient(135deg, #EDE8F5 0%, #ADBBDA 50%, #8697C4 100%);
+        border: 1px solid #7091E6;
         border-radius: 16px;
         padding: 2rem;
-        color: white;
+        color: #3D52A0;
         text-align: center;
         margin-bottom: 2rem;
-        box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        box-shadow: 0 8px 32px rgba(61, 82, 160, 0.2);
         backdrop-filter: blur(10px);
         position: relative;
         overflow: hidden;
@@ -99,7 +99,7 @@ st.markdown("""
         left: 0;
         right: 0;
         height: 1px;
-        background: linear-gradient(90deg, transparent, #00d4ff, transparent);
+        background: linear-gradient(90deg, transparent, #7091E6, transparent);
         animation: shimmer 2s infinite;
     }
     
@@ -108,10 +108,10 @@ st.markdown("""
         100% { transform: translateX(100%); }
     }
     
-    /* Token Cards - Zapper Style */
+    /* Token Cards - Shopify Style */
     .token-card {
-        background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-        border: 1px solid #333333;
+        background: linear-gradient(135deg, #EDE8F5 0%, #ADBBDA 100%);
+        border: 1px solid #8697C4;
         border-radius: 12px;
         padding: 1rem;
         margin: 0.5rem 0;
@@ -119,33 +119,35 @@ st.markdown("""
         justify-content: space-between;
         align-items: center;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        color: #3D52A0;
     }
     
     .token-card:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-        border-color: #00d4ff;
+        box-shadow: 0 8px 24px rgba(61, 82, 160, 0.2);
+        border-color: #7091E6;
     }
     
-    /* Protocol Cards - Zapper Style */
+    /* Protocol Cards - Shopify Style */
     .protocol-card {
-        background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-        border: 1px solid #333333;
+        background: linear-gradient(135deg, #EDE8F5 0%, #ADBBDA 100%);
+        border: 1px solid #8697C4;
         border-radius: 12px;
         padding: 1.5rem;
         margin: 1rem 0;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        color: #3D52A0;
     }
     
     .protocol-card:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-        border-color: #00d4ff;
+        box-shadow: 0 8px 24px rgba(61, 82, 160, 0.2);
+        border-color: #7091E6;
     }
     
     /* AI Badge */
     .ai-badge {
-        background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+        background: linear-gradient(135deg, #7091E6 0%, #3D52A0 100%);
         color: white;
         padding: 0.5rem 1rem;
         border-radius: 20px;
@@ -153,7 +155,7 @@ st.markdown("""
         font-weight: bold;
         display: inline-block;
         margin: 0.5rem;
-        box-shadow: 0 4px 12px rgba(0, 212, 255, 0.3);
+        box-shadow: 0 4px 12px rgba(112, 145, 230, 0.3);
         animation: pulse 2s infinite;
     }
     
@@ -173,18 +175,18 @@ st.markdown("""
     }
     
     .status-online { 
-        background-color: #00ff00;
-        box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        background-color: #7091E6;
+        box-shadow: 0 0 10px rgba(112, 145, 230, 0.5);
     }
     
     .status-offline { 
-        background-color: #ff0000;
-        box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        background-color: #ff6b6b;
+        box-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
     }
     
     .status-warning { 
-        background-color: #ffaa00;
-        box-shadow: 0 0 10px rgba(255, 170, 0, 0.5);
+        background-color: #ffd93d;
+        box-shadow: 0 0 10px rgba(255, 217, 61, 0.5);
     }
     
     @keyframes glow {
@@ -194,44 +196,45 @@ st.markdown("""
     
     /* AI Feature Cards */
     .ai-feature {
-        background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-        border: 1px solid #333333;
+        background: linear-gradient(135deg, #EDE8F5 0%, #ADBBDA 100%);
+        border: 1px solid #8697C4;
         border-radius: 12px;
-        color: white;
+        color: #3D52A0;
         padding: 1rem;
         border-radius: 10px;
         margin: 0.5rem 0;
-        border-left: 4px solid #00d4ff;
+        border-left: 4px solid #7091E6;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
     
     .ai-feature:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-        border-color: #00d4ff;
+        box-shadow: 0 8px 24px rgba(61, 82, 160, 0.2);
+        border-color: #7091E6;
     }
     
     /* Chat Container */
     .chat-container {
-        background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-        border: 1px solid #333333;
+        background: linear-gradient(135deg, #EDE8F5 0%, #ADBBDA 100%);
+        border: 1px solid #8697C4;
         border-radius: 12px;
         padding: 1rem;
         margin: 1rem 0;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        color: #3D52A0;
     }
     
     .chat-container:hover {
-        border-color: #00d4ff;
-        box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        border-color: #7091E6;
+        box-shadow: 0 8px 24px rgba(61, 82, 160, 0.2);
     }
     
     /* Notification Alerts */
     .notification-alert {
-        background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-        border: 1px solid #333333;
+        background: linear-gradient(135deg, #EDE8F5 0%, #ADBBDA 100%);
+        border: 1px solid #8697C4;
         border-radius: 8px;
-        color: white;
+        color: #3D52A0;
         padding: 0.5rem;
         margin: 0.5rem 0;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -245,211 +248,320 @@ st.markdown("""
     
     /* Financial Metrics Cards */
     .metric-card {
-        background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-        border: 1px solid #333333;
+        background: linear-gradient(135deg, #EDE8F5 0%, #ADBBDA 100%);
+        border: 1px solid #8697C4;
         border-radius: 12px;
         padding: 1rem;
         margin: 0.5rem;
         text-align: center;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        color: #3D52A0;
+    }
+    
+    .metric-card::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #7091E6, #3D52A0);
+        transition: width 0.3s ease;
+    }
+    
+    .metric-card:hover::after {
+        width: 80%;
     }
     
     .metric-card:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-        border-color: #00d4ff;
+        box-shadow: 0 8px 24px rgba(61, 82, 160, 0.2);
+        border-color: #7091E6;
     }
     
     /* Risk Analysis Cards */
     .risk-card {
-        background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-        border: 1px solid #333333;
+        background: linear-gradient(135deg, #EDE8F5 0%, #ADBBDA 100%);
+        border: 1px solid #8697C4;
         border-radius: 12px;
         padding: 1.5rem;
         margin: 1rem 0;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        color: #3D52A0;
     }
     
     .risk-card:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-        border-color: #00d4ff;
+        box-shadow: 0 8px 24px rgba(61, 82, 160, 0.2);
+        border-color: #7091E6;
     }
     
     /* Portfolio Summary Cards */
     .portfolio-summary {
-        background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-        border: 1px solid #333333;
+        background: linear-gradient(135deg, #EDE8F5 0%, #ADBBDA 100%);
+        border: 1px solid #8697C4;
         border-radius: 16px;
         padding: 2rem;
         margin: 1rem 0;
+        color: #3D52A0;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
     
     .portfolio-summary:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-        border-color: #00d4ff;
+        box-shadow: 0 8px 24px rgba(61, 82, 160, 0.2);
+        border-color: #7091E6;
     }
     
-    /* Blockchain Integration Cards */
-    .blockchain-card {
-        background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-        border: 1px solid #333333;
-        border-radius: 12px;
-        padding: 1.5rem;
-        margin: 1rem 0;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Floating Elements Animation */
+    .floating-element {
+        animation: float 3s ease-in-out infinite;
     }
     
-    .blockchain-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-        border-color: #00d4ff;
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
     }
     
-    /* Enhanced Buttons */
-    .stButton > button {
-        background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+    /* Metallic Button Style */
+    .metallic-button {
+        background: linear-gradient(135deg, #3D52A0 0%, #7091E6 100%);
+        color: white;
         border: none;
         border-radius: 8px;
-        color: white;
-        font-weight: bold;
         padding: 0.75rem 1.5rem;
+        font-weight: 600;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 12px rgba(61, 82, 160, 0.3);
+        position: relative;
+        overflow: hidden;
     }
     
-    .stButton > button:hover {
+    .metallic-button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s;
+    }
+    
+    .metallic-button:hover::before {
+        left: 100%;
+    }
+    
+    .metallic-button:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(0, 212, 255, 0.3);
+        box-shadow: 0 8px 24px rgba(61, 82, 160, 0.4);
     }
     
-    /* Enhanced Selectboxes */
-    .stSelectbox > div > div > div {
-        background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-        border: 1px solid #333333;
-        border-radius: 8px;
-        color: white;
-    }
-    
-    /* Enhanced Number Inputs */
-    .stNumberInput > div > div > input {
-        background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-        border: 1px solid #333333;
-        border-radius: 8px;
-        color: white;
-    }
-    
-    /* Enhanced Text Inputs */
-    .stTextInput > div > div > input {
-        background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-        border: 1px solid #333333;
-        border-radius: 8px;
-        color: white;
-    }
-    
-    /* Enhanced Sliders */
-    .stSlider > div > div > div > div {
-        background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
-    }
-    
-    /* Enhanced Checkboxes */
-    .stCheckbox > div > div > div {
-        background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-        border: 1px solid #333333;
-        border-radius: 8px;
-    }
-    
-    /* Enhanced Multiselect */
-    .stMultiSelect > div > div > div {
-        background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-        border: 1px solid #333333;
-        border-radius: 8px;
-        color: white;
-    }
-    
-    /* Enhanced Tabs */
-    .stTabs > div > div > div > div {
-        background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-        border: 1px solid #333333;
-        border-radius: 8px;
-        color: white;
-    }
-    
-    /* Enhanced Sidebar */
+    /* Sidebar Styling */
     .css-1d391kg {
-        background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0f0f0f 100%);
+        background: linear-gradient(135deg, #EDE8F5 0%, #ADBBDA 100%);
+        border-right: 1px solid #8697C4;
     }
     
-    /* Enhanced Metrics */
-    .css-1wivap2 {
-        background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-        border: 1px solid #333333;
-        border-radius: 12px;
-        padding: 1rem;
-        margin: 0.5rem;
+    /* Tab Styling */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 8px;
+        background: linear-gradient(135deg, #EDE8F5 0%, #ADBBDA 100%);
+        border-radius: 8px;
+        padding: 4px;
     }
     
-    /* Enhanced Success Messages */
+    .stTabs [data-baseweb="tab"] {
+        background: #EDE8F5;
+        border-radius: 6px;
+        color: #3D52A0;
+        border: 1px solid #8697C4;
+        transition: all 0.3s ease;
+    }
+    
+    .stTabs [aria-selected="true"] {
+        background: #3D52A0;
+        color: white;
+        border-color: #7091E6;
+    }
+    
+    /* Input Styling */
+    .stTextInput > div > div > input {
+        background: #EDE8F5;
+        border: 1px solid #8697C4;
+        border-radius: 8px;
+        color: #3D52A0;
+    }
+    
+    .stTextInput > div > div > input:focus {
+        border-color: #7091E6;
+        box-shadow: 0 0 0 2px rgba(112, 145, 230, 0.2);
+    }
+    
+    /* Selectbox Styling */
+    .stSelectbox > div > div {
+        background: #EDE8F5;
+        border: 1px solid #8697C4;
+        border-radius: 8px;
+        color: #3D52A0;
+    }
+    
+    /* Slider Styling */
+    .stSlider > div > div > div > div {
+        background: #7091E6;
+    }
+    
+    .stSlider > div > div > div > div > div {
+        background: #3D52A0;
+    }
+    
+    /* Success/Info/Error Messages */
     .stSuccess {
-        background: linear-gradient(135deg, #00ff00 0%, #00cc00 100%);
-        border: 1px solid #00ff00;
-        border-radius: 8px;
-        color: white;
-        padding: 1rem;
-        margin: 0.5rem 0;
+        background: linear-gradient(135deg, #EDE8F5 0%, #ADBBDA 100%);
+        border: 1px solid #7091E6;
+        color: #3D52A0;
     }
     
-    /* Enhanced Error Messages */
-    .stError {
-        background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);
-        border: 1px solid #ff0000;
-        border-radius: 8px;
-        color: white;
-        padding: 1rem;
-        margin: 0.5rem 0;
-    }
-    
-    /* Enhanced Warning Messages */
-    .stWarning {
-        background: linear-gradient(135deg, #ffaa00 0%, #cc8800 100%);
-        border: 1px solid #ffaa00;
-        border-radius: 8px;
-        color: white;
-        padding: 1rem;
-        margin: 0.5rem 0;
-    }
-    
-    /* Enhanced Info Messages */
     .stInfo {
-        background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
-        border: 1px solid #00d4ff;
+        background: linear-gradient(135deg, #EDE8F5 0%, #ADBBDA 100%);
+        border: 1px solid #8697C4;
+        color: #3D52A0;
+    }
+    
+    .stError {
+        background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+        border: 1px solid #f44336;
+        color: #c62828;
+    }
+    
+    /* Dataframe Styling */
+    .dataframe {
+        background: #EDE8F5;
+        border: 1px solid #8697C4;
         border-radius: 8px;
-        color: white;
+        color: #3D52A0;
+    }
+    
+    /* Chart Container */
+    .js-plotly-plot {
+        background: #EDE8F5;
+        border-radius: 8px;
         padding: 1rem;
-        margin: 0.5rem 0;
+        border: 1px solid #8697C4;
+    }
+    
+    /* Enhanced Button Styling for Primary Buttons */
+    .stButton > button[data-testid="baseButton-primary"] {
+        background: linear-gradient(135deg, #3D52A0 0%, #7091E6 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 12px rgba(61, 82, 160, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .stButton > button[data-testid="baseButton-primary"]::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s;
+    }
+    
+    .stButton > button[data-testid="baseButton-primary"]:hover::before {
+        left: 100%;
+    }
+    
+    .stButton > button[data-testid="baseButton-primary"]:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(61, 82, 160, 0.4);
+    }
+    
+    /* Enhanced Button Styling for Secondary Buttons */
+    .stButton > button[data-testid="baseButton-secondary"] {
+        background: linear-gradient(135deg, #EDE8F5 0%, #ADBBDA 100%);
+        color: #3D52A0;
+        border: 1px solid #8697C4;
+        border-radius: 8px;
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 2px 8px rgba(61, 82, 160, 0.1);
+    }
+    
+    .stButton > button[data-testid="baseButton-secondary"]:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(61, 82, 160, 0.2);
+        border-color: #7091E6;
+        background: linear-gradient(135deg, #ADBBDA 0%, #8697C4 100%);
+    }
+    
+    /* Floating Animation for Cards */
+    .floating-element {
+        animation: float 3s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+    }
+    
+    /* Metallic Shimmer Effect */
+    .metallic-shimmer {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .metallic-shimmer::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        animation: shimmer 2s infinite;
+    }
+    
+    @keyframes shimmer {
+        0% { left: -100%; }
+        100% { left: 100%; }
     }
 </style>
 """, unsafe_allow_html=True)
 
-# Main Header
+# Main Header with Floating Elements
 st.markdown("""
-<div class="main-header">
+<div class="main-header metallic-shimmer">
     <h1>🚀 Decentralized Portfolio Optimizer</h1>
     <p>AI-Powered Crypto Portfolio Management with Blockchain Integration</p>
     <div style="margin-top: 1rem;">
-        <span class="ai-badge">🤖 AI Enhanced</span>
-        <span class="ai-badge">🔗 Blockchain Ready</span>
-        <span class="ai-badge">📊 Real-time Data</span>
+        <span class="ai-badge floating-element">🤖 AI Enhanced</span>
+        <span class="ai-badge floating-element" style="animation-delay: 0.5s;">🔗 Blockchain Ready</span>
+        <span class="ai-badge floating-element" style="animation-delay: 1s;">📊 Real-time Data</span>
+    </div>
+    <div style="position: absolute; top: 20px; right: 20px; opacity: 0.1;">
+        <div class="floating-element" style="width: 20px; height: 20px; background: #7091E6; border-radius: 50%; margin: 5px;"></div>
+        <div class="floating-element" style="width: 15px; height: 15px; background: #3D52A0; border-radius: 50%; margin: 5px; animation-delay: 0.3s;"></div>
+        <div class="floating-element" style="width: 25px; height: 25px; background: #8697C4; border-radius: 50%; margin: 5px; animation-delay: 0.7s;"></div>
     </div>
 </div>
 """, unsafe_allow_html=True)
 
-# AI Chat Support Section
+# SEARCH Section
 with st.sidebar:
-    st.header("🤖 AI Chat Support")
+    st.header("🔍 SEARCH")
     
-    # Chat interface
+    # Search interface
     user_query = st.text_input("Ask me about portfolio optimization:", placeholder="How can I optimize my portfolio?")
     
     if user_query:
@@ -461,9 +573,9 @@ with st.sidebar:
         </div>
         """, unsafe_allow_html=True)
     
-    # Quick AI actions
+    # Quick AI actions with metallic button styling
     st.subheader("🚀 Quick AI Actions")
-    if st.button("💡 Get Smart Recommendations"):
+    if st.button("💡 Get Smart Recommendations", key="smart_rec_btn"):
         if 'portfolio_data' in st.session_state:
             recommendations = ai_chat.get_smart_recommendations(
                 st.session_state.portfolio_data,
@@ -475,7 +587,7 @@ with st.sidebar:
         else:
             st.info("Generate a portfolio first to get AI recommendations")
     
-    if st.button("📊 Market Sentiment Analysis"):
+    if st.button("📊 Market Sentiment Analysis", key="sentiment_btn"):
         try:
             market_data = mcp_optimizer.get_enhanced_market_data()
             if market_data.get('ai_sentiment'):
@@ -583,8 +695,8 @@ with tab1:
     # Portfolio Generation Section
     st.subheader("🎯 Portfolio Generation")
     
-    # Generate portfolio using AI-enhanced data
-    if st.button("🚀 Generate AI-Optimized Portfolio", type="primary"):
+    # Generate portfolio using AI-enhanced data with metallic styling
+    if st.button("🚀 Generate AI-Optimized Portfolio", type="primary", key="generate_portfolio_btn"):
         with st.spinner("🔄 Generating portfolio with AI-enhanced data..."):
             try:
                 # Debug: Check API key configuration
@@ -708,12 +820,12 @@ with tab1:
         # Quick retry with different settings
         col1, col2 = st.columns(2)
         with col1:
-            if st.button("🔄 Retry with Default Settings", type="secondary"):
+            if st.button("🔄 Retry with Default Settings", type="secondary", key="retry_default_btn"):
                 st.session_state.retry_default = True
                 st.rerun()
         
         with col2:
-            if st.button("🔧 Try with Fewer Assets", type="secondary"):
+            if st.button("🔧 Try with Fewer Assets", type="secondary", key="retry_fewer_btn"):
                 st.session_state.retry_fewer = True
                 st.rerun()
     
@@ -746,52 +858,60 @@ with tab1:
             portfolio_df = pd.DataFrame(portfolio_data['portfolio'])
             
             # AI-enhanced pie chart
-            market_sentiment = st.session_state.get('market_data', {}).get('ai_sentiment', {}).get('market_mood', 'neutral')
-            ai_chart = ai_visualizations.create_ai_enhanced_portfolio_chart(portfolio_data, market_sentiment)
-            st.plotly_chart(ai_chart, use_container_width=True)
+            try:
+                market_sentiment = st.session_state.get('market_data', {}).get('ai_sentiment', {}).get('market_mood', 'neutral')
+                ai_chart = ai_visualizations.create_ai_enhanced_portfolio_chart(portfolio_data, market_sentiment)
+                st.plotly_chart(ai_chart, use_container_width=True)
+            except Exception as e:
+                st.error(f"❌ Error creating portfolio chart: {str(e)}")
+                # Fallback to simple chart
+                if portfolio_df.shape[0] > 0:
+                    fig = px.pie(portfolio_df, values='allocation_percentage', names='symbol', 
+                                title='Portfolio Allocation')
+                    st.plotly_chart(fig, use_container_width=True)
             
-            # Token Cards - Zapper Style
+            # Token Cards - Shopify Style
             st.subheader("🪙 Portfolio Tokens")
             for asset in portfolio_data['portfolio'][:5]:  # Show top 5 tokens
                 st.markdown(f"""
-                <div class="token-card">
+                <div class="token-card floating-element">
                     <div>
-                        <h4 style="margin: 0; color: #00d4ff;">{asset['symbol']}</h4>
-                        <p style="margin: 0; color: #888;">{asset['name']}</p>
+                        <h4 style="margin: 0; color: #3D52A0;">{asset['symbol']}</h4>
+                        <p style="margin: 0; color: #8697C4;">{asset['name']}</p>
                     </div>
                     <div style="text-align: right;">
-                        <p style="margin: 0; color: #00d4ff; font-size: 1.2rem;">${asset['allocation_usd']:,.2f}</p>
-                        <p style="margin: 0; color: #888;">{asset['allocation_percentage']:.1f}%</p>
+                        <p style="margin: 0; color: #3D52A0; font-size: 1.2rem;">${asset['allocation_usd']:,.2f}</p>
+                        <p style="margin: 0; color: #8697C4;">{asset['allocation_percentage']:.1f}%</p>
                     </div>
                 </div>
                 """, unsafe_allow_html=True)
             
-            # Protocol Insights - Zapper Style
+            # Protocol Insights - Shopify Style
             st.subheader("🔍 Protocol Insights")
             col1, col2 = st.columns(2)
             
             with col1:
                 st.markdown("""
-                <div class="protocol-card">
+                <div class="protocol-card floating-element">
                     <h4>🏦 DeFi Protocols</h4>
-                    <p style="color: #00d4ff; font-size: 1.2rem;">$12,450.00</p>
-                    <p style="color: #00ff00;">+8.2% (24h)</p>
+                    <p style="color: #3D52A0; font-size: 1.2rem;">$12,450.00</p>
+                    <p style="color: #7091E6;">+8.2% (24h)</p>
                     <div style="margin-top: 1rem;">
-                        <span style="background: #00d4ff; color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem;">Uniswap V3</span>
-                        <span style="background: #00d4ff; color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem; margin-left: 0.5rem;">Aave V3</span>
+                        <span style="background: #3D52A0; color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem;">Uniswap V3</span>
+                        <span style="background: #3D52A0; color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem; margin-left: 0.5rem;">Aave V3</span>
                     </div>
                 </div>
                 """, unsafe_allow_html=True)
             
             with col2:
                 st.markdown("""
-                <div class="protocol-card">
+                <div class="protocol-card floating-element">
                     <h4>⛓️ Multichain Assets</h4>
-                    <p style="color: #00d4ff; font-size: 1.2rem;">$8,750.00</p>
-                    <p style="color: #00ff00;">+5.1% (24h)</p>
+                    <p style="color: #3D52A0; font-size: 1.2rem;">$8,750.00</p>
+                    <p style="color: #7091E6;">+5.1% (24h)</p>
                     <div style="margin-top: 1rem;">
-                        <span style="background: #00d4ff; color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem;">Ethereum</span>
-                        <span style="background: #00d4ff; color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem; margin-left: 0.5rem;">Polygon</span>
+                        <span style="background: #3D52A0; color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem;">Ethereum</span>
+                        <span style="background: #3D52A0; color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem; margin-left: 0.5rem;">Polygon</span>
                     </div>
                 </div>
                 """, unsafe_allow_html=True)
@@ -800,7 +920,7 @@ with tab1:
         st.subheader("🔗 Blockchain Integration")
         
         # Enhanced blockchain storage with AI validation
-        if st.button("💾 Store Portfolio on Blockchain", type="secondary"):
+        if st.button("💾 Store Portfolio on Blockchain", type="secondary", key="store_blockchain_btn"):
             try:
                 # Store portfolio with AI-enhanced validation
                 tx_hash = portfolio_manager.save_portfolio_allocation(
@@ -854,26 +974,52 @@ with tab2:
                 trending = market_data['trending_data']
                 
                 if trending.get('trending_coins'):
-                    for coin in trending['trending_coins'][:5]:
-                        st.write(f"• **{coin['item']['name']}**: {coin['item']['symbol'].upper()}")
+                    st.markdown('<div class="card-grid">', unsafe_allow_html=True)
+                    for coin in trending['trending_coins'][:6]:
+                        coin_data = coin['item']
+                        st.markdown(f"""
+                        <div class="trending-coin-card">
+                            <div>
+                                <h4 style="margin: 0; color: #00d4ff; font-size: 1.1rem;">{coin_data['name']}</h4>
+                                <p style="margin: 0; color: #888; font-size: 0.9rem;">{coin_data['symbol'].upper()}</p>
+                                <p style="margin: 0; color: #00ff88; font-size: 0.8rem;">#{coin_data.get('market_cap_rank', 'N/A')}</p>
+                            </div>
+                            <div style="text-align: right;">
+                                <p style="margin: 0; color: #00d4ff; font-size: 1.2rem;">${coin_data.get('price_btc', 0):.8f} BTC</p>
+                                <p style="margin: 0; color: #888; font-size: 0.8rem;">Score: {coin_data.get('score', 0)}</p>
+                            </div>
+                        </div>
+                        """, unsafe_allow_html=True)
+                    st.markdown('</div>', unsafe_allow_html=True)
             
             # Sector analysis
             if market_data.get('sector_analysis'):
                 st.subheader("🏢 Sector Performance")
                 sectors = market_data['sector_analysis']
                 
+                st.markdown('<div class="card-grid">', unsafe_allow_html=True)
                 for sector, data in sectors.items():
                     if data:
-                        col1, col2, col3 = st.columns(3)
-                        
-                        with col1:
-                            st.metric(f"{sector} Market Cap", f"${data.get('total_market_cap', 0):,.0f}")
-                        
-                        with col2:
-                            st.metric(f"{sector} Avg Change", f"{data.get('avg_24h_change', 0):.2f}%")
-                        
-                        with col3:
-                            st.metric(f"{sector} Assets", data.get('coin_count', 0))
+                        st.markdown(f"""
+                        <div class="sector-card">
+                            <h4 style="margin: 0 0 1rem 0; color: #00d4ff; font-size: 1.2rem;">{sector}</h4>
+                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+                                <div class="metric-card">
+                                    <h5 style="margin: 0; color: #888; font-size: 0.8rem;">Market Cap</h5>
+                                    <p style="margin: 0; color: #00d4ff; font-size: 1.1rem;">${data.get('total_market_cap', 0):,.0f}</p>
+                                </div>
+                                <div class="metric-card">
+                                    <h5 style="margin: 0; color: #888; font-size: 0.8rem;">Avg Change</h5>
+                                    <p style="margin: 0; color: {'#00ff88' if data.get('avg_24h_change', 0) > 0 else '#ff4444'}; font-size: 1.1rem;">{data.get('avg_24h_change', 0):.2f}%</p>
+                                </div>
+                                <div class="metric-card">
+                                    <h5 style="margin: 0; color: #888; font-size: 0.8rem;">Assets</h5>
+                                    <p style="margin: 0; color: #00d4ff; font-size: 1.1rem;">{data.get('coin_count', 0)}</p>
+                                </div>
+                            </div>
+                        </div>
+                        """, unsafe_allow_html=True)
+                st.markdown('</div>', unsafe_allow_html=True)
         
     except Exception as e:
         st.error(f"❌ Error loading market analytics: {str(e)}")
@@ -890,36 +1036,100 @@ with tab3:
         # Smart recommendations
         recommendations = ai_chat.get_smart_recommendations(portfolio_data, market_data)
         
-        st.write("**💡 AI Smart Recommendations:**")
-        for rec in recommendations:
-            st.write(f"• {rec}")
+        st.subheader("💡 AI Smart Recommendations")
+        if recommendations:
+            st.markdown('<div class="card-grid">', unsafe_allow_html=True)
+            for i, rec in enumerate(recommendations):
+                st.markdown(f"""
+                <div class="recommendation-card">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="color: #00d4ff; font-size: 1.2rem;">💡</span>
+                        <p style="margin: 0; color: white; font-size: 1rem;">{rec}</p>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+            st.markdown('</div>', unsafe_allow_html=True)
+        else:
+            st.info("No AI recommendations available at this time")
         
         # Market sentiment insights
         if market_data.get('ai_sentiment'):
             sentiment = market_data['ai_sentiment']
             st.subheader("📊 Market Sentiment Analysis")
             
-            col1, col2 = st.columns(2)
-            with col1:
-                st.metric("Overall Mood", sentiment.get('market_mood', 'Unknown'))
-                st.metric("Sentiment Score", f"{sentiment.get('sentiment_score', 0):.2f}")
+            st.markdown('<div class="card-grid">', unsafe_allow_html=True)
             
-            with col2:
-                st.metric("Positive Coins", sentiment.get('positive_coins', 0))
-                st.metric("Negative Coins", sentiment.get('negative_coins', 0))
+            # Overall Mood Card
+            mood_color = '#00ff88' if sentiment.get('market_mood') == 'bullish' else '#ff4444' if sentiment.get('market_mood') == 'bearish' else '#ffaa00'
+            st.markdown(f"""
+            <div class="metric-card">
+                <h5 style="margin: 0; color: #888; font-size: 0.8rem;">Overall Mood</h5>
+                <p style="margin: 0; color: {mood_color}; font-size: 1.2rem; font-weight: bold;">{sentiment.get('market_mood', 'Unknown')}</p>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            # Sentiment Score Card
+            score = sentiment.get('sentiment_score', 0)
+            score_color = '#00ff88' if score > 0.5 else '#ff4444' if score < -0.5 else '#ffaa00'
+            st.markdown(f"""
+            <div class="metric-card">
+                <h5 style="margin: 0; color: #888; font-size: 0.8rem;">Sentiment Score</h5>
+                <p style="margin: 0; color: {score_color}; font-size: 1.2rem; font-weight: bold;">{score:.2f}</p>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            # Positive Coins Card
+            st.markdown(f"""
+            <div class="metric-card">
+                <h5 style="margin: 0; color: #888; font-size: 0.8rem;">Positive Coins</h5>
+                <p style="margin: 0; color: #00ff88; font-size: 1.2rem; font-weight: bold;">{sentiment.get('positive_coins', 0)}</p>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            # Negative Coins Card
+            st.markdown(f"""
+            <div class="metric-card">
+                <h5 style="margin: 0; color: #888; font-size: 0.8rem;">Negative Coins</h5>
+                <p style="margin: 0; color: #ff4444; font-size: 1.2rem; font-weight: bold;">{sentiment.get('negative_coins', 0)}</p>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            st.markdown('</div>', unsafe_allow_html=True)
         
         # AI predictions
         st.subheader("🔮 AI Predictions")
-        predictions = ai_predictor.get_market_predictions(portfolio_data, market_data)
-        
-        for prediction in predictions:
-            st.markdown(f"""
-            <div class="ai-feature">
-                <h4>🔮 {prediction['title']}</h4>
-                <p>{prediction['description']}</p>
-                <p><strong>Confidence:</strong> {prediction['confidence']}%</p>
-            </div>
-            """, unsafe_allow_html=True)
+        try:
+            predictions = ai_predictor.get_portfolio_predictions(portfolio_data)
+            
+            if predictions:
+                st.markdown('<div class="card-grid">', unsafe_allow_html=True)
+                for prediction in predictions:
+                    confidence_color = '#00ff88' if prediction['confidence'] > 60 else '#ffaa00' if prediction['confidence'] > 40 else '#ff4444'
+                    trend_color = '#00ff88' if prediction['trend'] == 'bullish' else '#ff4444'
+                    
+                    st.markdown(f"""
+                    <div class="prediction-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                            <h4 style="margin: 0; color: #00d4ff; font-size: 1.2rem;">{prediction['asset']}</h4>
+                            <span style="color: {trend_color}; font-size: 1.1rem;">{prediction['trend'].upper()}</span>
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+                            <div class="metric-card">
+                                <h5 style="margin: 0; color: #888; font-size: 0.8rem;">Predicted Price</h5>
+                                <p style="margin: 0; color: #00d4ff; font-size: 1.1rem;">${prediction['predicted_price']:,.2f}</p>
+                            </div>
+                            <div class="metric-card">
+                                <h5 style="margin: 0; color: #888; font-size: 0.8rem;">Confidence</h5>
+                                <p style="margin: 0; color: {confidence_color}; font-size: 1.1rem;">{prediction['confidence']}%</p>
+                            </div>
+                        </div>
+                    </div>
+                    """, unsafe_allow_html=True)
+                st.markdown('</div>', unsafe_allow_html=True)
+            else:
+                st.info("No predictions available at this time")
+        except Exception as e:
+            st.error(f"❌ Error generating predictions: {str(e)}")
     
     else:
         st.info("Generate a portfolio first to see AI insights")
@@ -957,19 +1167,24 @@ with tab4:
     
     # Notification history
     st.subheader("📋 Notification History")
-    notifications = ai_notifications.get_notification_history()
-    
-    if notifications:
-        for notification in notifications[:5]:  # Show last 5 notifications
-            st.markdown(f"""
-            <div class="notification-alert">
-                <strong>{notification['type']}</strong><br>
-                {notification['message']}<br>
-                <small>{notification['timestamp']}</small>
-            </div>
-            """, unsafe_allow_html=True)
-    else:
-        st.info("No notifications yet")
+    try:
+        notifications = ai_notifications.get_notification_history()
+        
+        if notifications:
+            for notification in notifications[:5]:  # Show last 5 notifications
+                st.markdown(f"""
+                <div class="notification-alert">
+                    <strong>{notification['type']}</strong><br>
+                    {notification['message']}<br>
+                    <small>{notification['timestamp']}</small>
+                </div>
+                """, unsafe_allow_html=True)
+        else:
+            st.info("No notifications yet")
+    except AttributeError:
+        st.info("Notification history feature not available")
+    except Exception as e:
+        st.error(f"Error loading notifications: {str(e)}")
 
 with tab5:
     # Predictive Analytics Section
