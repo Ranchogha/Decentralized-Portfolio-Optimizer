@@ -683,4 +683,555 @@ with st.sidebar:
         "🏢 Preferred Sectors",
         available_sectors,
         default=["DeFi", "Layer 1"],
+        help="Select your preferred cryptocurrency sectors"
     )
+    
+    # Maximum Assets
+    max_assets = st.slider(
+        "📊 Maximum Assets",
+        min_value=3,
+        max_value=20,
+        value=10,
+        help="Maximum number of assets in your portfolio"
+    )
+    
+    # Handle retry states
+    if st.session_state.retry_default:
+        max_assets = 5  # Use fewer assets for retry
+        selected_sectors = ["DeFi", "Layer 1"]  # Use default sectors
+        st.session_state.retry_default = False
+    
+    if st.session_state.retry_fewer:
+        max_assets = 3  # Use even fewer assets
+        st.session_state.retry_fewer = False
+    
+    # Diagnostic Section
+    st.header("🔧 Diagnostics")
+    if st.button("🔍 Run Connection Test"):
+        with st.spinner("Testing connections..."):
+            # Test API keys
+            demo_key = os.getenv("COINGECKO_DEMO_API_KEY")
+            pro_key = os.getenv("COINGECKO_PRO_API_KEY")
+            
+            # Test server connection
+            try:
+                status = mcp_optimizer.mcp_server.get_server_status()
+                if status and status.get('gecko_says'):
+                    st.success("✅ Connection successful")
+                else:
+                    st.error("❌ Connection failed")
+            except Exception as e:
+                st.error("❌ Connection failed")
+            
+            # Test market data
+            try:
+                market_data = mcp_optimizer.mcp_server.get_coins_markets_mcp(per_page=5)
+                if market_data:
+                    st.success("✅ Data available")
+                else:
+                    st.error("❌ No data available")
+            except Exception as e:
+                st.error("❌ Data error")
+
+# Main application tabs
+tab1, tab2, tab3, tab4, tab5 = st.tabs([
+    "🎯 Portfolio Generation",
+    "📊 Market Analytics", 
+    "🤖 AI Insights",
+    "🔔 Smart Notifications",
+    "📈 Predictive Analytics"
+])
+
+with tab1:
+    # Portfolio Generation Section
+    st.subheader("🎯 Portfolio Generation")
+    
+    # Generate portfolio using AI-enhanced data with metallic styling
+    if st.button("🚀 Generate AI-Optimized Portfolio", type="primary", key="generate_portfolio_btn"):
+        with st.spinner("🔄 Generating portfolio with AI-enhanced data..."):
+            try:
+                # Get AI-enhanced portfolio data
+                portfolio_data = mcp_optimizer.ai_optimize_portfolio(
+                    risk_profile=risk_profile,
+                    investment_amount=investment_amount,
+                    preferred_sectors=selected_sectors,
+                    max_assets=max_assets
+                )
+                
+                if portfolio_data and portfolio_data.get('portfolio'):
+                    st.session_state.portfolio_data = portfolio_data
+                    st.session_state.market_data = mcp_optimizer.get_enhanced_market_data()
+                else:
+                    st.error("❌ Failed to generate portfolio. Please try again.")
+                    
+            except Exception as e:
+                st.error("❌ Error generating portfolio")
+                st.stop()
+    
+    # Retry button if portfolio generation failed
+    if 'portfolio_data' not in st.session_state or not st.session_state.portfolio_data:
+        st.markdown("""
+        <div style="background: #f0e68c; border: 2px solid #000000; border-radius: 8px; padding: 1rem; color: #000000;">
+            ⚠️ No portfolio data available. Click 'Generate AI-Optimized Portfolio' to create one.
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Quick retry with different settings
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("🔄 Retry with Default Settings", type="secondary", key="retry_default_btn"):
+                st.session_state.retry_default = True
+                st.rerun()
+        
+        with col2:
+            if st.button("🔧 Try with Fewer Assets", type="secondary", key="retry_fewer_btn"):
+                st.session_state.retry_fewer = True
+                st.rerun()
+    
+    # Portfolio Summary Section
+    if 'portfolio_data' in st.session_state and st.session_state.portfolio_data:
+        portfolio_data = st.session_state.portfolio_data
+        
+        st.subheader("📊 Portfolio Summary")
+        
+        # Display portfolio metrics
+        col1, col2, col3, col4 = st.columns(4)
+        
+        with col1:
+            st.metric("Total Value", f"${portfolio_data.get('total_value', 0):,.2f}")
+        
+        with col2:
+            st.metric("Number of Assets", len(portfolio_data.get('portfolio', [])))
+        
+        with col3:
+            st.metric("Risk Profile", risk_profile.upper())
+        
+        with col4:
+            st.metric("Sectors", len(selected_sectors))
+        
+        # AI-enhanced Portfolio Visualizations
+        st.subheader("📈 AI-Enhanced Portfolio Visualizations")
+        
+        # Create AI-enhanced portfolio allocation chart
+        if portfolio_data.get('portfolio'):
+            portfolio_df = pd.DataFrame(portfolio_data['portfolio'])
+            
+            # AI-enhanced pie chart
+            try:
+                market_sentiment = st.session_state.get('market_data', {}).get('ai_sentiment', {}).get('market_mood', 'neutral')
+                ai_chart = ai_visualizations.create_ai_enhanced_portfolio_chart(portfolio_data, market_sentiment)
+                st.plotly_chart(ai_chart, use_container_width=True)
+            except Exception as e:
+                st.error("❌ Error creating portfolio chart")
+                # Fallback to simple chart
+                if portfolio_df.shape[0] > 0:
+                    fig = px.pie(portfolio_df, values='allocation_percentage', names='symbol', 
+                                title='Portfolio Allocation')
+                    st.plotly_chart(fig, use_container_width=True)
+            
+            # Token Cards - Black and White Style
+            st.subheader("🪙 Portfolio Tokens")
+            for asset in portfolio_data['portfolio'][:5]:  # Show top 5 tokens
+                st.markdown(f"""
+                <div class="token-card floating-element">
+                    <div>
+                        <h4 style="margin: 0; color: #D4AF37;">{asset['symbol']}</h4>
+                        <p style="margin: 0; color: #ffffff;">{asset['name']}</p>
+                    </div>
+                    <div style="text-align: right;">
+                        <p style="margin: 0; color: #D4AF37; font-size: 1.2rem;">${asset['allocation_usd']:,.2f}</p>
+                        <p style="margin: 0; color: #ffffff;">{asset['allocation_percentage']:.1f}%</p>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+            
+            # Protocol Insights - Black and White Style
+            st.subheader("🔍 Protocol Insights")
+            col1, col2 = st.columns(2)
+            
+            with col1:
+                st.markdown("""
+                <div class="protocol-card floating-element">
+                    <h4>🏦 DeFi Protocols</h4>
+                    <p style="color: #D4AF37; font-size: 1.2rem;">$12,450.00</p>
+                    <p style="color: #FFD700;">+8.2% (24h)</p>
+                    <div style="margin-top: 1rem;">
+                        <span style="background: #D4AF37; color: #000000; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem;">Uniswap V3</span>
+                        <span style="background: #D4AF37; color: #000000; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem; margin-left: 0.5rem;">Aave V3</span>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+            
+            with col2:
+                st.markdown("""
+                <div class="protocol-card floating-element">
+                    <h4>⛓️ Multichain Assets</h4>
+                    <p style="color: #D4AF37; font-size: 1.2rem;">$8,750.00</p>
+                    <p style="color: #FFD700;">+5.1% (24h)</p>
+                    <div style="margin-top: 1rem;">
+                        <span style="background: #D4AF37; color: #000000; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem;">Ethereum</span>
+                        <span style="background: #D4AF37; color: #000000; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem; margin-left: 0.5rem;">Polygon</span>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+        
+        # Blockchain Integration Section
+        st.subheader("🔗 Blockchain Integration")
+        
+        # Enhanced blockchain storage with AI validation
+        if st.button("💾 Store Portfolio on Blockchain", type="secondary", key="store_blockchain_btn"):
+            try:
+                # Store portfolio with AI-enhanced validation
+                tx_hash = portfolio_manager.save_portfolio_allocation(
+                    portfolio_data=portfolio_data,
+                    risk_profile=risk_profile,
+                    sectors=selected_sectors
+                )
+                
+                if tx_hash:
+                    st.success("✅ Portfolio stored successfully!")
+                else:
+                    st.error("❌ Failed to store portfolio")
+                    
+            except Exception as e:
+                st.error("❌ Storage error")
+
+with tab2:
+    # Market Analytics Section
+    st.subheader("📊 AI-Enhanced Market Analytics")
+    
+    try:
+        # Get comprehensive market data
+        market_data = mcp_optimizer.get_enhanced_market_data()
+        
+        if market_data:
+            # Market sentiment analysis
+            if market_data.get('ai_sentiment'):
+                sentiment = market_data['ai_sentiment']
+                
+                col1, col2, col3 = st.columns(3)
+                
+                with col1:
+                    st.metric("Market Mood", sentiment.get('market_mood', 'Unknown'))
+                
+                with col2:
+                    st.metric("Sentiment Score", f"{sentiment.get('sentiment_score', 0):.2f}")
+                
+                with col3:
+                    st.metric("Positive Coins", sentiment.get('positive_coins', 0))
+            
+            # Trending analysis
+            if market_data.get('trending_data'):
+                st.subheader("🔥 Trending Coins")
+                trending = market_data['trending_data']
+                
+                if trending.get('trending_coins'):
+                    st.markdown('<div class="card-grid">', unsafe_allow_html=True)
+                    for coin in trending['trending_coins'][:6]:
+                        coin_data = coin['item']
+                        st.markdown(f"""
+                        <div class="trending-coin-card">
+                            <div>
+                                <h4 style="margin: 0; color: #D4AF37; font-size: 1.1rem;">{coin_data['name']}</h4>
+                                <p style="margin: 0; color: #ffffff; font-size: 0.9rem;">{coin_data['symbol'].upper()}</p>
+                                <p style="margin: 0; color: #FFD700; font-size: 0.8rem;">#{coin_data.get('market_cap_rank', 'N/A')}</p>
+                            </div>
+                            <div style="text-align: right;">
+                                <p style="margin: 0; color: #D4AF37; font-size: 1.2rem;">${coin_data.get('price_btc', 0):.8f} BTC</p>
+                                <p style="margin: 0; color: #ffffff; font-size: 0.8rem;">Score: {coin_data.get('score', 0)}</p>
+                            </div>
+                        </div>
+                        """, unsafe_allow_html=True)
+                    st.markdown('</div>', unsafe_allow_html=True)
+            
+            # Sector analysis
+            if market_data.get('sector_analysis'):
+                st.subheader("🏢 Sector Performance")
+                sectors = market_data['sector_analysis']
+                
+                st.markdown('<div class="card-grid">', unsafe_allow_html=True)
+                for sector, data in sectors.items():
+                    if data:
+                        st.markdown(f"""
+                        <div class="sector-card">
+                            <h4 style="margin: 0 0 1rem 0; color: #D4AF37; font-size: 1.2rem;">{sector}</h4>
+                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+                                <div class="metric-card">
+                                    <h5 style="margin: 0; color: #ffffff; font-size: 0.8rem;">Market Cap</h5>
+                                    <p style="margin: 0; color: #D4AF37; font-size: 1.1rem;">${data.get('total_market_cap', 0):,.0f}</p>
+                                </div>
+                                <div class="metric-card">
+                                    <h5 style="margin: 0; color: #ffffff; font-size: 0.8rem;">Avg Change</h5>
+                                    <p style="margin: 0; color: {'#FFD700' if data.get('avg_24h_change', 0) > 0 else '#ff4444'}; font-size: 1.1rem;">{data.get('avg_24h_change', 0):.2f}%</p>
+                                </div>
+                                <div class="metric-card">
+                                    <h5 style="margin: 0; color: #ffffff; font-size: 0.8rem;">Assets</h5>
+                                    <p style="margin: 0; color: #D4AF37; font-size: 1.1rem;">{data.get('coin_count', 0)}</p>
+                                </div>
+                            </div>
+                        </div>
+                        """, unsafe_allow_html=True)
+                st.markdown('</div>', unsafe_allow_html=True)
+        
+    except Exception as e:
+        st.error("❌ Error loading market analytics")
+
+with tab3:
+    # AI Insights Section
+    st.subheader("🤖 AI Insights")
+    
+    if 'portfolio_data' in st.session_state and 'market_data' in st.session_state:
+        # Get AI insights
+        portfolio_data = st.session_state.portfolio_data
+        market_data = st.session_state.market_data
+        
+        # Smart recommendations
+        recommendations = ai_chat.get_smart_recommendations(portfolio_data, market_data)
+        
+        st.subheader("💡 AI Smart Recommendations")
+        if recommendations:
+            st.markdown('<div class="card-grid">', unsafe_allow_html=True)
+            for i, rec in enumerate(recommendations):
+                st.markdown(f"""
+                <div class="recommendation-card">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="color: #D4AF37; font-size: 1.2rem;">💡</span>
+                        <p style="margin: 0; color: #ffffff; font-size: 1rem;">{rec}</p>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+            st.markdown('</div>', unsafe_allow_html=True)
+        else:
+            st.info("No recommendations available")
+        
+        # Market sentiment insights
+        if market_data.get('ai_sentiment'):
+            sentiment = market_data['ai_sentiment']
+            st.subheader("📊 Market Sentiment Analysis")
+            
+            st.markdown('<div class="card-grid">', unsafe_allow_html=True)
+            
+            # Overall Mood Card
+            mood_color = '#FFD700' if sentiment.get('market_mood') == 'bullish' else '#ff4444' if sentiment.get('market_mood') == 'bearish' else '#D4AF37'
+            st.markdown(f"""
+            <div class="metric-card">
+                <h5 style="margin: 0; color: #ffffff; font-size: 0.8rem;">Overall Mood</h5>
+                <p style="margin: 0; color: {mood_color}; font-size: 1.2rem; font-weight: bold;">{sentiment.get('market_mood', 'Unknown')}</p>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            # Sentiment Score Card
+            score = sentiment.get('sentiment_score', 0)
+            score_color = '#FFD700' if score > 0.5 else '#ff4444' if score < -0.5 else '#D4AF37'
+            st.markdown(f"""
+            <div class="metric-card">
+                <h5 style="margin: 0; color: #ffffff; font-size: 0.8rem;">Sentiment Score</h5>
+                <p style="margin: 0; color: {score_color}; font-size: 1.2rem; font-weight: bold;">{score:.2f}</p>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            # Positive Coins Card
+            st.markdown(f"""
+            <div class="metric-card">
+                <h5 style="margin: 0; color: #ffffff; font-size: 0.8rem;">Positive Coins</h5>
+                <p style="margin: 0; color: #FFD700; font-size: 1.2rem; font-weight: bold;">{sentiment.get('positive_coins', 0)}</p>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            # Negative Coins Card
+            st.markdown(f"""
+            <div class="metric-card">
+                <h5 style="margin: 0; color: #ffffff; font-size: 0.8rem;">Negative Coins</h5>
+                <p style="margin: 0; color: #ff4444; font-size: 1.2rem; font-weight: bold;">{sentiment.get('negative_coins', 0)}</p>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            st.markdown('</div>', unsafe_allow_html=True)
+        
+        # AI predictions
+        st.subheader("🔮 AI Predictions")
+        try:
+            predictions = ai_predictor.get_portfolio_predictions(portfolio_data)
+            
+            if predictions:
+                st.markdown('<div class="card-grid">', unsafe_allow_html=True)
+                for prediction in predictions:
+                    confidence_color = '#FFD700' if prediction['confidence'] > 60 else '#D4AF37' if prediction['confidence'] > 40 else '#ff4444'
+                    trend_color = '#FFD700' if prediction['trend'] == 'bullish' else '#ff4444'
+                    
+                    st.markdown(f"""
+                    <div class="prediction-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                            <h4 style="margin: 0; color: #D4AF37; font-size: 1.2rem;">{prediction['asset']}</h4>
+                            <span style="color: {trend_color}; font-size: 1.1rem;">{prediction['trend'].upper()}</span>
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+                            <div class="metric-card">
+                                <h5 style="margin: 0; color: #ffffff; font-size: 0.8rem;">Predicted Price</h5>
+                                <p style="margin: 0; color: #D4AF37; font-size: 1.1rem;">${prediction['predicted_price']:,.2f}</p>
+                            </div>
+                            <div class="metric-card">
+                                <h5 style="margin: 0; color: #ffffff; font-size: 0.8rem;">Confidence</h5>
+                                <p style="margin: 0; color: {confidence_color}; font-size: 1.1rem;">{prediction['confidence']}%</p>
+                            </div>
+                        </div>
+                    </div>
+                    """, unsafe_allow_html=True)
+                st.markdown('</div>', unsafe_allow_html=True)
+            else:
+                st.info("No predictions available")
+        except Exception as e:
+            st.error("❌ Error generating predictions")
+    
+    else:
+        st.markdown("""
+        <div style="background: #f0e68c; border: 2px solid #000000; border-radius: 8px; padding: 1rem; color: #000000;">
+            Generate a portfolio first to see AI insights
+        </div>
+        """, unsafe_allow_html=True)
+
+with tab4:
+    # Smart Notifications Section
+    st.subheader("🔔 Smart Notifications")
+    
+    # Notification settings
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.subheader("⚙️ Notification Settings")
+        st.markdown("""
+        <div style="background: #f0e68c; border: 2px solid #000000; border-radius: 8px; padding: 1rem; color: #000000; margin-bottom: 1rem;">
+            <div style="margin-bottom: 0.5rem;">📧 Email notifications</div>
+            <div style="margin-bottom: 0.5rem;">📱 Push notifications</div>
+            <div style="margin-bottom: 0.5rem;">💰 Price Alerts</div>
+            <div style="margin-bottom: 0.5rem;">📊 Portfolio alerts</div>
+        </div>
+        """, unsafe_allow_html=True)
+        email_notifications = st.checkbox("📧 Email Notifications", value=True)
+        push_notifications = st.checkbox("📱 Push Notifications", value=True)
+        price_alerts = st.checkbox("💰 Price Alerts", value=True)
+        portfolio_alerts = st.checkbox("📊 Portfolio Alerts", value=True)
+    
+    with col2:
+        st.subheader("🎯 Alert Thresholds")
+        st.markdown("""
+        <div style="background: #f0e68c; border: 2px solid #000000; border-radius: 8px; padding: 1rem; color: #000000; margin-bottom: 1rem;">
+            <div style="margin-bottom: 0.5rem;">Price Change %</div>
+            <div style="margin-bottom: 0.5rem;">Portfolio Change %</div>
+        </div>
+        """, unsafe_allow_html=True)
+        price_change_threshold = st.slider("Price Change %", 1, 20, 5)
+        portfolio_change_threshold = st.slider("Portfolio Change %", 1, 15, 3)
+    
+    # Test notifications
+    if st.button("🧪 Test Notifications"):
+        try:
+            # Test different notification types
+            ai_notifications.send_price_alert("BTC", 45000, 5.2)
+            ai_notifications.send_portfolio_alert("Portfolio value increased by 3.5%")
+            ai_notifications.send_market_alert("Market sentiment is bullish")
+            
+            st.success("✅ Test notifications sent!")
+        except Exception as e:
+            st.error("❌ Error sending notifications")
+    
+    # Notification history
+    st.subheader("📋 Notification History")
+    try:
+        notifications = ai_notifications.get_notification_history()
+        
+        if notifications:
+            for notification in notifications[:5]:  # Show last 5 notifications
+                st.markdown(f"""
+                <div class="notification-alert">
+                    <strong>{notification['type']}</strong><br>
+                    {notification['message']}<br>
+                    <small>{notification['timestamp']}</small>
+                </div>
+                """, unsafe_allow_html=True)
+        else:
+            st.markdown("""
+            <div style="background: #f0e68c; border: 2px solid #000000; border-radius: 8px; padding: 1rem; color: #000000;">
+                No notifications yet
+            </div>
+            """, unsafe_allow_html=True)
+    except AttributeError:
+        st.info("Notification history not available")
+    except Exception as e:
+        st.error("Error loading notifications")
+
+with tab5:
+    # Predictive Analytics Section
+    st.subheader("📈 Predictive Analytics")
+    
+    if 'portfolio_data' in st.session_state:
+        portfolio_data = st.session_state.portfolio_data
+        
+        # AI-powered predictions
+        st.subheader("🔮 AI Market Predictions")
+        
+        # Get predictions for portfolio assets
+        predictions = ai_predictor.get_portfolio_predictions(portfolio_data)
+        
+        if predictions:
+            for prediction in predictions:
+                col1, col2, col3 = st.columns(3)
+                
+                with col1:
+                    st.metric("Asset", prediction['asset'])
+                
+                with col2:
+                    st.metric("Predicted Price", f"${prediction['predicted_price']:,.2f}")
+                
+                with col3:
+                    st.metric("Confidence", f"{prediction['confidence']}%")
+        
+        # Risk analysis
+        st.subheader("⚖️ Risk Analysis")
+        
+        # Calculate risk metrics
+        risk_metrics = ai_predictor.calculate_risk_metrics(portfolio_data)
+        
+        col1, col2, col3 = st.columns(3)
+        
+        with col1:
+            st.metric("Average Volatility", f"{risk_metrics.get('avg_volatility', 0):.3f}")
+        
+        with col2:
+            st.metric("Portfolio Diversity", f"{risk_metrics.get('diversity', 0)} assets")
+        
+        with col3:
+            st.metric("Largest Position", f"{risk_metrics.get('largest_position', 0):.1f}%")
+        
+        # Portfolio insights
+        st.subheader("ℹ️ Portfolio Insights")
+        insights = ai_predictor.get_portfolio_insights(portfolio_data)
+        
+        for insight in insights:
+            st.markdown(f"""
+            <div class="ai-feature">
+                <h4>💡 {insight['title']}</h4>
+                <p>{insight['description']}</p>
+            </div>
+            """, unsafe_allow_html=True)
+    
+    else:
+        st.markdown("""
+        <div style="background: #f0e68c; border: 2px solid #000000; border-radius: 8px; padding: 1rem; color: #000000;">
+            Generate a portfolio first to see analytics
+        </div>
+        """, unsafe_allow_html=True)
+
+# Footer
+st.markdown("---")
+st.markdown("""
+<div style="text-align: center; color: #000000; padding: 2rem; background: #f0e68c; border: 2px solid #000000; border-radius: 16px; margin: 2rem 0;">
+    <p style="color: #000000; font-weight: bold;">🚀 Powered by AI, Coingecko MCP & Blockchain Technology</p>
+    <p style="color: #000000;">Built with Streamlit, CoinGecko API, and Ethereum Smart Contracts by Rancho</p>
+    <p>
+        <a href="https://x.com/Rancho_GHA" target="_blank" style="text-decoration: none; color: #D4AF37;">
+            <span style="font-size: 24px;">𝕏</span> Follow @Rancho_GHA
+        </a>
+    </p>
+</div>
+""", unsafe_allow_html=True)
