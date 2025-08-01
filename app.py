@@ -609,8 +609,8 @@ st.markdown("""
 # Main Header with Floating Elements
 st.markdown("""
 <div class="main-header gold-shimmer">
-    <h1>🚀 Decentralized Portfolio Optimizer</h1>
-    <p>AI-Powered Crypto Portfolio Management with Blockchain Integration</p>
+    <h1 style="color: #ffffff;">🚀 Decentralized Portfolio Optimizer</h1>
+    <p style="color: #ffffff;">AI-Powered Crypto Portfolio Management with Blockchain Integration</p>
     <div style="margin-top: 1rem;">
         <span class="ai-badge floating-element">🤖 AI Enhanced</span>
         <span class="ai-badge floating-element" style="animation-delay: 0.5s;">🔗 Blockchain Ready</span>
@@ -779,7 +779,11 @@ with tab1:
     
     # Retry button if portfolio generation failed
     if 'portfolio_data' not in st.session_state or not st.session_state.portfolio_data:
-        st.warning("⚠️ No portfolio data available. Click 'Generate AI-Optimized Portfolio' to create one.")
+        st.markdown("""
+        <div style="background: #f0e68c; border: 2px solid #000000; border-radius: 8px; padding: 1rem; color: #000000;">
+            ⚠️ No portfolio data available. Click 'Generate AI-Optimized Portfolio' to create one.
+        </div>
+        """, unsafe_allow_html=True)
         
         # Quick retry with different settings
         col1, col2 = st.columns(2)
@@ -1089,7 +1093,11 @@ with tab3:
             st.error("❌ Error generating predictions")
     
     else:
-        st.info("Generate a portfolio first to see AI insights")
+        st.markdown("""
+        <div style="background: #f0e68c; border: 2px solid #000000; border-radius: 8px; padding: 1rem; color: #000000;">
+            Generate a portfolio first to see AI insights
+        </div>
+        """, unsafe_allow_html=True)
 
 with tab4:
     # Smart Notifications Section
@@ -1100,6 +1108,14 @@ with tab4:
     
     with col1:
         st.subheader("⚙️ Notification Settings")
+        st.markdown("""
+        <div style="background: #f0e68c; border: 2px solid #000000; border-radius: 8px; padding: 1rem; color: #000000; margin-bottom: 1rem;">
+            <div style="margin-bottom: 0.5rem;">📧 Email notifications</div>
+            <div style="margin-bottom: 0.5rem;">📱 Push notifications</div>
+            <div style="margin-bottom: 0.5rem;">💰 Price Alerts</div>
+            <div style="margin-bottom: 0.5rem;">📊 Portfolio alerts</div>
+        </div>
+        """, unsafe_allow_html=True)
         email_notifications = st.checkbox("📧 Email Notifications", value=True)
         push_notifications = st.checkbox("📱 Push Notifications", value=True)
         price_alerts = st.checkbox("💰 Price Alerts", value=True)
@@ -1107,6 +1123,12 @@ with tab4:
     
     with col2:
         st.subheader("🎯 Alert Thresholds")
+        st.markdown("""
+        <div style="background: #f0e68c; border: 2px solid #000000; border-radius: 8px; padding: 1rem; color: #000000; margin-bottom: 1rem;">
+            <div style="margin-bottom: 0.5rem;">Price Change %</div>
+            <div style="margin-bottom: 0.5rem;">Portfolio Change %</div>
+        </div>
+        """, unsafe_allow_html=True)
         price_change_threshold = st.slider("Price Change %", 1, 20, 5)
         portfolio_change_threshold = st.slider("Portfolio Change %", 1, 15, 3)
     
@@ -1137,7 +1159,11 @@ with tab4:
                 </div>
                 """, unsafe_allow_html=True)
         else:
-            st.info("No notifications yet")
+            st.markdown("""
+            <div style="background: #f0e68c; border: 2px solid #000000; border-radius: 8px; padding: 1rem; color: #000000;">
+                No notifications yet
+            </div>
+            """, unsafe_allow_html=True)
     except AttributeError:
         st.info("Notification history not available")
     except Exception as e:
@@ -1199,7 +1225,11 @@ with tab5:
             """, unsafe_allow_html=True)
     
     else:
-        st.info("Generate a portfolio first to see analytics")
+        st.markdown("""
+        <div style="background: #f0e68c; border: 2px solid #000000; border-radius: 8px; padding: 1rem; color: #000000;">
+            Generate a portfolio first to see analytics
+        </div>
+        """, unsafe_allow_html=True)
 
 # Footer
 st.markdown("---")
