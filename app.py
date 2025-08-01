@@ -683,3 +683,4 @@ with st.sidebar:
         "🏢 Preferred Sectors",
         available_sectors,
         default=["DeFi", "Layer 1"],
+    )
