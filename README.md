@@ -1,4 +1,5 @@
 # 🚀 Decentralized Portfolio Optimizer
+A **Decentralized Portfolio Optimizer** is a smart tool that helps you choose the best mix of crypto assets based on your risk level — using real-time data and AI — all without relying on banks or middlemen. It connects directly to blockchain data, giving you full control and transparency over your investments.
 
 ## 🎯 **Core Foundation: CoinGecko MCP Server**
 
