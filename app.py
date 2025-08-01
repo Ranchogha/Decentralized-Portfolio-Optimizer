@@ -264,17 +264,17 @@ st.markdown("""
         to { transform: translateX(0); opacity: 1; }
     }
     
-    /* Financial Metrics Cards - Black with Gold Border */
+    /* Financial Metrics Cards - Khaki with Black Border */
     .metric-card {
-        background: #000000;
-        border: 1px solid #D4AF37;
+        background: #f0e68c;
+        border: 2px solid #000000;
         border-radius: 16px;
         padding: 1.5rem;
         margin: 0.5rem;
         text-align: center;
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         position: relative;
-        color: #ffffff;
+        color: #000000;
         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
     }
     
@@ -297,8 +297,8 @@ st.markdown("""
     .metric-card:hover {
         transform: translateY(-4px) scale(1.02);
         box-shadow: 0 20px 40px rgba(212, 175, 55, 0.3);
-        border-color: #FFD700;
-        background: #111111;
+        border-color: #D4AF37;
+        background: #f5e6a0;
     }
     
     /* Risk Analysis Cards - Black with Gold Border */
@@ -412,9 +412,9 @@ st.markdown("""
         border-color: #FFD700;
     }
     
-    /* Input Styling - White Background with Black Border */
+    /* Input Styling - Khaki Background with Black Border */
     .stTextInput > div > div > input {
-        background: #ffffff;
+        background: #f0e68c;
         border: 2px solid #000000;
         border-radius: 8px;
         color: #000000;
@@ -425,12 +425,28 @@ st.markdown("""
         box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
     }
     
-    /* Selectbox Styling - White Background with Black Border */
+    /* Selectbox Styling - Khaki Background with Black Border */
     .stSelectbox > div > div {
-        background: #ffffff;
+        background: #f0e68c;
         border: 2px solid #000000;
         border-radius: 8px;
         color: #000000;
+    }
+    
+    /* Placeholder text styling */
+    .stTextInput > div > div > input::placeholder {
+        color: #000000 !important;
+    }
+    
+    /* Sidebar specific styling */
+    .css-1d391kg .stTextInput > div > div > input {
+        background: #f0e68c;
+        border: 2px solid #000000;
+        color: #000000;
+    }
+    
+    .css-1d391kg .stTextInput > div > div > input::placeholder {
+        color: #000000 !important;
     }
     
     /* Slider Styling - Gold */
@@ -444,34 +460,34 @@ st.markdown("""
     
     /* Success/Info/Error Messages */
     .stSuccess {
-        background: #000000;
-        border: 2px solid #D4AF37;
-        color: #ffffff;
+        background: #f0e68c;
+        border: 2px solid #000000;
+        color: #000000;
     }
     
     .stInfo {
-        background: #000000;
-        border: 2px solid #D4AF37;
-        color: #ffffff;
+        background: #f0e68c;
+        border: 2px solid #000000;
+        color: #000000;
     }
     
     .stError {
-        background: #000000;
+        background: #f0e68c;
         border: 2px solid #ff4444;
-        color: #ffffff;
+        color: #000000;
     }
     
-    /* Dataframe Styling - White Background */
+    /* Dataframe Styling - Khaki Background */
     .dataframe {
-        background: #ffffff;
+        background: #f0e68c;
         border: 2px solid #000000;
         border-radius: 8px;
         color: #000000;
     }
     
-    /* Chart Container - White Background */
+    /* Chart Container - Khaki Background */
     .js-plotly-plot {
-        background: #ffffff;
+        background: #f0e68c;
         border-radius: 8px;
         padding: 1rem;
         border: 2px solid #000000;
@@ -561,6 +577,32 @@ st.markdown("""
         0% { left: -100%; }
         100% { left: 100%; }
     }
+    
+    /* Notification settings and other sections styling */
+    .stCheckbox > div > div {
+        background: #f0e68c;
+        border: 2px solid #000000;
+        color: #000000;
+    }
+    
+    .stCheckbox > div > div > label {
+        color: #000000 !important;
+    }
+    
+    /* Streamlit default text styling override */
+    .stMarkdown, .stText {
+        color: #000000 !important;
+    }
+    
+    /* Ensure all text in main content area is black */
+    .main .block-container {
+        color: #000000;
+    }
+    
+    /* Override any white text on white background */
+    .stMarkdown p, .stMarkdown div, .stMarkdown span {
+        color: #000000 !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -620,7 +662,7 @@ with st.sidebar:
                 st.success(f"Market Mood: {sentiment.get('market_mood', 'Unknown')}")
                 st.info(f"Sentiment Score: {sentiment.get('sentiment_score', 0):.2f}")
         except Exception as e:
-            st.error(f"Error analyzing sentiment: {str(e)}")
+            st.error("Error analyzing sentiment")
 
 # Sidebar Configuration
 with st.sidebar:
@@ -667,12 +709,10 @@ with st.sidebar:
         max_assets = 5  # Use fewer assets for retry
         selected_sectors = ["DeFi", "Layer 1"]  # Use default sectors
         st.session_state.retry_default = False
-        st.info("🔄 Using default settings for retry")
     
     if st.session_state.retry_fewer:
         max_assets = 3  # Use even fewer assets
         st.session_state.retry_fewer = False
-        st.info("🔄 Using fewer assets for retry")
     
     # Diagnostic Section
     st.header("🔧 Diagnostics")
@@ -682,30 +722,25 @@ with st.sidebar:
             demo_key = os.getenv("COINGECKO_DEMO_API_KEY")
             pro_key = os.getenv("COINGECKO_PRO_API_KEY")
             
-            if demo_key or pro_key:
-                st.success("✅ API keys found")
-            else:
-                st.warning("⚠️ No API keys found")
-            
             # Test server connection
             try:
                 status = mcp_optimizer.mcp_server.get_server_status()
                 if status and status.get('gecko_says'):
-                    st.success("✅ CoinGecko API accessible")
+                    st.success("✅ Connection successful")
                 else:
-                    st.error("❌ CoinGecko API not responding")
+                    st.error("❌ Connection failed")
             except Exception as e:
-                st.error(f"❌ Connection error: {str(e)}")
+                st.error("❌ Connection failed")
             
             # Test market data
             try:
                 market_data = mcp_optimizer.mcp_server.get_coins_markets_mcp(per_page=5)
                 if market_data:
-                    st.success(f"✅ Market data available ({len(market_data)} assets)")
+                    st.success("✅ Data available")
                 else:
-                    st.error("❌ No market data available")
+                    st.error("❌ No data available")
             except Exception as e:
-                st.error(f"❌ Market data error: {str(e)}")
+                st.error("❌ Data error")
 
 # Main application tabs
 tab1, tab2, tab3, tab4, tab5 = st.tabs([
@@ -724,48 +759,7 @@ with tab1:
     if st.button("🚀 Generate AI-Optimized Portfolio", type="primary", key="generate_portfolio_btn"):
         with st.spinner("🔄 Generating portfolio with AI-enhanced data..."):
             try:
-                # Debug: Check API key configuration
-                demo_key = os.getenv("COINGECKO_DEMO_API_KEY")
-                pro_key = os.getenv("COINGECKO_PRO_API_KEY")
-                
-                if not demo_key and not pro_key:
-                    st.warning("⚠️ No CoinGecko API keys found. Using public endpoints (rate limited).")
-                else:
-                    st.success("✅ API keys configured")
-                
-                # Debug: Check MCP server status first
-                st.info("🔍 Checking MCP server connection...")
-                server_status = mcp_optimizer.mcp_server.get_server_status()
-                if not server_status:
-                    st.error("❌ MCP server is not responding. Check your internet connection and API keys.")
-                    st.stop()
-                
-                # Test basic API connectivity
-                st.info("🌐 Testing API connectivity...")
-                try:
-                    test_response = mcp_optimizer.mcp_server._make_mcp_request("ping")
-                    if test_response and test_response.get('gecko_says'):
-                        st.success("✅ CoinGecko API is accessible")
-                    else:
-                        st.warning("⚠️ CoinGecko API response unclear")
-                except Exception as api_error:
-                    st.error(f"❌ API connectivity test failed: {str(api_error)}")
-                    st.stop()
-                
-                # Debug: Check market data availability
-                st.info("📊 Fetching market data...")
-                market_data = mcp_optimizer.mcp_server.get_coins_markets_mcp(per_page=50)
-                if not market_data:
-                    st.error("❌ No market data available. This could be due to:")
-                    st.error("   • API rate limiting")
-                    st.error("   • Invalid API key")
-                    st.error("   • Network connectivity issues")
-                    st.stop()
-                
-                st.success(f"✅ Found {len(market_data)} market assets")
-                
                 # Get AI-enhanced portfolio data
-                st.info("🤖 Running AI optimization...")
                 portfolio_data = mcp_optimizer.ai_optimize_portfolio(
                     risk_profile=risk_profile,
                     investment_amount=investment_amount,
@@ -776,67 +770,12 @@ with tab1:
                 if portfolio_data and portfolio_data.get('portfolio'):
                     st.session_state.portfolio_data = portfolio_data
                     st.session_state.market_data = mcp_optimizer.get_enhanced_market_data()
-                    st.success("✅ AI-optimized portfolio generated successfully!")
                 else:
                     st.error("❌ Failed to generate portfolio. Please try again.")
-                    st.info("💡 This might be due to:")
-                    st.info("   • Insufficient market data for selected sectors")
-                    st.info("   • AI optimization algorithm constraints")
-                    st.info("   • Rate limiting from CoinGecko API")
                     
             except Exception as e:
-                st.error(f"❌ Error generating portfolio: {str(e)}")
-                st.info("ℹ️ Falling back to standard API endpoints")
-                
-                # Fallback: Simple portfolio generation
-                try:
-                    st.info("🔄 Attempting fallback portfolio generation...")
-                    
-                    # Get basic market data
-                    fallback_market_data = mcp_optimizer.mcp_server.get_coins_markets_mcp(per_page=20)
-                    if fallback_market_data:
-                        # Create simple portfolio with top assets
-                        portfolio = []
-                        total_allocation = 0
-                        
-                        for i, asset in enumerate(fallback_market_data[:max_assets]):
-                            # Simple allocation based on position
-                            allocation_percentage = (1 / max_assets) * 100
-                            allocation_usd = (investment_amount * allocation_percentage) / 100
-                            
-                            portfolio.append({
-                                'id': asset['id'],
-                                'symbol': asset['symbol'].upper(),
-                                'name': asset['name'],
-                                'current_price': asset['current_price'],
-                                'allocation_usd': allocation_usd,
-                                'allocation_percentage': allocation_percentage,
-                                'market_cap': asset['market_cap'],
-                                'price_change_24h': asset.get('price_change_percentage_24h', 0)
-                            })
-                            total_allocation += allocation_usd
-                        
-                        if portfolio:
-                            fallback_portfolio_data = {
-                                'portfolio': portfolio,
-                                'total_value': total_allocation,
-                                'ai_model_used': 'Fallback Simple Allocation',
-                                'risk_profile': risk_profile,
-                                'sectors': selected_sectors,
-                                'timestamp': datetime.now().isoformat()
-                            }
-                            
-                            st.session_state.portfolio_data = fallback_portfolio_data
-                            st.session_state.market_data = {'fallback': True}
-                            st.success("✅ Fallback portfolio generated successfully!")
-                        else:
-                            st.error("❌ Fallback portfolio generation also failed")
-                    else:
-                        st.error("❌ No market data available for fallback")
-                        
-                except Exception as fallback_error:
-                    st.error(f"❌ Fallback also failed: {str(fallback_error)}")
-                    st.stop()
+                st.error("❌ Error generating portfolio")
+                st.stop()
     
     # Retry button if portfolio generation failed
     if 'portfolio_data' not in st.session_state or not st.session_state.portfolio_data:
@@ -888,7 +827,7 @@ with tab1:
                 ai_chart = ai_visualizations.create_ai_enhanced_portfolio_chart(portfolio_data, market_sentiment)
                 st.plotly_chart(ai_chart, use_container_width=True)
             except Exception as e:
-                st.error(f"❌ Error creating portfolio chart: {str(e)}")
+                st.error("❌ Error creating portfolio chart")
                 # Fallback to simple chart
                 if portfolio_df.shape[0] > 0:
                     fig = px.pie(portfolio_df, values='allocation_percentage', names='symbol', 
@@ -955,19 +894,12 @@ with tab1:
                 )
                 
                 if tx_hash:
-                    st.success(f"✅ Portfolio stored on blockchain!")
-                    st.info(f"Transaction Hash: {tx_hash}")
-                    
-                    # Show stored portfolio data
-                    stored_data = portfolio_manager.get_stored_portfolios()
-                    if stored_data:
-                        st.subheader("📋 Stored Portfolios")
-                        st.json(stored_data)
+                    st.success("✅ Portfolio stored successfully!")
                 else:
-                    st.error("❌ Failed to store portfolio on blockchain")
+                    st.error("❌ Failed to store portfolio")
                     
             except Exception as e:
-                st.error(f"❌ Blockchain storage error: {str(e)}")
+                st.error("❌ Storage error")
 
 with tab2:
     # Market Analytics Section
@@ -1047,7 +979,7 @@ with tab2:
                 st.markdown('</div>', unsafe_allow_html=True)
         
     except Exception as e:
-        st.error(f"❌ Error loading market analytics: {str(e)}")
+        st.error("❌ Error loading market analytics")
 
 with tab3:
     # AI Insights Section
@@ -1075,7 +1007,7 @@ with tab3:
                 """, unsafe_allow_html=True)
             st.markdown('</div>', unsafe_allow_html=True)
         else:
-            st.info("No AI recommendations available at this time")
+            st.info("No recommendations available")
         
         # Market sentiment insights
         if market_data.get('ai_sentiment'):
@@ -1152,9 +1084,9 @@ with tab3:
                     """, unsafe_allow_html=True)
                 st.markdown('</div>', unsafe_allow_html=True)
             else:
-                st.info("No predictions available at this time")
+                st.info("No predictions available")
         except Exception as e:
-            st.error(f"❌ Error generating predictions: {str(e)}")
+            st.error("❌ Error generating predictions")
     
     else:
         st.info("Generate a portfolio first to see AI insights")
@@ -1186,9 +1118,9 @@ with tab4:
             ai_notifications.send_portfolio_alert("Portfolio value increased by 3.5%")
             ai_notifications.send_market_alert("Market sentiment is bullish")
             
-            st.success("✅ Test notifications sent successfully!")
+            st.success("✅ Test notifications sent!")
         except Exception as e:
-            st.error(f"❌ Error sending notifications: {str(e)}")
+            st.error("❌ Error sending notifications")
     
     # Notification history
     st.subheader("📋 Notification History")
@@ -1207,9 +1139,9 @@ with tab4:
         else:
             st.info("No notifications yet")
     except AttributeError:
-        st.info("Notification history feature not available")
+        st.info("Notification history not available")
     except Exception as e:
-        st.error(f"Error loading notifications: {str(e)}")
+        st.error("Error loading notifications")
 
 with tab5:
     # Predictive Analytics Section
@@ -1267,12 +1199,12 @@ with tab5:
             """, unsafe_allow_html=True)
     
     else:
-        st.info("Generate a portfolio first to see predictive analytics")
+        st.info("Generate a portfolio first to see analytics")
 
 # Footer
 st.markdown("---")
 st.markdown("""
-<div style="text-align: center; color: #000000; padding: 2rem; background: #ffffff; border: 2px solid #D4AF37; border-radius: 16px; margin: 2rem 0;">
+<div style="text-align: center; color: #000000; padding: 2rem; background: #f0e68c; border: 2px solid #000000; border-radius: 16px; margin: 2rem 0;">
     <p style="color: #000000; font-weight: bold;">🚀 Powered by AI, Coingecko MCP & Blockchain Technology</p>
     <p style="color: #000000;">Built with Streamlit, CoinGecko API, and Ethereum Smart Contracts by Rancho</p>
     <p>
