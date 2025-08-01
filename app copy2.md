@@ -18,7 +18,7 @@ from dotenv import load_dotenv
 from web3_integration import EthereumPortfolioManager
 from wallet_manager import MultiWalletManager
 from mcp_integration import CoinGeckoMCPServer, MCPPortfolioOptimizer, check_mcp_server_status, get_mcp_enhanced_data
-from ai_features import ai_chat, ai_predictor, ai_visualizations
+from ai_features import ai_chat, ai_predictor, ai_notifications, ai_visualizations
 import time
 import asyncio
 from typing import Dict, List, Optional, Any
@@ -57,11 +57,6 @@ st.markdown("""
     .stApp {
         background: #ffffff;
         color: #000000;
-    }
-
-    /* VISIBILITY FIX: Ensure subheaders and metric labels are black on white background */
-    h3, [data-testid="stMetricLabel"] {
-        color: #000000 !important;
     }
     
     /* Custom Scrollbar */
@@ -739,10 +734,11 @@ with st.sidebar:
                 st.error("❌ Data error")
 
 # Main application tabs
-tab1, tab2, tab3, tab4 = st.tabs([
+tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "🎯 Portfolio Generation",
     "📊 Market Analytics", 
     "🤖 AI Insights",
+    "🔔 Smart Notifications",
     "📈 Predictive Analytics"
 ])
 
@@ -1095,6 +1091,76 @@ with tab3:
         """, unsafe_allow_html=True)
 
 with tab4:
+    # Smart Notifications Section
+    st.subheader("🔔 Smart Notifications")
+    
+    # Notification settings
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.subheader("⚙️ Notification Settings")
+        st.markdown("""
+        <div style="background: #f0e68c; border: 2px solid #000000; border-radius: 8px; padding: 1rem; color: #000000; margin-bottom: 1rem;">
+            <div style="margin-bottom: 0.5rem;">📧 Email notifications</div>
+            <div style="margin-bottom: 0.5rem;">📱 Push notifications</div>
+            <div style="margin-bottom: 0.5rem;">💰 Price Alerts</div>
+            <div style="margin-bottom: 0.5rem;">📊 Portfolio alerts</div>
+        </div>
+        """, unsafe_allow_html=True)
+        email_notifications = st.checkbox("📧 Email Notifications", value=True)
+        push_notifications = st.checkbox("📱 Push Notifications", value=True)
+        price_alerts = st.checkbox("💰 Price Alerts", value=True)
+        portfolio_alerts = st.checkbox("📊 Portfolio Alerts", value=True)
+    
+    with col2:
+        st.subheader("🎯 Alert Thresholds")
+        st.markdown("""
+        <div style="background: #f0e68c; border: 2px solid #000000; border-radius: 8px; padding: 1rem; color: #000000; margin-bottom: 1rem;">
+            <div style="margin-bottom: 0.5rem;">Price Change %</div>
+            <div style="margin-bottom: 0.5rem;">Portfolio Change %</div>
+        </div>
+        """, unsafe_allow_html=True)
+        price_change_threshold = st.slider("Price Change %", 1, 20, 5)
+        portfolio_change_threshold = st.slider("Portfolio Change %", 1, 15, 3)
+    
+    # Test notifications
+    if st.button("🧪 Test Notifications"):
+        try:
+            # Test different notification types
+            ai_notifications.send_price_alert("BTC", 45000, 5.2)
+            ai_notifications.send_portfolio_alert("Portfolio value increased by 3.5%")
+            ai_notifications.send_market_alert("Market sentiment is bullish")
+            
+            st.success("✅ Test notifications sent!")
+        except Exception as e:
+            st.error("❌ Error sending notifications")
+    
+    # Notification history
+    st.subheader("📋 Notification History")
+    try:
+        notifications = ai_notifications.get_notification_history()
+        
+        if notifications:
+            for notification in notifications[:5]:  # Show last 5 notifications
+                st.markdown(f"""
+                <div class="notification-alert">
+                    <strong>{notification['type']}</strong><br>
+                    {notification['message']}<br>
+                    <small>{notification['timestamp']}</small>
+                </div>
+                """, unsafe_allow_html=True)
+        else:
+            st.markdown("""
+            <div style="background: #f0e68c; border: 2px solid #000000; border-radius: 8px; padding: 1rem; color: #000000;">
+                No notifications yet
+            </div>
+            """, unsafe_allow_html=True)
+    except AttributeError:
+        st.info("Notification history not available")
+    except Exception as e:
+        st.error("Error loading notifications")
+
+with tab5:
     # Predictive Analytics Section
     st.subheader("📈 Predictive Analytics")
     
