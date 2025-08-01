@@ -50,13 +50,13 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Enhanced CSS for Blockchain-Inspired Modern Theme with Vibrant Gradients
+# Beautiful Black and White Theme with Gold Accents
 st.markdown("""
 <style>
-    /* Blockchain-Inspired Modern Theme with Vibrant Gradients */
+    /* Clean Black and White Theme with Gold Accents */
     .stApp {
-        background: linear-gradient(135deg, #0a0e1a 0%, #1a1f2e 50%, #0f1419 100%);
-        color: #ffffff;
+        background: #ffffff;
+        color: #000000;
     }
     
     /* Custom Scrollbar */
@@ -65,29 +65,28 @@ st.markdown("""
     }
     
     ::-webkit-scrollbar-track {
-        background: #1a1f2e;
+        background: #f5f5f5;
     }
     
     ::-webkit-scrollbar-thumb {
-        background: linear-gradient(180deg, #6366f1 0%, #8b5cf6 100%);
+        background: #D4AF37;
         border-radius: 4px;
     }
     
     ::-webkit-scrollbar-thumb:hover {
-        background: linear-gradient(180deg, #4f46e5 0%, #7c3aed 100%);
+        background: #B8860B;
     }
     
-    /* Main Header - Blockchain Style */
+    /* Main Header - Elegant Black and Gold */
     .main-header {
-        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: #000000;
+        border: 2px solid #D4AF37;
         border-radius: 20px;
         padding: 2.5rem;
         color: #ffffff;
         text-align: center;
         margin-bottom: 2rem;
-        box-shadow: 0 20px 40px rgba(99, 102, 241, 0.3);
-        backdrop-filter: blur(20px);
+        box-shadow: 0 20px 40px rgba(212, 175, 55, 0.2);
         position: relative;
         overflow: hidden;
     }
@@ -99,7 +98,7 @@ st.markdown("""
         left: 0;
         right: 0;
         bottom: 0;
-        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(212,175,55,0.3)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
         opacity: 0.3;
     }
     
@@ -110,7 +109,7 @@ st.markdown("""
         left: 0;
         right: 0;
         height: 2px;
-        background: linear-gradient(90deg, transparent, #ffffff, transparent);
+        background: linear-gradient(90deg, transparent, #D4AF37, transparent);
         animation: shimmer 3s infinite;
     }
     
@@ -119,10 +118,10 @@ st.markdown("""
         100% { transform: translateX(100%); }
     }
     
-    /* Token Cards - Blockchain Style */
+    /* Token Cards - Black with Gold Border */
     .token-card {
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: #000000;
+        border: 1px solid #D4AF37;
         border-radius: 16px;
         padding: 1.5rem;
         margin: 0.5rem 0;
@@ -131,46 +130,46 @@ st.markdown("""
         align-items: center;
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         color: #ffffff;
-        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
     }
     
     .token-card:hover {
         transform: translateY(-4px) scale(1.02);
-        box-shadow: 0 20px 40px rgba(99, 102, 241, 0.4);
-        border-color: rgba(255, 255, 255, 0.3);
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
+        box-shadow: 0 20px 40px rgba(212, 175, 55, 0.3);
+        border-color: #FFD700;
+        background: #111111;
     }
     
-    /* Protocol Cards - Blockchain Style */
+    /* Protocol Cards - Black with Gold Accent */
     .protocol-card {
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: #000000;
+        border: 1px solid #D4AF37;
         border-radius: 16px;
         padding: 2rem;
         margin: 1rem 0;
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         color: #ffffff;
-        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
     }
     
     .protocol-card:hover {
         transform: translateY(-4px) scale(1.02);
-        box-shadow: 0 20px 40px rgba(99, 102, 241, 0.4);
-        border-color: rgba(255, 255, 255, 0.3);
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
+        box-shadow: 0 20px 40px rgba(212, 175, 55, 0.3);
+        border-color: #FFD700;
+        background: #111111;
     }
     
-    /* AI Badge */
+    /* AI Badge - Gold */
     .ai-badge {
-        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-        color: white;
+        background: linear-gradient(135deg, #D4AF37 0%, #FFD700 100%);
+        color: #000000;
         padding: 0.5rem 1rem;
         border-radius: 20px;
         font-size: 0.8rem;
         font-weight: bold;
         display: inline-block;
         margin: 0.5rem;
-        box-shadow: 0 4px 12px rgba(112, 145, 230, 0.3);
+        box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
         animation: pulse 2s infinite;
     }
     
@@ -190,18 +189,18 @@ st.markdown("""
     }
     
     .status-online { 
-        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        box-shadow: 0 0 15px rgba(16, 185, 129, 0.6);
+        background: #D4AF37;
+        box-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
     }
     
     .status-offline { 
-        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-        box-shadow: 0 0 15px rgba(239, 68, 68, 0.6);
+        background: #ff4444;
+        box-shadow: 0 0 15px rgba(255, 68, 68, 0.6);
     }
     
     .status-warning { 
-        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-        box-shadow: 0 0 15px rgba(245, 158, 11, 0.6);
+        background: #ffaa00;
+        box-shadow: 0 0 15px rgba(255, 170, 0, 0.6);
     }
     
     @keyframes glow {
@@ -209,55 +208,55 @@ st.markdown("""
         50% { opacity: 0.7; }
     }
     
-    /* AI Feature Cards */
+    /* AI Feature Cards - Black with Gold Border */
     .ai-feature {
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: #000000;
+        border: 1px solid #D4AF37;
         border-radius: 16px;
         color: #ffffff;
         padding: 1.5rem;
         margin: 0.5rem 0;
-        border-left: 4px solid #6366f1;
+        border-left: 4px solid #D4AF37;
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
     }
     
     .ai-feature:hover {
         transform: translateY(-4px) scale(1.02);
-        box-shadow: 0 20px 40px rgba(99, 102, 241, 0.4);
-        border-color: rgba(255, 255, 255, 0.3);
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
+        box-shadow: 0 20px 40px rgba(212, 175, 55, 0.3);
+        border-color: #FFD700;
+        background: #111111;
     }
     
-    /* Chat Container */
+    /* Chat Container - Black with Gold Border */
     .chat-container {
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: #000000;
+        border: 1px solid #D4AF37;
         border-radius: 16px;
         padding: 1.5rem;
         margin: 1rem 0;
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         color: #ffffff;
-        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
     }
     
     .chat-container:hover {
-        border-color: rgba(255, 255, 255, 0.3);
-        box-shadow: 0 20px 40px rgba(99, 102, 241, 0.4);
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
+        border-color: #FFD700;
+        box-shadow: 0 20px 40px rgba(212, 175, 55, 0.3);
+        background: #111111;
     }
     
-    /* Notification Alerts */
+    /* Notification Alerts - Black with Gold Border */
     .notification-alert {
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: #000000;
+        border: 1px solid #D4AF37;
         border-radius: 12px;
         color: #ffffff;
         padding: 1rem;
         margin: 0.5rem 0;
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         animation: slideIn 0.3s ease-out;
-        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
     }
     
     @keyframes slideIn {
@@ -265,10 +264,10 @@ st.markdown("""
         to { transform: translateX(0); opacity: 1; }
     }
     
-    /* Financial Metrics Cards */
+    /* Financial Metrics Cards - Black with Gold Border */
     .metric-card {
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: #000000;
+        border: 1px solid #D4AF37;
         border-radius: 16px;
         padding: 1.5rem;
         margin: 0.5rem;
@@ -276,7 +275,7 @@ st.markdown("""
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         position: relative;
         color: #ffffff;
-        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
     }
     
     .metric-card::after {
@@ -287,7 +286,7 @@ st.markdown("""
         transform: translateX(-50%);
         width: 0;
         height: 2px;
-        background: linear-gradient(90deg, #6366f1, #8b5cf6);
+        background: #D4AF37;
         transition: width 0.4s ease;
     }
     
@@ -297,47 +296,47 @@ st.markdown("""
     
     .metric-card:hover {
         transform: translateY(-4px) scale(1.02);
-        box-shadow: 0 20px 40px rgba(99, 102, 241, 0.4);
-        border-color: rgba(255, 255, 255, 0.3);
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
+        box-shadow: 0 20px 40px rgba(212, 175, 55, 0.3);
+        border-color: #FFD700;
+        background: #111111;
     }
     
-    /* Risk Analysis Cards */
+    /* Risk Analysis Cards - Black with Gold Border */
     .risk-card {
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: #000000;
+        border: 1px solid #D4AF37;
         border-radius: 16px;
         padding: 2rem;
         margin: 1rem 0;
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         color: #ffffff;
-        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
     }
     
     .risk-card:hover {
         transform: translateY(-4px) scale(1.02);
-        box-shadow: 0 20px 40px rgba(99, 102, 241, 0.4);
-        border-color: rgba(255, 255, 255, 0.3);
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
+        box-shadow: 0 20px 40px rgba(212, 175, 55, 0.3);
+        border-color: #FFD700;
+        background: #111111;
     }
     
-    /* Portfolio Summary Cards */
+    /* Portfolio Summary Cards - Black with Gold Border */
     .portfolio-summary {
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: #000000;
+        border: 1px solid #D4AF37;
         border-radius: 20px;
         padding: 2.5rem;
         margin: 1rem 0;
         color: #ffffff;
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
     }
     
     .portfolio-summary:hover {
         transform: translateY(-4px) scale(1.02);
-        box-shadow: 0 20px 40px rgba(99, 102, 241, 0.4);
-        border-color: rgba(255, 255, 255, 0.3);
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
+        box-shadow: 0 20px 40px rgba(212, 175, 55, 0.3);
+        border-color: #FFD700;
+        background: #111111;
     }
     
     /* Floating Elements Animation */
@@ -350,143 +349,144 @@ st.markdown("""
         50% { transform: translateY(-10px); }
     }
     
-    /* Metallic Button Style */
-    .metallic-button {
-        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-        color: white;
+    /* Gold Button Style */
+    .gold-button {
+        background: linear-gradient(135deg, #D4AF37 0%, #FFD700 100%);
+        color: #000000;
         border: none;
         border-radius: 8px;
         padding: 0.75rem 1.5rem;
         font-weight: 600;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: 0 4px 12px rgba(61, 82, 160, 0.3);
+        box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
         position: relative;
         overflow: hidden;
     }
     
-    .metallic-button::before {
+    .gold-button::before {
         content: '';
         position: absolute;
         top: 0;
         left: -100%;
         width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
         transition: left 0.5s;
     }
     
-    .metallic-button:hover::before {
+    .gold-button:hover::before {
         left: 100%;
     }
     
-    .metallic-button:hover {
+    .gold-button:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(61, 82, 160, 0.4);
+        box-shadow: 0 8px 24px rgba(212, 175, 55, 0.4);
     }
     
-    /* Sidebar Styling */
+    /* Sidebar Styling - White Background */
     .css-1d391kg {
-        background: linear-gradient(135deg, #EDE8F5 0%, #ADBBDA 100%);
-        border-right: 1px solid #8697C4;
+        background: #ffffff;
+        border-right: 2px solid #D4AF37;
     }
     
-    /* Tab Styling */
+    /* Tab Styling - Black and Gold */
     .stTabs [data-baseweb="tab-list"] {
         gap: 8px;
-        background: linear-gradient(135deg, #EDE8F5 0%, #ADBBDA 100%);
+        background: #000000;
         border-radius: 8px;
         padding: 4px;
+        border: 1px solid #D4AF37;
     }
     
     .stTabs [data-baseweb="tab"] {
-        background: #EDE8F5;
+        background: #000000;
         border-radius: 6px;
-        color: #3D52A0;
-        border: 1px solid #8697C4;
+        color: #ffffff;
+        border: 1px solid #D4AF37;
         transition: all 0.3s ease;
     }
     
     .stTabs [aria-selected="true"] {
-        background: #3D52A0;
-        color: white;
-        border-color: #7091E6;
+        background: #D4AF37;
+        color: #000000;
+        border-color: #FFD700;
     }
     
-    /* Input Styling */
+    /* Input Styling - White Background with Black Border */
     .stTextInput > div > div > input {
-        background: #EDE8F5;
-        border: 1px solid #8697C4;
+        background: #ffffff;
+        border: 2px solid #000000;
         border-radius: 8px;
-        color: #3D52A0;
+        color: #000000;
     }
     
     .stTextInput > div > div > input:focus {
-        border-color: #7091E6;
-        box-shadow: 0 0 0 2px rgba(112, 145, 230, 0.2);
+        border-color: #D4AF37;
+        box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
     }
     
-    /* Selectbox Styling */
+    /* Selectbox Styling - White Background with Black Border */
     .stSelectbox > div > div {
-        background: #EDE8F5;
-        border: 1px solid #8697C4;
+        background: #ffffff;
+        border: 2px solid #000000;
         border-radius: 8px;
-        color: #3D52A0;
+        color: #000000;
     }
     
-    /* Slider Styling */
+    /* Slider Styling - Gold */
     .stSlider > div > div > div > div {
-        background: #7091E6;
+        background: #D4AF37;
     }
     
     .stSlider > div > div > div > div > div {
-        background: #3D52A0;
+        background: #FFD700;
     }
     
     /* Success/Info/Error Messages */
     .stSuccess {
-        background: linear-gradient(135deg, #EDE8F5 0%, #ADBBDA 100%);
-        border: 1px solid #7091E6;
-        color: #3D52A0;
+        background: #000000;
+        border: 2px solid #D4AF37;
+        color: #ffffff;
     }
     
     .stInfo {
-        background: linear-gradient(135deg, #EDE8F5 0%, #ADBBDA 100%);
-        border: 1px solid #8697C4;
-        color: #3D52A0;
+        background: #000000;
+        border: 2px solid #D4AF37;
+        color: #ffffff;
     }
     
     .stError {
-        background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
-        border: 1px solid #f44336;
-        color: #c62828;
+        background: #000000;
+        border: 2px solid #ff4444;
+        color: #ffffff;
     }
     
-    /* Dataframe Styling */
+    /* Dataframe Styling - White Background */
     .dataframe {
-        background: #EDE8F5;
-        border: 1px solid #8697C4;
+        background: #ffffff;
+        border: 2px solid #000000;
         border-radius: 8px;
-        color: #3D52A0;
+        color: #000000;
     }
     
-    /* Chart Container */
+    /* Chart Container - White Background */
     .js-plotly-plot {
-        background: #EDE8F5;
+        background: #ffffff;
         border-radius: 8px;
         padding: 1rem;
-        border: 1px solid #8697C4;
+        border: 2px solid #000000;
     }
     
-    /* Enhanced Button Styling for Primary Buttons */
+    /* Enhanced Button Styling for Primary Buttons - Gold */
     .stButton > button[data-testid="baseButton-primary"] {
-        background: linear-gradient(135deg, #3D52A0 0%, #7091E6 100%);
-        color: white;
+        background: linear-gradient(135deg, #D4AF37 0%, #FFD700 100%);
+        color: #000000;
         border: none;
         border-radius: 8px;
         padding: 0.75rem 1.5rem;
         font-weight: 600;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: 0 4px 12px rgba(61, 82, 160, 0.3);
+        box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
         position: relative;
         overflow: hidden;
     }
@@ -498,7 +498,7 @@ st.markdown("""
         left: -100%;
         width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
         transition: left 0.5s;
     }
     
@@ -508,26 +508,26 @@ st.markdown("""
     
     .stButton > button[data-testid="baseButton-primary"]:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(61, 82, 160, 0.4);
+        box-shadow: 0 8px 24px rgba(212, 175, 55, 0.4);
     }
     
-    /* Enhanced Button Styling for Secondary Buttons */
+    /* Enhanced Button Styling for Secondary Buttons - Black */
     .stButton > button[data-testid="baseButton-secondary"] {
-        background: linear-gradient(135deg, #EDE8F5 0%, #ADBBDA 100%);
-        color: #3D52A0;
-        border: 1px solid #8697C4;
+        background: #000000;
+        color: #ffffff;
+        border: 2px solid #D4AF37;
         border-radius: 8px;
         padding: 0.75rem 1.5rem;
         font-weight: 600;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: 0 2px 8px rgba(61, 82, 160, 0.1);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
     
     .stButton > button[data-testid="baseButton-secondary"]:hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(61, 82, 160, 0.2);
-        border-color: #7091E6;
-        background: linear-gradient(135deg, #ADBBDA 0%, #8697C4 100%);
+        box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
+        border-color: #FFD700;
+        background: #111111;
     }
     
     /* Floating Animation for Cards */
@@ -540,20 +540,20 @@ st.markdown("""
         50% { transform: translateY(-10px); }
     }
     
-    /* Metallic Shimmer Effect */
-    .metallic-shimmer {
+    /* Gold Shimmer Effect */
+    .gold-shimmer {
         position: relative;
         overflow: hidden;
     }
     
-    .metallic-shimmer::after {
+    .gold-shimmer::after {
         content: '';
         position: absolute;
         top: 0;
         left: -100%;
         width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        background: linear-gradient(90deg, transparent, rgba(212,175,55,0.5), transparent);
         animation: shimmer 2s infinite;
     }
     
@@ -566,7 +566,7 @@ st.markdown("""
 
 # Main Header with Floating Elements
 st.markdown("""
-<div class="main-header metallic-shimmer">
+<div class="main-header gold-shimmer">
     <h1>🚀 Decentralized Portfolio Optimizer</h1>
     <p>AI-Powered Crypto Portfolio Management with Blockchain Integration</p>
     <div style="margin-top: 1rem;">
@@ -575,9 +575,9 @@ st.markdown("""
         <span class="ai-badge floating-element" style="animation-delay: 1s;">📊 Real-time Data</span>
     </div>
     <div style="position: absolute; top: 20px; right: 20px; opacity: 0.1;">
-        <div class="floating-element" style="width: 20px; height: 20px; background: #7091E6; border-radius: 50%; margin: 5px;"></div>
-        <div class="floating-element" style="width: 15px; height: 15px; background: #3D52A0; border-radius: 50%; margin: 5px; animation-delay: 0.3s;"></div>
-        <div class="floating-element" style="width: 25px; height: 25px; background: #8697C4; border-radius: 50%; margin: 5px; animation-delay: 0.7s;"></div>
+        <div class="floating-element" style="width: 20px; height: 20px; background: #D4AF37; border-radius: 50%; margin: 5px;"></div>
+        <div class="floating-element" style="width: 15px; height: 15px; background: #FFD700; border-radius: 50%; margin: 5px; animation-delay: 0.3s;"></div>
+        <div class="floating-element" style="width: 25px; height: 25px; background: #B8860B; border-radius: 50%; margin: 5px; animation-delay: 0.7s;"></div>
     </div>
 </div>
 """, unsafe_allow_html=True)
@@ -895,23 +895,23 @@ with tab1:
                                 title='Portfolio Allocation')
                     st.plotly_chart(fig, use_container_width=True)
             
-            # Token Cards - Shopify Style
+            # Token Cards - Black and White Style
             st.subheader("🪙 Portfolio Tokens")
             for asset in portfolio_data['portfolio'][:5]:  # Show top 5 tokens
                 st.markdown(f"""
                 <div class="token-card floating-element">
                     <div>
-                        <h4 style="margin: 0; color: #3D52A0;">{asset['symbol']}</h4>
-                        <p style="margin: 0; color: #8697C4;">{asset['name']}</p>
+                        <h4 style="margin: 0; color: #D4AF37;">{asset['symbol']}</h4>
+                        <p style="margin: 0; color: #ffffff;">{asset['name']}</p>
                     </div>
                     <div style="text-align: right;">
-                        <p style="margin: 0; color: #3D52A0; font-size: 1.2rem;">${asset['allocation_usd']:,.2f}</p>
-                        <p style="margin: 0; color: #8697C4;">{asset['allocation_percentage']:.1f}%</p>
+                        <p style="margin: 0; color: #D4AF37; font-size: 1.2rem;">${asset['allocation_usd']:,.2f}</p>
+                        <p style="margin: 0; color: #ffffff;">{asset['allocation_percentage']:.1f}%</p>
                     </div>
                 </div>
                 """, unsafe_allow_html=True)
             
-            # Protocol Insights - Shopify Style
+            # Protocol Insights - Black and White Style
             st.subheader("🔍 Protocol Insights")
             col1, col2 = st.columns(2)
             
@@ -919,11 +919,11 @@ with tab1:
                 st.markdown("""
                 <div class="protocol-card floating-element">
                     <h4>🏦 DeFi Protocols</h4>
-                    <p style="color: #3D52A0; font-size: 1.2rem;">$12,450.00</p>
-                    <p style="color: #7091E6;">+8.2% (24h)</p>
+                    <p style="color: #D4AF37; font-size: 1.2rem;">$12,450.00</p>
+                    <p style="color: #FFD700;">+8.2% (24h)</p>
                     <div style="margin-top: 1rem;">
-                        <span style="background: #3D52A0; color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem;">Uniswap V3</span>
-                        <span style="background: #3D52A0; color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem; margin-left: 0.5rem;">Aave V3</span>
+                        <span style="background: #D4AF37; color: #000000; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem;">Uniswap V3</span>
+                        <span style="background: #D4AF37; color: #000000; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem; margin-left: 0.5rem;">Aave V3</span>
                     </div>
                 </div>
                 """, unsafe_allow_html=True)
@@ -932,11 +932,11 @@ with tab1:
                 st.markdown("""
                 <div class="protocol-card floating-element">
                     <h4>⛓️ Multichain Assets</h4>
-                    <p style="color: #3D52A0; font-size: 1.2rem;">$8,750.00</p>
-                    <p style="color: #7091E6;">+5.1% (24h)</p>
+                    <p style="color: #D4AF37; font-size: 1.2rem;">$8,750.00</p>
+                    <p style="color: #FFD700;">+5.1% (24h)</p>
                     <div style="margin-top: 1rem;">
-                        <span style="background: #3D52A0; color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem;">Ethereum</span>
-                        <span style="background: #3D52A0; color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem; margin-left: 0.5rem;">Polygon</span>
+                        <span style="background: #D4AF37; color: #000000; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem;">Ethereum</span>
+                        <span style="background: #D4AF37; color: #000000; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem; margin-left: 0.5rem;">Polygon</span>
                     </div>
                 </div>
                 """, unsafe_allow_html=True)
@@ -1005,13 +1005,13 @@ with tab2:
                         st.markdown(f"""
                         <div class="trending-coin-card">
                             <div>
-                                <h4 style="margin: 0; color: #00d4ff; font-size: 1.1rem;">{coin_data['name']}</h4>
-                                <p style="margin: 0; color: #888; font-size: 0.9rem;">{coin_data['symbol'].upper()}</p>
-                                <p style="margin: 0; color: #00ff88; font-size: 0.8rem;">#{coin_data.get('market_cap_rank', 'N/A')}</p>
+                                <h4 style="margin: 0; color: #D4AF37; font-size: 1.1rem;">{coin_data['name']}</h4>
+                                <p style="margin: 0; color: #ffffff; font-size: 0.9rem;">{coin_data['symbol'].upper()}</p>
+                                <p style="margin: 0; color: #FFD700; font-size: 0.8rem;">#{coin_data.get('market_cap_rank', 'N/A')}</p>
                             </div>
                             <div style="text-align: right;">
-                                <p style="margin: 0; color: #00d4ff; font-size: 1.2rem;">${coin_data.get('price_btc', 0):.8f} BTC</p>
-                                <p style="margin: 0; color: #888; font-size: 0.8rem;">Score: {coin_data.get('score', 0)}</p>
+                                <p style="margin: 0; color: #D4AF37; font-size: 1.2rem;">${coin_data.get('price_btc', 0):.8f} BTC</p>
+                                <p style="margin: 0; color: #ffffff; font-size: 0.8rem;">Score: {coin_data.get('score', 0)}</p>
                             </div>
                         </div>
                         """, unsafe_allow_html=True)
@@ -1027,19 +1027,19 @@ with tab2:
                     if data:
                         st.markdown(f"""
                         <div class="sector-card">
-                            <h4 style="margin: 0 0 1rem 0; color: #00d4ff; font-size: 1.2rem;">{sector}</h4>
+                            <h4 style="margin: 0 0 1rem 0; color: #D4AF37; font-size: 1.2rem;">{sector}</h4>
                             <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
                                 <div class="metric-card">
-                                    <h5 style="margin: 0; color: #888; font-size: 0.8rem;">Market Cap</h5>
-                                    <p style="margin: 0; color: #00d4ff; font-size: 1.1rem;">${data.get('total_market_cap', 0):,.0f}</p>
+                                    <h5 style="margin: 0; color: #ffffff; font-size: 0.8rem;">Market Cap</h5>
+                                    <p style="margin: 0; color: #D4AF37; font-size: 1.1rem;">${data.get('total_market_cap', 0):,.0f}</p>
                                 </div>
                                 <div class="metric-card">
-                                    <h5 style="margin: 0; color: #888; font-size: 0.8rem;">Avg Change</h5>
-                                    <p style="margin: 0; color: {'#00ff88' if data.get('avg_24h_change', 0) > 0 else '#ff4444'}; font-size: 1.1rem;">{data.get('avg_24h_change', 0):.2f}%</p>
+                                    <h5 style="margin: 0; color: #ffffff; font-size: 0.8rem;">Avg Change</h5>
+                                    <p style="margin: 0; color: {'#FFD700' if data.get('avg_24h_change', 0) > 0 else '#ff4444'}; font-size: 1.1rem;">{data.get('avg_24h_change', 0):.2f}%</p>
                                 </div>
                                 <div class="metric-card">
-                                    <h5 style="margin: 0; color: #888; font-size: 0.8rem;">Assets</h5>
-                                    <p style="margin: 0; color: #00d4ff; font-size: 1.1rem;">{data.get('coin_count', 0)}</p>
+                                    <h5 style="margin: 0; color: #ffffff; font-size: 0.8rem;">Assets</h5>
+                                    <p style="margin: 0; color: #D4AF37; font-size: 1.1rem;">{data.get('coin_count', 0)}</p>
                                 </div>
                             </div>
                         </div>
@@ -1068,8 +1068,8 @@ with tab3:
                 st.markdown(f"""
                 <div class="recommendation-card">
                     <div style="display: flex; align-items: center; gap: 0.5rem;">
-                        <span style="color: #00d4ff; font-size: 1.2rem;">💡</span>
-                        <p style="margin: 0; color: white; font-size: 1rem;">{rec}</p>
+                        <span style="color: #D4AF37; font-size: 1.2rem;">💡</span>
+                        <p style="margin: 0; color: #ffffff; font-size: 1rem;">{rec}</p>
                     </div>
                 </div>
                 """, unsafe_allow_html=True)
@@ -1085,20 +1085,20 @@ with tab3:
             st.markdown('<div class="card-grid">', unsafe_allow_html=True)
             
             # Overall Mood Card
-            mood_color = '#00ff88' if sentiment.get('market_mood') == 'bullish' else '#ff4444' if sentiment.get('market_mood') == 'bearish' else '#ffaa00'
+            mood_color = '#FFD700' if sentiment.get('market_mood') == 'bullish' else '#ff4444' if sentiment.get('market_mood') == 'bearish' else '#D4AF37'
             st.markdown(f"""
             <div class="metric-card">
-                <h5 style="margin: 0; color: #888; font-size: 0.8rem;">Overall Mood</h5>
+                <h5 style="margin: 0; color: #ffffff; font-size: 0.8rem;">Overall Mood</h5>
                 <p style="margin: 0; color: {mood_color}; font-size: 1.2rem; font-weight: bold;">{sentiment.get('market_mood', 'Unknown')}</p>
             </div>
             """, unsafe_allow_html=True)
             
             # Sentiment Score Card
             score = sentiment.get('sentiment_score', 0)
-            score_color = '#00ff88' if score > 0.5 else '#ff4444' if score < -0.5 else '#ffaa00'
+            score_color = '#FFD700' if score > 0.5 else '#ff4444' if score < -0.5 else '#D4AF37'
             st.markdown(f"""
             <div class="metric-card">
-                <h5 style="margin: 0; color: #888; font-size: 0.8rem;">Sentiment Score</h5>
+                <h5 style="margin: 0; color: #ffffff; font-size: 0.8rem;">Sentiment Score</h5>
                 <p style="margin: 0; color: {score_color}; font-size: 1.2rem; font-weight: bold;">{score:.2f}</p>
             </div>
             """, unsafe_allow_html=True)
@@ -1106,15 +1106,15 @@ with tab3:
             # Positive Coins Card
             st.markdown(f"""
             <div class="metric-card">
-                <h5 style="margin: 0; color: #888; font-size: 0.8rem;">Positive Coins</h5>
-                <p style="margin: 0; color: #00ff88; font-size: 1.2rem; font-weight: bold;">{sentiment.get('positive_coins', 0)}</p>
+                <h5 style="margin: 0; color: #ffffff; font-size: 0.8rem;">Positive Coins</h5>
+                <p style="margin: 0; color: #FFD700; font-size: 1.2rem; font-weight: bold;">{sentiment.get('positive_coins', 0)}</p>
             </div>
             """, unsafe_allow_html=True)
             
             # Negative Coins Card
             st.markdown(f"""
             <div class="metric-card">
-                <h5 style="margin: 0; color: #888; font-size: 0.8rem;">Negative Coins</h5>
+                <h5 style="margin: 0; color: #ffffff; font-size: 0.8rem;">Negative Coins</h5>
                 <p style="margin: 0; color: #ff4444; font-size: 1.2rem; font-weight: bold;">{sentiment.get('negative_coins', 0)}</p>
             </div>
             """, unsafe_allow_html=True)
@@ -1129,22 +1129,22 @@ with tab3:
             if predictions:
                 st.markdown('<div class="card-grid">', unsafe_allow_html=True)
                 for prediction in predictions:
-                    confidence_color = '#00ff88' if prediction['confidence'] > 60 else '#ffaa00' if prediction['confidence'] > 40 else '#ff4444'
-                    trend_color = '#00ff88' if prediction['trend'] == 'bullish' else '#ff4444'
+                    confidence_color = '#FFD700' if prediction['confidence'] > 60 else '#D4AF37' if prediction['confidence'] > 40 else '#ff4444'
+                    trend_color = '#FFD700' if prediction['trend'] == 'bullish' else '#ff4444'
                     
                     st.markdown(f"""
                     <div class="prediction-card">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                            <h4 style="margin: 0; color: #00d4ff; font-size: 1.2rem;">{prediction['asset']}</h4>
+                            <h4 style="margin: 0; color: #D4AF37; font-size: 1.2rem;">{prediction['asset']}</h4>
                             <span style="color: {trend_color}; font-size: 1.1rem;">{prediction['trend'].upper()}</span>
                         </div>
                         <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
                             <div class="metric-card">
-                                <h5 style="margin: 0; color: #888; font-size: 0.8rem;">Predicted Price</h5>
-                                <p style="margin: 0; color: #00d4ff; font-size: 1.1rem;">${prediction['predicted_price']:,.2f}</p>
+                                <h5 style="margin: 0; color: #ffffff; font-size: 0.8rem;">Predicted Price</h5>
+                                <p style="margin: 0; color: #D4AF37; font-size: 1.1rem;">${prediction['predicted_price']:,.2f}</p>
                             </div>
                             <div class="metric-card">
-                                <h5 style="margin: 0; color: #888; font-size: 0.8rem;">Confidence</h5>
+                                <h5 style="margin: 0; color: #ffffff; font-size: 0.8rem;">Confidence</h5>
                                 <p style="margin: 0; color: {confidence_color}; font-size: 1.1rem;">{prediction['confidence']}%</p>
                             </div>
                         </div>
@@ -1272,11 +1272,11 @@ with tab5:
 # Footer
 st.markdown("---")
 st.markdown("""
-<div style="text-align: center; color: #888; padding: 2rem;">
-    <p>🚀 Powered by AI, Coingecko MCP & Blockchain Technology</p>
-    <p>Built with Streamlit, CoinGecko API, and Ethereum Smart Contracts by Rancho</p>
+<div style="text-align: center; color: #000000; padding: 2rem; background: #ffffff; border: 2px solid #D4AF37; border-radius: 16px; margin: 2rem 0;">
+    <p style="color: #000000; font-weight: bold;">🚀 Powered by AI, Coingecko MCP & Blockchain Technology</p>
+    <p style="color: #000000;">Built with Streamlit, CoinGecko API, and Ethereum Smart Contracts by Rancho</p>
     <p>
-        <a href="https://x.com/Rancho_GHA" target="_blank" style="text-decoration: none; color: #1DA1F2;">
+        <a href="https://x.com/Rancho_GHA" target="_blank" style="text-decoration: none; color: #D4AF37;">
             <span style="font-size: 24px;">𝕏</span> Follow @Rancho_GHA
         </a>
     </p>
