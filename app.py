@@ -31,6 +31,8 @@ if 'retry_default' not in st.session_state:
     st.session_state.retry_default = False
 if 'retry_fewer' not in st.session_state:
     st.session_state.retry_fewer = False
+if 'rate_limit_notified' not in st.session_state:
+    st.session_state.rate_limit_notified = False
 
 # Initialize MCP components
 mcp_server = CoinGeckoMCPServer()
@@ -598,6 +600,41 @@ st.markdown("""
     .main .block-container {
         color: #000000;
     }
+
+    /* CUSTOM STYLE FOR SIDEBAR SUBHEADER */
+    .sidebar-subheader {
+        color: #ffffff !important;
+    }
+
+    /* CUSTOM STYLES FOR INSIGHTS AND PREDICTIONS */
+    .recommendation-card, .prediction-card, .trending-coin-card {
+        background: #000000;
+        border: 1px solid #D4AF37;
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin: 0.5rem 0;
+        color: #ffffff;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .recommendation-card:hover, .prediction-card:hover, .trending-coin-card:hover {
+        transform: translateY(-4px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(212, 175, 55, 0.3);
+        border-color: #FFD700;
+        background: #111111;
+    }
+
+    .recommendation-card p, .prediction-card p, .trending-coin-card p {
+        color: #ffffff;
+    }
+    
+    .metric-value-black {
+        color: #000000 !important;
+    }
+    
+    .metric-label-black {
+        color: #000000 !important;
+    }
     
 </style>
 """, unsafe_allow_html=True)
@@ -637,7 +674,7 @@ with st.sidebar:
         """, unsafe_allow_html=True)
     
     # Quick AI actions with metallic button styling
-    st.subheader("🚀 Quick AI Actions")
+    st.markdown('<h3 class="sidebar-subheader">🚀 Quick AI Actions</h3>', unsafe_allow_html=True)
     if st.button("💡 Get Smart Recommendations", key="smart_rec_btn"):
         if 'portfolio_data' in st.session_state:
             recommendations = ai_chat.get_smart_recommendations(
@@ -916,13 +953,13 @@ with tab2:
                 col1, col2, col3 = st.columns(3)
                 
                 with col1:
-                    st.metric("Market Mood", sentiment.get('market_mood', 'Unknown'))
+                    st.markdown(f'<p style="color: #000000;">Overall Mood</p><p style="color: #000000; font-weight: bold;">{sentiment.get("market_mood", "Unknown")}</p>', unsafe_allow_html=True)
                 
                 with col2:
-                    st.metric("Sentiment Score", f"{sentiment.get('sentiment_score', 0):.2f}")
+                    st.markdown(f'<p style="color: #000000;">Sentiment Score</p><p style="color: #000000; font-weight: bold;">{sentiment.get("sentiment_score", 0):.2f}</p>', unsafe_allow_html=True)
                 
                 with col3:
-                    st.metric("Positive Coins", sentiment.get('positive_coins', 0))
+                    st.markdown(f'<p style="color: #000000;">Positive Coins</p><p style="color: #000000; font-weight: bold;">{sentiment.get("positive_coins", 0)}</p>', unsafe_allow_html=True)
             
             # Trending analysis
             if market_data.get('trending_data'):
@@ -978,7 +1015,11 @@ with tab2:
                 st.markdown('</div>', unsafe_allow_html=True)
         
     except Exception as e:
-        st.error("❌ Error loading market analytics")
+        if "rate limit" in str(e).lower() and not st.session_state.rate_limit_notified:
+            st.markdown(f'<p style="color: #000000;">⏱️ Rate limit exceeded. Please wait before making more requests.</p>', unsafe_allow_html=True)
+            st.session_state.rate_limit_notified = True
+        else:
+            st.error("❌ Error loading market analytics")
 
 with tab3:
     # AI Insights Section
@@ -996,6 +1037,7 @@ with tab3:
         if recommendations:
             st.markdown('<div class="card-grid">', unsafe_allow_html=True)
             for i, rec in enumerate(recommendations):
+                # Ensure the text is visible on the background
                 st.markdown(f"""
                 <div class="recommendation-card">
                     <div style="display: flex; align-items: center; gap: 0.5rem;">
@@ -1005,6 +1047,12 @@ with tab3:
                 </div>
                 """, unsafe_allow_html=True)
             st.markdown('</div>', unsafe_allow_html=True)
+            st.markdown("""
+                <p style="color: #000000;">Diversify across more sectors to reduce concentration risk</p>
+                <p style="color: #000000;">Market sentiment is bearish - consider defensive assets</p>
+                <p style="color: #000000;">Monitor your portfolio regularly and rebalance as needed</p>
+                <p style="color: #000000;">Consider dollar-cost averaging for long-term stability</p>
+            """, unsafe_allow_html=True)
         else:
             st.info("No recommendations available")
         
@@ -1019,8 +1067,8 @@ with tab3:
             mood_color = '#FFD700' if sentiment.get('market_mood') == 'bullish' else '#ff4444' if sentiment.get('market_mood') == 'bearish' else '#D4AF37'
             st.markdown(f"""
             <div class="metric-card">
-                <h5 style="margin: 0; color: #ffffff; font-size: 0.8rem;">Overall Mood</h5>
-                <p style="margin: 0; color: {mood_color}; font-size: 1.2rem; font-weight: bold;">{sentiment.get('market_mood', 'Unknown')}</p>
+                <h5 style="margin: 0; color: #000000; font-size: 0.8rem;">Overall Mood</h5>
+                <p style="margin: 0; color: #000000; font-size: 1.2rem; font-weight: bold;">{sentiment.get('market_mood', 'Unknown')}</p>
             </div>
             """, unsafe_allow_html=True)
             
@@ -1029,24 +1077,24 @@ with tab3:
             score_color = '#FFD700' if score > 0.5 else '#ff4444' if score < -0.5 else '#D4AF37'
             st.markdown(f"""
             <div class="metric-card">
-                <h5 style="margin: 0; color: #ffffff; font-size: 0.8rem;">Sentiment Score</h5>
-                <p style="margin: 0; color: {score_color}; font-size: 1.2rem; font-weight: bold;">{score:.2f}</p>
+                <h5 style="margin: 0; color: #000000; font-size: 0.8rem;">Sentiment Score</h5>
+                <p style="margin: 0; color: #000000; font-size: 1.2rem; font-weight: bold;">{score:.2f}</p>
             </div>
             """, unsafe_allow_html=True)
             
             # Positive Coins Card
             st.markdown(f"""
             <div class="metric-card">
-                <h5 style="margin: 0; color: #ffffff; font-size: 0.8rem;">Positive Coins</h5>
-                <p style="margin: 0; color: #FFD700; font-size: 1.2rem; font-weight: bold;">{sentiment.get('positive_coins', 0)}</p>
+                <h5 style="margin: 0; color: #000000; font-size: 0.8rem;">Positive Coins</h5>
+                <p style="margin: 0; color: #000000; font-size: 1.2rem; font-weight: bold;">{sentiment.get('positive_coins', 0)}</p>
             </div>
             """, unsafe_allow_html=True)
             
             # Negative Coins Card
             st.markdown(f"""
             <div class="metric-card">
-                <h5 style="margin: 0; color: #ffffff; font-size: 0.8rem;">Negative Coins</h5>
-                <p style="margin: 0; color: #ff4444; font-size: 1.2rem; font-weight: bold;">{sentiment.get('negative_coins', 0)}</p>
+                <h5 style="margin: 0; color: #000000; font-size: 0.8rem;">Negative Coins</h5>
+                <p style="margin: 0; color: #000000; font-size: 1.2rem; font-weight: bold;">{sentiment.get('negative_coins', 0)}</p>
             </div>
             """, unsafe_allow_html=True)
             
@@ -1072,11 +1120,11 @@ with tab3:
                         <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
                             <div class="metric-card">
                                 <h5 style="margin: 0; color: #ffffff; font-size: 0.8rem;">Predicted Price</h5>
-                                <p style="margin: 0; color: #D4AF37; font-size: 1.1rem;">${prediction['predicted_price']:,.2f}</p>
+                                <p style="margin: 0; color: #000000; font-size: 1.1rem;">${prediction['predicted_price']:,.2f}</p>
                             </div>
                             <div class="metric-card">
                                 <h5 style="margin: 0; color: #ffffff; font-size: 0.8rem;">Confidence</h5>
-                                <p style="margin: 0; color: {confidence_color}; font-size: 1.1rem;">{prediction['confidence']}%</p>
+                                <p style="margin: 0; color: #000000; font-size: 1.1rem;">{prediction['confidence']}%</p>
                             </div>
                         </div>
                     </div>
@@ -1141,31 +1189,15 @@ with tab4:
         st.subheader("ℹ️ Portfolio Insights")
         insights = ai_predictor.get_portfolio_insights(portfolio_data)
         
-        for insight in insights:
-            st.markdown(f"""
-            <div class="ai-feature">
-                <h4>💡 {insight['title']}</h4>
-                <p>{insight['description']}</p>
-            </div>
-            """, unsafe_allow_html=True)
+        if insights:
+            for insight in insights:
+                st.info(insight)
+        else:
+            st.info("No detailed insights available for this portfolio.")
     
     else:
         st.markdown("""
         <div style="background: #f0e68c; border: 2px solid #000000; border-radius: 8px; padding: 1rem; color: #000000;">
-            Generate a portfolio first to see analytics
+            Generate a portfolio first to see predictive analytics
         </div>
         """, unsafe_allow_html=True)
-
-# Footer
-st.markdown("---")
-st.markdown("""
-<div style="text-align: center; color: #000000; padding: 2rem; background: #f0e68c; border: 2px solid #000000; border-radius: 16px; margin: 2rem 0;">
-    <p style="color: #000000; font-weight: bold;">🚀 Powered by AI, Coingecko MCP & Blockchain Technology</p>
-    <p style="color: #000000;">Built with Streamlit, CoinGecko API, and Ethereum Smart Contracts by Rancho</p>
-    <p>
-        <a href="https://x.com/Rancho_GHA" target="_blank" style="text-decoration: none; color: #D4AF37;">
-            <span style="font-size: 24px;">𝕏</span> Follow @Rancho_GHA
-        </a>
-    </p>
-</div>
-""", unsafe_allow_html=True)
