@@ -26,7 +26,7 @@ from typing import Dict, List, Optional, Any
 # Load environment variables
 load_dotenv()
 
-# Initialize session state for retry functionality
+# Initialize session state for retry functionality and notifications
 if 'retry_default' not in st.session_state:
     st.session_state.retry_default = False
 if 'retry_fewer' not in st.session_state:
@@ -125,45 +125,29 @@ st.markdown("""
         100% { transform: translateX(100%); }
     }
     
-    /* Token Cards - Black with Gold Border */
-    .token-card {
+    /* Card Styles for Tokens, Protocols, Recommendations, etc. */
+    .token-card, .protocol-card, .ai-feature, .recommendation-card, .trending-coin-card, .prediction-card {
         background: #000000;
         border: 1px solid #D4AF37;
         border-radius: 16px;
         padding: 1.5rem;
         margin: 0.5rem 0;
+        color: #ffffff;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .token-card:hover, .protocol-card:hover, .ai-feature:hover, .recommendation-card:hover, .trending-coin-card:hover, .prediction-card:hover {
+        transform: translateY(-4px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(212, 175, 55, 0.3);
+        border-color: #FFD700;
+        background: #111111;
+    }
+
+    .token-card {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        color: #ffffff;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    }
-    
-    .token-card:hover {
-        transform: translateY(-4px) scale(1.02);
-        box-shadow: 0 20px 40px rgba(212, 175, 55, 0.3);
-        border-color: #FFD700;
-        background: #111111;
-    }
-    
-    /* Protocol Cards - Black with Gold Accent */
-    .protocol-card {
-        background: #000000;
-        border: 1px solid #D4AF37;
-        border-radius: 16px;
-        padding: 2rem;
-        margin: 1rem 0;
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        color: #ffffff;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    }
-    
-    .protocol-card:hover {
-        transform: translateY(-4px) scale(1.02);
-        box-shadow: 0 20px 40px rgba(212, 175, 55, 0.3);
-        border-color: #FFD700;
-        background: #111111;
     }
     
     /* AI Badge - Gold */
@@ -185,56 +169,6 @@ st.markdown("""
         50% { transform: scale(1.05); }
     }
     
-    /* Status Indicators */
-    .status-indicator {
-        display: inline-block;
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-        margin-right: 8px;
-        animation: glow 2s infinite;
-    }
-    
-    .status-online { 
-        background: #D4AF37;
-        box-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
-    }
-    
-    .status-offline { 
-        background: #ff4444;
-        box-shadow: 0 0 15px rgba(255, 68, 68, 0.6);
-    }
-    
-    .status-warning { 
-        background: #ffaa00;
-        box-shadow: 0 0 15px rgba(255, 170, 0, 0.6);
-    }
-    
-    @keyframes glow {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.7; }
-    }
-    
-    /* AI Feature Cards - Black with Gold Border */
-    .ai-feature {
-        background: #000000;
-        border: 1px solid #D4AF37;
-        border-radius: 16px;
-        color: #ffffff;
-        padding: 1.5rem;
-        margin: 0.5rem 0;
-        border-left: 4px solid #D4AF37;
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    }
-    
-    .ai-feature:hover {
-        transform: translateY(-4px) scale(1.02);
-        box-shadow: 0 20px 40px rgba(212, 175, 55, 0.3);
-        border-color: #FFD700;
-        background: #111111;
-    }
-    
     /* Chat Container - Black with Gold Border */
     .chat-container {
         background: #000000;
@@ -253,24 +187,6 @@ st.markdown("""
         background: #111111;
     }
     
-    /* Notification Alerts - Black with Gold Border */
-    .notification-alert {
-        background: #000000;
-        border: 1px solid #D4AF37;
-        border-radius: 12px;
-        color: #ffffff;
-        padding: 1rem;
-        margin: 0.5rem 0;
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        animation: slideIn 0.3s ease-out;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    }
-    
-    @keyframes slideIn {
-        from { transform: translateX(-100%); opacity: 0; }
-        to { transform: translateX(0); opacity: 1; }
-    }
-    
     /* Financial Metrics Cards - Khaki with Black Border */
     .metric-card {
         background: #f0e68c;
@@ -285,65 +201,11 @@ st.markdown("""
         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
     }
     
-    .metric-card::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 0;
-        height: 2px;
-        background: #D4AF37;
-        transition: width 0.4s ease;
-    }
-    
-    .metric-card:hover::after {
-        width: 80%;
-    }
-    
     .metric-card:hover {
         transform: translateY(-4px) scale(1.02);
         box-shadow: 0 20px 40px rgba(212, 175, 55, 0.3);
         border-color: #D4AF37;
         background: #f5e6a0;
-    }
-    
-    /* Risk Analysis Cards - Black with Gold Border */
-    .risk-card {
-        background: #000000;
-        border: 1px solid #D4AF37;
-        border-radius: 16px;
-        padding: 2rem;
-        margin: 1rem 0;
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        color: #ffffff;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    }
-    
-    .risk-card:hover {
-        transform: translateY(-4px) scale(1.02);
-        box-shadow: 0 20px 40px rgba(212, 175, 55, 0.3);
-        border-color: #FFD700;
-        background: #111111;
-    }
-    
-    /* Portfolio Summary Cards - Black with Gold Border */
-    .portfolio-summary {
-        background: #000000;
-        border: 1px solid #D4AF37;
-        border-radius: 20px;
-        padding: 2.5rem;
-        margin: 1rem 0;
-        color: #ffffff;
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    }
-    
-    .portfolio-summary:hover {
-        transform: translateY(-4px) scale(1.02);
-        box-shadow: 0 20px 40px rgba(212, 175, 55, 0.3);
-        border-color: #FFD700;
-        background: #111111;
     }
     
     /* Floating Elements Animation */
@@ -354,40 +216,6 @@ st.markdown("""
     @keyframes float {
         0%, 100% { transform: translateY(0px); }
         50% { transform: translateY(-10px); }
-    }
-    
-    /* Gold Button Style */
-    .gold-button {
-        background: linear-gradient(135deg, #D4AF37 0%, #FFD700 100%);
-        color: #000000;
-        border: none;
-        border-radius: 8px;
-        padding: 0.75rem 1.5rem;
-        font-weight: 600;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .gold-button::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-        transition: left 0.5s;
-    }
-    
-    .gold-button:hover::before {
-        left: 100%;
-    }
-    
-    .gold-button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(212, 175, 55, 0.4);
     }
     
     /* Sidebar Styling - White Background */
@@ -420,7 +248,7 @@ st.markdown("""
     }
     
     /* Input Styling - Khaki Background with Black Border */
-    .stTextInput > div > div > input {
+    .stTextInput > div > div > input, .stSelectbox > div > div {
         background: #f0e68c;
         border: 2px solid #000000;
         border-radius: 8px;
@@ -432,27 +260,8 @@ st.markdown("""
         box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
     }
     
-    /* Selectbox Styling - Khaki Background with Black Border */
-    .stSelectbox > div > div {
-        background: #f0e68c;
-        border: 2px solid #000000;
-        border-radius: 8px;
-        color: #000000;
-    }
-    
     /* Placeholder text styling */
     .stTextInput > div > div > input::placeholder {
-        color: #000000 !important;
-    }
-    
-    /* Sidebar specific styling */
-    .css-1d391kg .stTextInput > div > div > input {
-        background: #f0e68c;
-        border: 2px solid #000000;
-        color: #000000;
-    }
-    
-    .css-1d391kg .stTextInput > div > div > input::placeholder {
         color: #000000 !important;
     }
     
@@ -465,31 +274,15 @@ st.markdown("""
         background: #FFD700;
     }
     
-    /* Success/Info/Error Messages */
-    .stSuccess {
+    /* Success/Info/Error/Warning Messages */
+    .stSuccess, .stInfo, .stError, .stWarning {
         background: #f0e68c;
         border: 2px solid #000000;
         color: #000000;
-    }
-    
-    .stInfo {
-        background: #f0e68c;
-        border: 2px solid #000000;
-        color: #000000;
-    }
-    
-    .stError {
-        background: #f0e68c;
-        border: 2px solid #ff4444;
-        color: #000000;
-    }
-    
-    /* Dataframe Styling - Khaki Background */
-    .dataframe {
-        background: #f0e68c;
-        border: 2px solid #000000;
         border-radius: 8px;
-        color: #000000;
+    }
+    .stError, .stWarning {
+        border-color: #ff4444;
     }
     
     /* Chart Container - Khaki Background */
@@ -500,52 +293,29 @@ st.markdown("""
         border: 2px solid #000000;
     }
     
-    /* Enhanced Button Styling for Primary Buttons - Gold */
+    /* Button Styling */
+    .stButton > button {
+        border-radius: 8px;
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
     .stButton > button[data-testid="baseButton-primary"] {
         background: linear-gradient(135deg, #D4AF37 0%, #FFD700 100%);
         color: #000000;
         border: none;
-        border-radius: 8px;
-        padding: 0.75rem 1.5rem;
-        font-weight: 600;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
-        position: relative;
-        overflow: hidden;
     }
-    
-    .stButton > button[data-testid="baseButton-primary"]::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-        transition: left 0.5s;
-    }
-    
-    .stButton > button[data-testid="baseButton-primary"]:hover::before {
-        left: 100%;
-    }
-    
     .stButton > button[data-testid="baseButton-primary"]:hover {
         transform: translateY(-2px);
         box-shadow: 0 8px 24px rgba(212, 175, 55, 0.4);
     }
-    
-    /* Enhanced Button Styling for Secondary Buttons - Black */
     .stButton > button[data-testid="baseButton-secondary"] {
         background: #000000;
         color: #ffffff;
         border: 2px solid #D4AF37;
-        border-radius: 8px;
-        padding: 0.75rem 1.5rem;
-        font-weight: 600;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
-    
     .stButton > button[data-testid="baseButton-secondary"]:hover {
         transform: translateY(-2px);
         box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
@@ -553,87 +323,9 @@ st.markdown("""
         background: #111111;
     }
     
-    /* Floating Animation for Cards */
-    .floating-element {
-        animation: float 3s ease-in-out infinite;
-    }
-    
-    @keyframes float {
-        0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-10px); }
-    }
-    
-    /* Gold Shimmer Effect */
-    .gold-shimmer {
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .gold-shimmer::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(212,175,55,0.5), transparent);
-        animation: shimmer 2s infinite;
-    }
-    
-    @keyframes shimmer {
-        0% { left: -100%; }
-        100% { left: 100%; }
-    }
-    
-    /* Notification settings and other sections styling */
-    .stCheckbox > div > div {
-        background: #f0e68c;
-        border: 2px solid #000000;
-        color: #000000;
-    }
-    
-    .stCheckbox > div > div > label {
-        color: #000000 !important;
-    }
-    
     /* Ensure all text in main content area is black by default */
     .main .block-container {
         color: #000000;
-    }
-
-    /* CUSTOM STYLE FOR SIDEBAR SUBHEADER */
-    .sidebar-subheader {
-        color: #ffffff !important;
-    }
-
-    /* CUSTOM STYLES FOR INSIGHTS AND PREDICTIONS */
-    .recommendation-card, .prediction-card, .trending-coin-card {
-        background: #000000;
-        border: 1px solid #D4AF37;
-        border-radius: 16px;
-        padding: 1.5rem;
-        margin: 0.5rem 0;
-        color: #ffffff;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .recommendation-card:hover, .prediction-card:hover, .trending-coin-card:hover {
-        transform: translateY(-4px) scale(1.02);
-        box-shadow: 0 20px 40px rgba(212, 175, 55, 0.3);
-        border-color: #FFD700;
-        background: #111111;
-    }
-
-    .recommendation-card p, .prediction-card p, .trending-coin-card p {
-        color: #ffffff;
-    }
-    
-    .metric-value-black {
-        color: #000000 !important;
-    }
-    
-    .metric-label-black {
-        color: #000000 !important;
     }
     
 </style>
@@ -648,11 +340,6 @@ st.markdown("""
         <span class="ai-badge floating-element">🤖 AI Enhanced</span>
         <span class="ai-badge floating-element" style="animation-delay: 0.5s;">🔗 Blockchain Ready</span>
         <span class="ai-badge floating-element" style="animation-delay: 1s;">📊 Real-time Data</span>
-    </div>
-    <div style="position: absolute; top: 20px; right: 20px; opacity: 0.1;">
-        <div class="floating-element" style="width: 20px; height: 20px; background: #D4AF37; border-radius: 50%; margin: 5px;"></div>
-        <div class="floating-element" style="width: 15px; height: 15px; background: #FFD700; border-radius: 50%; margin: 5px; animation-delay: 0.3s;"></div>
-        <div class="floating-element" style="width: 25px; height: 25px; background: #B8860B; border-radius: 50%; margin: 5px; animation-delay: 0.7s;"></div>
     </div>
 </div>
 """, unsafe_allow_html=True)
@@ -674,7 +361,7 @@ with st.sidebar:
         """, unsafe_allow_html=True)
     
     # Quick AI actions with metallic button styling
-    st.markdown('<h3 class="sidebar-subheader">🚀 Quick AI Actions</h3>', unsafe_allow_html=True)
+    st.header("🚀 Quick AI Actions")
     if st.button("💡 Get Smart Recommendations", key="smart_rec_btn"):
         if 'portfolio_data' in st.session_state:
             recommendations = ai_chat.get_smart_recommendations(
@@ -739,23 +426,18 @@ with st.sidebar:
     
     # Handle retry states
     if st.session_state.retry_default:
-        max_assets = 5  # Use fewer assets for retry
-        selected_sectors = ["DeFi", "Layer 1"]  # Use default sectors
+        max_assets = 5
+        selected_sectors = ["DeFi", "Layer 1"]
         st.session_state.retry_default = False
     
     if st.session_state.retry_fewer:
-        max_assets = 3  # Use even fewer assets
+        max_assets = 3
         st.session_state.retry_fewer = False
     
     # Diagnostic Section
     st.header("🔧 Diagnostics")
     if st.button("🔍 Run Connection Test"):
         with st.spinner("Testing connections..."):
-            # Test API keys
-            demo_key = os.getenv("COINGECKO_DEMO_API_KEY")
-            pro_key = os.getenv("COINGECKO_PRO_API_KEY")
-            
-            # Test server connection
             try:
                 status = mcp_optimizer.mcp_server.get_server_status()
                 if status and status.get('gecko_says'):
@@ -763,9 +445,8 @@ with st.sidebar:
                 else:
                     st.error("❌ Connection failed")
             except Exception as e:
-                st.error("❌ Connection failed")
+                st.error(f"❌ Connection failed: {e}")
             
-            # Test market data
             try:
                 market_data = mcp_optimizer.mcp_server.get_coins_markets_mcp(per_page=5)
                 if market_data:
@@ -773,7 +454,7 @@ with st.sidebar:
                 else:
                     st.error("❌ No data available")
             except Exception as e:
-                st.error("❌ Data error")
+                st.error(f"❌ Data error: {e}")
 
 # Main application tabs
 tab1, tab2, tab3, tab4 = st.tabs([
@@ -784,95 +465,67 @@ tab1, tab2, tab3, tab4 = st.tabs([
 ])
 
 with tab1:
-    # Portfolio Generation Section
     st.subheader("🎯 Portfolio Generation")
     
-    # Generate portfolio using AI-enhanced data with metallic styling
     if st.button("🚀 Generate AI-Optimized Portfolio", type="primary", key="generate_portfolio_btn"):
         with st.spinner("🔄 Generating portfolio with AI-enhanced data..."):
             try:
-                # Get AI-enhanced portfolio data
                 portfolio_data = mcp_optimizer.ai_optimize_portfolio(
                     risk_profile=risk_profile,
                     investment_amount=investment_amount,
                     preferred_sectors=selected_sectors,
                     max_assets=max_assets
                 )
-                
                 if portfolio_data and portfolio_data.get('portfolio'):
                     st.session_state.portfolio_data = portfolio_data
                     st.session_state.market_data = mcp_optimizer.get_enhanced_market_data()
                 else:
                     st.error("❌ Failed to generate portfolio. Please try again.")
-                    
             except Exception as e:
-                st.error("❌ Error generating portfolio")
+                if "rate limit" in str(e).lower() and not st.session_state.get('rate_limit_notified', False):
+                    st.warning("⏱️ Rate limit exceeded. Please wait before making more requests.")
+                    st.session_state.rate_limit_notified = True
+                elif "rate limit" not in str(e).lower():
+                    st.error(f"❌ Error generating portfolio: {e}")
                 st.stop()
-    
-    # Retry button if portfolio generation failed
+
     if 'portfolio_data' not in st.session_state or not st.session_state.portfolio_data:
-        st.markdown("""
-        <div style="background: #f0e68c; border: 2px solid #000000; border-radius: 8px; padding: 1rem; color: #000000;">
-            ⚠️ No portfolio data available. Click 'Generate AI-Optimized Portfolio' to create one.
-        </div>
-        """, unsafe_allow_html=True)
-        
-        # Quick retry with different settings
+        st.info("⚠️ No portfolio data available. Click 'Generate AI-Optimized Portfolio' to create one.")
         col1, col2 = st.columns(2)
         with col1:
             if st.button("🔄 Retry with Default Settings", type="secondary", key="retry_default_btn"):
                 st.session_state.retry_default = True
                 st.rerun()
-        
         with col2:
             if st.button("🔧 Try with Fewer Assets", type="secondary", key="retry_fewer_btn"):
                 st.session_state.retry_fewer = True
                 st.rerun()
     
-    # Portfolio Summary Section
     if 'portfolio_data' in st.session_state and st.session_state.portfolio_data:
         portfolio_data = st.session_state.portfolio_data
-        
         st.subheader("📊 Portfolio Summary")
-        
-        # Display portfolio metrics
         col1, col2, col3, col4 = st.columns(4)
-        
         with col1:
             st.metric("Total Value", f"${portfolio_data.get('total_value', 0):,.2f}")
-        
         with col2:
             st.metric("Number of Assets", len(portfolio_data.get('portfolio', [])))
-        
         with col3:
             st.metric("Risk Profile", risk_profile.upper())
-        
         with col4:
             st.metric("Sectors", len(selected_sectors))
         
-        # AI-enhanced Portfolio Visualizations
         st.subheader("📈 AI-Enhanced Portfolio Visualizations")
-        
-        # Create AI-enhanced portfolio allocation chart
         if portfolio_data.get('portfolio'):
             portfolio_df = pd.DataFrame(portfolio_data['portfolio'])
-            
-            # AI-enhanced pie chart
             try:
                 market_sentiment = st.session_state.get('market_data', {}).get('ai_sentiment', {}).get('market_mood', 'neutral')
                 ai_chart = ai_visualizations.create_ai_enhanced_portfolio_chart(portfolio_data, market_sentiment)
                 st.plotly_chart(ai_chart, use_container_width=True)
             except Exception as e:
-                st.error("❌ Error creating portfolio chart")
-                # Fallback to simple chart
-                if portfolio_df.shape[0] > 0:
-                    fig = px.pie(portfolio_df, values='allocation_percentage', names='symbol', 
-                                title='Portfolio Allocation')
-                    st.plotly_chart(fig, use_container_width=True)
+                st.error(f"❌ Error creating portfolio chart: {e}")
             
-            # Token Cards - Black and White Style
             st.subheader("🪙 Portfolio Tokens")
-            for asset in portfolio_data['portfolio'][:5]:  # Show top 5 tokens
+            for asset in portfolio_data['portfolio'][:5]:
                 st.markdown(f"""
                 <div class="token-card floating-element">
                     <div>
@@ -886,318 +539,153 @@ with tab1:
                 </div>
                 """, unsafe_allow_html=True)
             
-            # Protocol Insights - Black and White Style
             st.subheader("🔍 Protocol Insights")
             col1, col2 = st.columns(2)
-            
             with col1:
                 st.markdown("""
                 <div class="protocol-card floating-element">
                     <h4>🏦 DeFi Protocols</h4>
                     <p style="color: #D4AF37; font-size: 1.2rem;">$12,450.00</p>
                     <p style="color: #FFD700;">+8.2% (24h)</p>
-                    <div style="margin-top: 1rem;">
-                        <span style="background: #D4AF37; color: #000000; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem;">Uniswap V3</span>
-                        <span style="background: #D4AF37; color: #000000; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem; margin-left: 0.5rem;">Aave V3</span>
-                    </div>
                 </div>
                 """, unsafe_allow_html=True)
-            
             with col2:
                 st.markdown("""
                 <div class="protocol-card floating-element">
                     <h4>⛓️ Multichain Assets</h4>
                     <p style="color: #D4AF37; font-size: 1.2rem;">$8,750.00</p>
                     <p style="color: #FFD700;">+5.1% (24h)</p>
-                    <div style="margin-top: 1rem;">
-                        <span style="background: #D4AF37; color: #000000; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem;">Ethereum</span>
-                        <span style="background: #D4AF37; color: #000000; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem; margin-left: 0.5rem;">Polygon</span>
-                    </div>
                 </div>
                 """, unsafe_allow_html=True)
         
-        # Blockchain Integration Section
         st.subheader("🔗 Blockchain Integration")
-        
-        # Enhanced blockchain storage with AI validation
         if st.button("💾 Store Portfolio on Blockchain", type="secondary", key="store_blockchain_btn"):
             try:
-                # Store portfolio with AI-enhanced validation
                 tx_hash = portfolio_manager.save_portfolio_allocation(
                     portfolio_data=portfolio_data,
                     risk_profile=risk_profile,
                     sectors=selected_sectors
                 )
-                
                 if tx_hash:
                     st.success("✅ Portfolio stored successfully!")
                 else:
                     st.error("❌ Failed to store portfolio")
-                    
             except Exception as e:
-                st.error("❌ Storage error")
+                st.error(f"❌ Storage error: {e}")
 
 with tab2:
-    # Market Analytics Section
     st.subheader("📊 AI-Enhanced Market Analytics")
-    
     try:
-        # Get comprehensive market data
         market_data = mcp_optimizer.get_enhanced_market_data()
-        
         if market_data:
-            # Market sentiment analysis
             if market_data.get('ai_sentiment'):
                 sentiment = market_data['ai_sentiment']
-                
                 col1, col2, col3 = st.columns(3)
-                
                 with col1:
-                    st.markdown(f'<p style="color: #000000;">Overall Mood</p><p style="color: #000000; font-weight: bold;">{sentiment.get("market_mood", "Unknown")}</p>', unsafe_allow_html=True)
-                
+                    st.metric("Market Mood", sentiment.get('market_mood', 'Unknown'))
                 with col2:
-                    st.markdown(f'<p style="color: #000000;">Sentiment Score</p><p style="color: #000000; font-weight: bold;">{sentiment.get("sentiment_score", 0):.2f}</p>', unsafe_allow_html=True)
-                
+                    st.metric("Sentiment Score", f"{sentiment.get('sentiment_score', 0):.2f}")
                 with col3:
-                    st.markdown(f'<p style="color: #000000;">Positive Coins</p><p style="color: #000000; font-weight: bold;">{sentiment.get("positive_coins", 0)}</p>', unsafe_allow_html=True)
+                    st.metric("Positive Coins", sentiment.get('positive_coins', 0))
             
-            # Trending analysis
             if market_data.get('trending_data'):
                 st.subheader("🔥 Trending Coins")
                 trending = market_data['trending_data']
-                
-                if trending.get('trending_coins'):
-                    st.markdown('<div class="card-grid">', unsafe_allow_html=True)
-                    for coin in trending['trending_coins'][:6]:
+                if trending.get('coins'):
+                    for coin in trending['coins'][:6]:
                         coin_data = coin['item']
                         st.markdown(f"""
                         <div class="trending-coin-card">
-                            <div>
-                                <h4 style="margin: 0; color: #D4AF37; font-size: 1.1rem;">{coin_data['name']}</h4>
-                                <p style="margin: 0; color: #ffffff; font-size: 0.9rem;">{coin_data['symbol'].upper()}</p>
-                                <p style="margin: 0; color: #FFD700; font-size: 0.8rem;">#{coin_data.get('market_cap_rank', 'N/A')}</p>
-                            </div>
-                            <div style="text-align: right;">
-                                <p style="margin: 0; color: #D4AF37; font-size: 1.2rem;">${coin_data.get('price_btc', 0):.8f} BTC</p>
-                                <p style="margin: 0; color: #ffffff; font-size: 0.8rem;">Score: {coin_data.get('score', 0)}</p>
-                            </div>
-                        </div>
-                        """, unsafe_allow_html=True)
-                    st.markdown('</div>', unsafe_allow_html=True)
-            
-            # Sector analysis
-            if market_data.get('sector_analysis'):
-                st.subheader("🏢 Sector Performance")
-                sectors = market_data['sector_analysis']
-                
-                st.markdown('<div class="card-grid">', unsafe_allow_html=True)
-                for sector, data in sectors.items():
-                    if data:
-                        st.markdown(f"""
-                        <div class="sector-card">
-                            <h4 style="margin: 0 0 1rem 0; color: #D4AF37; font-size: 1.2rem;">{sector}</h4>
-                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
-                                <div class="metric-card">
-                                    <h5 style="margin: 0; color: #ffffff; font-size: 0.8rem;">Market Cap</h5>
-                                    <p style="margin: 0; color: #D4AF37; font-size: 1.1rem;">${data.get('total_market_cap', 0):,.0f}</p>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <h4 style="margin: 0; color: #D4AF37;">{coin_data['name']} ({coin_data['symbol'].upper()})</h4>
+                                    <p style="margin: 0; color: #ffffff; font-size: 0.9rem;">Rank: #{coin_data.get('market_cap_rank', 'N/A')}</p>
                                 </div>
-                                <div class="metric-card">
-                                    <h5 style="margin: 0; color: #ffffff; font-size: 0.8rem;">Avg Change</h5>
-                                    <p style="margin: 0; color: {'#FFD700' if data.get('avg_24h_change', 0) > 0 else '#ff4444'}; font-size: 1.1rem;">{data.get('avg_24h_change', 0):.2f}%</p>
-                                </div>
-                                <div class="metric-card">
-                                    <h5 style="margin: 0; color: #ffffff; font-size: 0.8rem;">Assets</h5>
-                                    <p style="margin: 0; color: #D4AF37; font-size: 1.1rem;">{data.get('coin_count', 0)}</p>
+                                <div style="text-align: right;">
+                                    <p style="margin: 0; color: #D4AF37; font-size: 1.1rem;">{coin_data.get('price_btc', 0):.8f} BTC</p>
                                 </div>
                             </div>
                         </div>
                         """, unsafe_allow_html=True)
-                st.markdown('</div>', unsafe_allow_html=True)
-        
     except Exception as e:
-        if "rate limit" in str(e).lower() and not st.session_state.rate_limit_notified:
-            st.markdown(f'<p style="color: #000000;">⏱️ Rate limit exceeded. Please wait before making more requests.</p>', unsafe_allow_html=True)
+        if "rate limit" in str(e).lower() and not st.session_state.get('rate_limit_notified', False):
+            st.warning("⏱️ Rate limit exceeded. Please wait before making more requests.")
             st.session_state.rate_limit_notified = True
-        else:
-            st.error("❌ Error loading market analytics")
+        elif "rate limit" not in str(e).lower():
+            st.error(f"❌ Error loading market analytics: {e}")
 
 with tab3:
-    # AI Insights Section
     st.subheader("🤖 AI Insights")
-    
     if 'portfolio_data' in st.session_state and 'market_data' in st.session_state:
-        # Get AI insights
         portfolio_data = st.session_state.portfolio_data
         market_data = st.session_state.market_data
-        
-        # Smart recommendations
         recommendations = ai_chat.get_smart_recommendations(portfolio_data, market_data)
         
         st.subheader("💡 AI Smart Recommendations")
         if recommendations:
-            st.markdown('<div class="card-grid">', unsafe_allow_html=True)
-            for i, rec in enumerate(recommendations):
-                # Ensure the text is visible on the background
+            for rec in recommendations:
                 st.markdown(f"""
                 <div class="recommendation-card">
-                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                        <span style="color: #D4AF37; font-size: 1.2rem;">💡</span>
-                        <p style="margin: 0; color: #ffffff; font-size: 1rem;">{rec}</p>
-                    </div>
+                    <p style="margin: 0; color: #ffffff;">💡 {rec}</p>
                 </div>
                 """, unsafe_allow_html=True)
-            st.markdown('</div>', unsafe_allow_html=True)
-            st.markdown("""
-                <p style="color: #000000;">Diversify across more sectors to reduce concentration risk</p>
-                <p style="color: #000000;">Market sentiment is bearish - consider defensive assets</p>
-                <p style="color: #000000;">Monitor your portfolio regularly and rebalance as needed</p>
-                <p style="color: #000000;">Consider dollar-cost averaging for long-term stability</p>
-            """, unsafe_allow_html=True)
         else:
             st.info("No recommendations available")
-        
-        # Market sentiment insights
-        if market_data.get('ai_sentiment'):
-            sentiment = market_data['ai_sentiment']
-            st.subheader("📊 Market Sentiment Analysis")
-            
-            st.markdown('<div class="card-grid">', unsafe_allow_html=True)
-            
-            # Overall Mood Card
-            mood_color = '#FFD700' if sentiment.get('market_mood') == 'bullish' else '#ff4444' if sentiment.get('market_mood') == 'bearish' else '#D4AF37'
-            st.markdown(f"""
-            <div class="metric-card">
-                <h5 style="margin: 0; color: #000000; font-size: 0.8rem;">Overall Mood</h5>
-                <p style="margin: 0; color: #000000; font-size: 1.2rem; font-weight: bold;">{sentiment.get('market_mood', 'Unknown')}</p>
-            </div>
-            """, unsafe_allow_html=True)
-            
-            # Sentiment Score Card
-            score = sentiment.get('sentiment_score', 0)
-            score_color = '#FFD700' if score > 0.5 else '#ff4444' if score < -0.5 else '#D4AF37'
-            st.markdown(f"""
-            <div class="metric-card">
-                <h5 style="margin: 0; color: #000000; font-size: 0.8rem;">Sentiment Score</h5>
-                <p style="margin: 0; color: #000000; font-size: 1.2rem; font-weight: bold;">{score:.2f}</p>
-            </div>
-            """, unsafe_allow_html=True)
-            
-            # Positive Coins Card
-            st.markdown(f"""
-            <div class="metric-card">
-                <h5 style="margin: 0; color: #000000; font-size: 0.8rem;">Positive Coins</h5>
-                <p style="margin: 0; color: #000000; font-size: 1.2rem; font-weight: bold;">{sentiment.get('positive_coins', 0)}</p>
-            </div>
-            """, unsafe_allow_html=True)
-            
-            # Negative Coins Card
-            st.markdown(f"""
-            <div class="metric-card">
-                <h5 style="margin: 0; color: #000000; font-size: 0.8rem;">Negative Coins</h5>
-                <p style="margin: 0; color: #000000; font-size: 1.2rem; font-weight: bold;">{sentiment.get('negative_coins', 0)}</p>
-            </div>
-            """, unsafe_allow_html=True)
-            
-            st.markdown('</div>', unsafe_allow_html=True)
-        
-        # AI predictions
-        st.subheader("🔮 AI Predictions")
-        try:
-            predictions = ai_predictor.get_portfolio_predictions(portfolio_data)
-            
-            if predictions:
-                st.markdown('<div class="card-grid">', unsafe_allow_html=True)
-                for prediction in predictions:
-                    confidence_color = '#FFD700' if prediction['confidence'] > 60 else '#D4AF37' if prediction['confidence'] > 40 else '#ff4444'
-                    trend_color = '#FFD700' if prediction['trend'] == 'bullish' else '#ff4444'
-                    
-                    st.markdown(f"""
-                    <div class="prediction-card">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                            <h4 style="margin: 0; color: #D4AF37; font-size: 1.2rem;">{prediction['asset']}</h4>
-                            <span style="color: {trend_color}; font-size: 1.1rem;">{prediction['trend'].upper()}</span>
-                        </div>
-                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
-                            <div class="metric-card">
-                                <h5 style="margin: 0; color: #ffffff; font-size: 0.8rem;">Predicted Price</h5>
-                                <p style="margin: 0; color: #000000; font-size: 1.1rem;">${prediction['predicted_price']:,.2f}</p>
-                            </div>
-                            <div class="metric-card">
-                                <h5 style="margin: 0; color: #ffffff; font-size: 0.8rem;">Confidence</h5>
-                                <p style="margin: 0; color: #000000; font-size: 1.1rem;">{prediction['confidence']}%</p>
-                            </div>
-                        </div>
-                    </div>
-                    """, unsafe_allow_html=True)
-                st.markdown('</div>', unsafe_allow_html=True)
-            else:
-                st.info("No predictions available")
-        except Exception as e:
-            st.error("❌ Error generating predictions")
-    
     else:
-        st.markdown("""
-        <div style="background: #f0e68c; border: 2px solid #000000; border-radius: 8px; padding: 1rem; color: #000000;">
-            Generate a portfolio first to see AI insights
-        </div>
-        """, unsafe_allow_html=True)
+        st.info("Generate a portfolio first to see AI insights.")
 
 with tab4:
-    # Predictive Analytics Section
     st.subheader("📈 Predictive Analytics")
-    
     if 'portfolio_data' in st.session_state:
         portfolio_data = st.session_state.portfolio_data
         
-        # AI-powered predictions
         st.subheader("🔮 AI Market Predictions")
-        
-        # Get predictions for portfolio assets
         predictions = ai_predictor.get_portfolio_predictions(portfolio_data)
-        
         if predictions:
             for prediction in predictions:
                 col1, col2, col3 = st.columns(3)
-                
                 with col1:
                     st.metric("Asset", prediction['asset'])
-                
                 with col2:
                     st.metric("Predicted Price", f"${prediction['predicted_price']:,.2f}")
-                
                 with col3:
                     st.metric("Confidence", f"{prediction['confidence']}%")
         
-        # Risk analysis
         st.subheader("⚖️ Risk Analysis")
-        
-        # Calculate risk metrics
         risk_metrics = ai_predictor.calculate_risk_metrics(portfolio_data)
-        
         col1, col2, col3 = st.columns(3)
-        
         with col1:
             st.metric("Average Volatility", f"{risk_metrics.get('avg_volatility', 0):.3f}")
-        
         with col2:
             st.metric("Portfolio Diversity", f"{risk_metrics.get('diversity', 0)} assets")
-        
         with col3:
             st.metric("Largest Position", f"{risk_metrics.get('largest_position', 0):.1f}%")
         
-        # Portfolio insights
         st.subheader("ℹ️ Portfolio Insights")
         insights = ai_predictor.get_portfolio_insights(portfolio_data)
-        
         if insights:
             for insight in insights:
-                st.info(insight)
+                st.markdown(f"""
+                <div class="ai-feature">
+                    <h4>💡 {insight['title']}</h4>
+                    <p>{insight['description']}</p>
+                </div>
+                """, unsafe_allow_html=True)
         else:
             st.info("No detailed insights available for this portfolio.")
-    
     else:
-        st.markdown("""
-        <div style="background: #f0e68c; border: 2px solid #000000; border-radius: 8px; padding: 1rem; color: #000000;">
-            Generate a portfolio first to see predictive analytics
-        </div>
-        """, unsafe_allow_html=True)
+        st.info("Generate a portfolio first to see predictive analytics.")
+
+# Footer
+st.markdown("---")
+st.markdown("""
+<div style="text-align: center; color: #000000; padding: 2rem; background: #f0e68c; border: 2px solid #000000; border-radius: 16px; margin: 2rem 0;">
+    <p style="color: #000000; font-weight: bold;">🚀 Powered by AI, Coingecko MCP & Blockchain Technology</p>
+    <p style="color: #000000;">Built with Streamlit, CoinGecko API, and Ethereum Smart Contracts by Rancho</p>
+    <p>
+        <a href="https://x.com/Rancho_GHA" target="_blank" style="text-decoration: none; color: #D4AF37;">
+            <span style="font-size: 24px;">𝕏</span> Follow @Rancho_GHA
+        </a>
+    </p>
+</div>
+""", unsafe_allow_html=True)
