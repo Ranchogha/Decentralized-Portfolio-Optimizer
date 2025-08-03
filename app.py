@@ -938,42 +938,85 @@ with tab1:
                 st.error("❌ Storage error")
 
 with tab2:
+    # Market Analytics Section
     st.subheader("📊 AI-Enhanced Market Analytics")
+    
     try:
+        # Get comprehensive market data
         market_data = mcp_optimizer.get_enhanced_market_data()
+        
         if market_data:
+            # Market sentiment analysis
             if market_data.get('ai_sentiment'):
                 sentiment = market_data['ai_sentiment']
+                
                 col1, col2, col3 = st.columns(3)
+                
                 with col1:
-                    st.metric("Market Mood", sentiment.get('market_mood', 'Unknown'))
+                    st.markdown(f'<p style="color: #000000;">Overall Mood</p><p style="color: #000000; font-weight: bold;">{sentiment.get("market_mood", "Unknown")}</p>', unsafe_allow_html=True)
+                
                 with col2:
-                    st.metric("Sentiment Score", f"{sentiment.get('sentiment_score', 0):.2f}")
+                    st.markdown(f'<p style="color: #000000;">Sentiment Score</p><p style="color: #000000; font-weight: bold;">{sentiment.get("sentiment_score", 0):.2f}</p>', unsafe_allow_html=True)
+                
                 with col3:
-                    st.metric("Positive Coins", sentiment.get('positive_coins', 0))
+                    st.markdown(f'<p style="color: #000000;">Positive Coins</p><p style="color: #000000; font-weight: bold;">{sentiment.get("positive_coins", 0)}</p>', unsafe_allow_html=True)
             
+            # Trending analysis
             if market_data.get('trending_data'):
                 st.subheader("🔥 Trending Coins")
                 trending = market_data['trending_data']
-                if trending.get('coins'):
-                    for coin in trending['coins'][:6]:
+                
+                if trending.get('trending_coins'):
+                    st.markdown('<div class="card-grid">', unsafe_allow_html=True)
+                    for coin in trending['trending_coins'][:6]:
                         coin_data = coin['item']
                         st.markdown(f"""
                         <div class="trending-coin-card">
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <div>
-                                    <h4 style="margin: 0; color: #D4AF37;">{coin_data['name']} ({coin_data['symbol'].upper()})</h4>
-                                    <p style="margin: 0; color: #ffffff; font-size: 0.9rem;">Rank: #{coin_data.get('market_cap_rank', 'N/A')}</p>
+                            <div>
+                                <h4 style="margin: 0; color: #D4AF37; font-size: 1.1rem;">{coin_data['name']}</h4>
+                                <p style="margin: 0; color: #ffffff; font-size: 0.9rem;">{coin_data['symbol'].upper()}</p>
+                                <p style="margin: 0; color: #FFD700; font-size: 0.8rem;">#{coin_data.get('market_cap_rank', 'N/A')}</p>
+                            </div>
+                            <div style="text-align: right;">
+                                <p style="margin: 0; color: #D4AF37; font-size: 1.2rem;">${coin_data.get('price_btc', 0):.8f} BTC</p>
+                                <p style="margin: 0; color: #ffffff; font-size: 0.8rem;">Score: {coin_data.get('score', 0)}</p>
+                            </div>
+                        </div>
+                        """, unsafe_allow_html=True)
+                    st.markdown('</div>', unsafe_allow_html=True)
+            
+            # Sector analysis
+            if market_data.get('sector_analysis'):
+                st.subheader("🏢 Sector Performance")
+                sectors = market_data['sector_analysis']
+                
+                st.markdown('<div class="card-grid">', unsafe_allow_html=True)
+                for sector, data in sectors.items():
+                    if data:
+                        st.markdown(f"""
+                        <div class="sector-card">
+                            <h4 style="margin: 0 0 1rem 0; color: #D4AF37; font-size: 1.2rem;">{sector}</h4>
+                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+                                <div class="metric-card">
+                                    <h5 style="margin: 0; color: #ffffff; font-size: 0.8rem;">Market Cap</h5>
+                                    <p style="margin: 0; color: #D4AF37; font-size: 1.1rem;">${data.get('total_market_cap', 0):,.0f}</p>
                                 </div>
-                                <div style="text-align: right;">
-                                    <p style="margin: 0; color: #D4AF37; font-size: 1.1rem;">{coin_data.get('price_btc', 0):.8f} BTC</p>
+                                <div class="metric-card">
+                                    <h5 style="margin: 0; color: #ffffff; font-size: 0.8rem;">Avg Change</h5>
+                                    <p style="margin: 0; color: {'#FFD700' if data.get('avg_24h_change', 0) > 0 else '#ff4444'}; font-size: 1.1rem;">{data.get('avg_24h_change', 0):.2f}%</p>
+                                </div>
+                                <div class="metric-card">
+                                    <h5 style="margin: 0; color: #ffffff; font-size: 0.8rem;">Assets</h5>
+                                    <p style="margin: 0; color: #D4AF37; font-size: 1.1rem;">{data.get('coin_count', 0)}</p>
                                 </div>
                             </div>
                         </div>
                         """, unsafe_allow_html=True)
+                st.markdown('</div>', unsafe_allow_html=True)
+        
     except Exception as e:
         if "rate limit" in str(e).lower() and not st.session_state.rate_limit_notified:
-            st.markdown(f'<p style="color: #ffffff;">⏱️ Rate limit exceeded. Please wait before making more requests.</p>', unsafe_allow_html=True)
+            st.markdown(f'<p style="color: #000000;">⏱️ Rate limit exceeded. Please wait before making more requests.</p>', unsafe_allow_html=True)
             st.session_state.rate_limit_notified = True
         else:
             st.error("❌ Error loading market analytics")
