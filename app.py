@@ -565,22 +565,8 @@ with tab1:
                     <p style="color: #D4AF37; font-size: 1.2rem;">$8,750.00</p>
                     <p style="color: #FFD700;">+5.1% (24h)</p>
                 </div>
-                """, unsafe_allow_html=True)
+                """, unsafe_allow_html=True)        
         
-        st.subheader("🔗 Blockchain Integration")
-        if st.button("💾 Store Portfolio on Blockchain", type="secondary", key="store_blockchain_btn"):
-            try:
-                tx_hash = portfolio_manager.save_portfolio_allocation(
-                    portfolio_data=portfolio_data,
-                    risk_profile=risk_profile,
-                    sectors=selected_sectors
-                )
-                if tx_hash:
-                    st.success("✅ Portfolio stored successfully!")
-                else:
-                    st.error("❌ Failed to store portfolio")
-            except Exception as e:
-                st.error(f"❌ Storage error: {e}")
 
 with tab2:
     st.subheader("📊 AI-Enhanced Market Analytics")
