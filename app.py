@@ -641,7 +641,11 @@ with tab3:
         else:
             st.info("No recommendations available")
     else:
-        st.info("Generate a portfolio first to see AI insights.")
+        st.markdown("""
+        <div style="background: #f0e68c; border: 2px solid #000000; border-radius: 8px; padding: 1rem; color: #000000;">
+            Generate a portfolio first to see predictive analytics
+        </div>
+        """, unsafe_allow_html=True)
 
 with tab4:
     st.subheader("📈 Predictive Analytics")
@@ -683,7 +687,11 @@ with tab4:
         else:
             st.info("No detailed insights available for this portfolio.")
     else:
-        st.info("Generate a portfolio first to see predictive analytics.")
+        st.markdown("""
+        <div style="background: #f0e68c; border: 2px solid #000000; border-radius: 8px; padding: 1rem; color: #000000;">
+            Generate a portfolio first to see predictive analytics
+        </div>
+        """, unsafe_allow_html=True)
 
 # Footer
 st.markdown("---")
