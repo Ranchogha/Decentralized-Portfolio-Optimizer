@@ -465,37 +465,46 @@ tab1, tab2, tab3, tab4 = st.tabs([
 ])
 
 with tab1:
+    # Portfolio Generation Section
     st.subheader("🎯 Portfolio Generation")
     
+    # Generate portfolio using AI-enhanced data with metallic styling
     if st.button("🚀 Generate AI-Optimized Portfolio", type="primary", key="generate_portfolio_btn"):
         with st.spinner("🔄 Generating portfolio with AI-enhanced data..."):
             try:
+                # Get AI-enhanced portfolio data
                 portfolio_data = mcp_optimizer.ai_optimize_portfolio(
                     risk_profile=risk_profile,
                     investment_amount=investment_amount,
                     preferred_sectors=selected_sectors,
                     max_assets=max_assets
                 )
+                
                 if portfolio_data and portfolio_data.get('portfolio'):
                     st.session_state.portfolio_data = portfolio_data
                     st.session_state.market_data = mcp_optimizer.get_enhanced_market_data()
                 else:
                     st.error("❌ Failed to generate portfolio. Please try again.")
+                    
             except Exception as e:
-                if "rate limit" in str(e).lower() and not st.session_state.get('rate_limit_notified', False):
-                    st.warning("⏱️ Rate limit exceeded. Please wait before making more requests.")
-                    st.session_state.rate_limit_notified = True
-                elif "rate limit" not in str(e).lower():
-                    st.error(f"❌ Error generating portfolio: {e}")
+                st.error("❌ Error generating portfolio")
                 st.stop()
-
+    
+    # Retry button if portfolio generation failed
     if 'portfolio_data' not in st.session_state or not st.session_state.portfolio_data:
-        st.info("⚠️ No portfolio data available. Click 'Generate AI-Optimized Portfolio' to create one.")
+        st.markdown("""
+        <div style="background: #f0e68c; border: 2px solid #000000; border-radius: 8px; padding: 1rem; color: #000000;">
+            ⚠️ No portfolio data available. Click 'Generate AI-Optimized Portfolio' to create one.
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Quick retry with different settings
         col1, col2 = st.columns(2)
         with col1:
             if st.button("🔄 Retry with Default Settings", type="secondary", key="retry_default_btn"):
                 st.session_state.retry_default = True
                 st.rerun()
+        
         with col2:
             if st.button("🔧 Try with Fewer Assets", type="secondary", key="retry_fewer_btn"):
                 st.session_state.retry_fewer = True
